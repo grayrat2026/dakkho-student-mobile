@@ -1,6 +1,14 @@
-import { DefaultTheme } from '@react-navigation/native';
-
 // ── DAKKHO Theme — exact match from web app CSS variables ──
+
+// React Navigation DefaultTheme colors (inlined to avoid extra dep)
+const RN_DEFAULT_COLORS = {
+  primary: 'rgb(0, 122, 255)',
+  background: 'rgb(242, 242, 242)',
+  card: 'rgb(255, 255, 255)',
+  text: 'rgb(28, 28, 30)',
+  border: 'rgb(216, 216, 216)',
+  notification: 'rgb(255, 59, 48)',
+};
 
 export const LightColors = {
   background: '#f0f9ff',
@@ -115,9 +123,9 @@ export const TECHNOLOGY_SHORT_NAMES: Record<string, string> = {
 
 // Nav theme for React Navigation
 export const LightNavTheme = {
-  ...DefaultTheme,
+  dark: false,
   colors: {
-    ...DefaultTheme.colors,
+    ...RN_DEFAULT_COLORS,
     primary: '#0ea5e9',
     background: '#f0f9ff',
     card: 'rgba(255, 255, 255, 0.7)',
@@ -128,10 +136,9 @@ export const LightNavTheme = {
 };
 
 export const DarkNavTheme = {
-  ...DefaultTheme,
   dark: true,
   colors: {
-    ...DefaultTheme.colors,
+    ...RN_DEFAULT_COLORS,
     primary: '#0ea5e9',
     background: '#0c1222',
     card: 'rgba(15, 23, 42, 0.7)',

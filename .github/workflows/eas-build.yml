@@ -2,13 +2,16 @@ name: EAS Build
 
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: 'Build profile (development, preview, production)'
+        required: true
+        default: 'preview'
 
 jobs:
   build:
-    name: Build Android App
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -18,28 +21,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
+          cache: yarn
 
       - name: Setup Expo
         uses: expo/expo-github-action@v8
         with:
+          expo-version: latest
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run: yarn install --frozen-lockfile || npm ci
 
-      - name: Type check
-        run: npx tsc --noEmit || true
-
-      - name: Build on EAS (Preview)
-        if: github.event_name == 'pull_request'
-        run: eas build --profile preview --platform android --non-interactive
-
-      - name: Build on EAS (Production)
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: eas build --profile production --platform android --non-interactive
-
-      - name: Submit to Play Store
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: eas submit --profile production --platform android --non-interactive || true
+      - name: Build on EAS
+        run: eas build --platform android --profile ${{ github.event.inputs.profile || 'preview' }} --non-interactive

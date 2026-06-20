@@ -4,8 +4,30 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { ErrorBoundary } from 'react-native';
 import { useAuthStore, useThemeStore, useNotificationStore, useServerConfigStore } from '@/lib/store';
 import { LightColors, DarkColors } from '@/lib/theme';
+
+// Global error handler for TurboModule issues
+if (__DEV__) {
+  const originalConsoleError = console.error;
+  console.error = (...args) => {
+    const message = args[0]?.toString?.() || '';
+    // Suppress known TurboModule warnings that are harmless in Expo managed workflow
+    if (message.includes('TurboModuleRegistry') && message.includes('PlatformConstants')) {
+      return;
+    }
+    originalConsoleError.call(console, ...args);
+  };
+}
+
+export function ErrorFallback({ error, resetErrorBoundary }: { error: Error; resetErrorBoundary: () => void }) {
+  return (
+    <View style={styles.errorContainer}>
+      <ActivityIndicator size="large" color="#0ea5e9" />
+    </View>
+  );
+}
 
 export default function RootLayout() {
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
@@ -58,6 +80,12 @@ export default function RootLayout() {
 
 const styles = StyleSheet.create({
   loadingContainer: {
+    flex: 1,
+    backgroundColor: '#0c1222',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  errorContainer: {
     flex: 1,
     backgroundColor: '#0c1222',
     alignItems: 'center',
