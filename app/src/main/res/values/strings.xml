@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DAKKHO</string>
+    <string name="app_name_debug">DAKKHO Debug</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_courses">Courses</string>
+    <string name="nav_my_learning">My Learning</string>
+    <string name="nav_profile">Profile</string>
+    <string name="nav_notifications">Notifications</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_search">Search</string>
+
+    <!-- Auth -->
+    <string name="auth_login">Log In</string>
+    <string name="auth_signup">Sign Up</string>
+    <string name="auth_logout">Log Out</string>
+    <string name="auth_email">Email</string>
+    <string name="auth_password">Password</string>
+    <string name="auth_forgot_password">Forgot Password?</string>
+    <string name="auth_reset_password">Reset Password</string>
+    <string name="auth_verify_otp">Verify OTP</string>
+    <string name="auth_full_name">Full Name</string>
+    <string name="auth_phone">Phone Number</string>
+    <string name="auth_no_account">Don\'t have an account?</string>
+    <string name="auth_has_account">Already have an account?</string>
+    <string name="auth_delete_account">Delete Account</string>
+
+    <!-- Courses -->
+    <string name="course_enroll">Enroll Now</string>
+    <string name="course_continue">Continue Learning</string>
+    <string name="course_curriculum">Curriculum</string>
+    <string name="course_reviews">Reviews</string>
+    <string name="course_instructor">Instructor</string>
+    <string name="course_duration">Duration</string>
+    <string name="course_level">Level</string>
+    <string name="course_rating">Rating</string>
+    <string name="course_students">Students</string>
+    <string name="course_price">Price</string>
+    <string name="course_free">Free</string>
+    <string name="course_completed">Completed</string>
+    <string name="course_progress">Progress</string>
+
+    <!-- General -->
+    <string name="loading">Loading…</string>
+    <string name="error_generic">Something went wrong. Please try again.</string>
+    <string name="error_network">No internet connection</string>
+    <string name="retry">Retry</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="done">Done</string>
+    <string name="ok">OK</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="close">Close</string>
+    <string name="back">Back</string>
+    <string name="next">Next</string>
+    <string name="skip">Skip</string>
+    <string name="search">Search</string>
+    <string name="filter">Filter</string>
+    <string name="sort">Sort</string>
+
+    <!-- Notifications -->
+    <string name="notification_mark_read">Mark as Read</string>
+    <string name="notification_mark_all_read">Mark All as Read</string>
+    <string name="notification_no_unread">No unread notifications</string>
+
+    <!-- Profile -->
+    <string name="profile_edit">Edit Profile</string>
+    <string name="profile_achievements">Achievements</string>
+    <string name="profile_certificates">Certificates</string>
+    <string name="profile_bookmarks">Bookmarks</string>
+    <string name="profile_download_manager">Downloads</string>
+
+    <!-- Downloads -->
+    <string name="download_start">Download</string>
+    <string name="download_pause">Pause</string>
+    <string name="download_resume">Resume</string>
+    <string name="download_cancel">Cancel Download</string>
+    <string name="download_complete">Download Complete</string>
+    <string name="download_failed">Download Failed</string>
+
+    <!-- Support -->
+    <string name="support_create_ticket">Create Support Ticket</string>
+    <string name="support_subject">Subject</string>
+    <string name="support_message">Message</string>
+
+    <!-- Content descriptions -->
+    <string name="cd_navigate_back">Navigate back</string>
+    <string name="cd_profile_avatar">Profile avatar</string>
+    <string name="cd_course_thumbnail">Course thumbnail</string>
+    <string name="cd_play_video">Play video</string>
+    <string name="cd_pause_video">Pause video</string>
+    <string name="cd_notification_icon">Notification icon</string>
+    <string name="cd_search_icon">Search icon</string>
+</resources>
