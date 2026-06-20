@@ -18,6 +18,7 @@ import androidx.navigation.toRoute
 import com.dakkho.android.presentation.screens.auth.ForgotPasswordScreen
 import com.dakkho.android.presentation.screens.auth.LoginScreen
 import com.dakkho.android.presentation.screens.auth.SignupScreen
+import com.dakkho.android.presentation.screens.home.HomeScreen
 import com.dakkho.android.presentation.theme.AnimationConstants
 
 @Composable
@@ -134,7 +135,23 @@ fun DakkhoNavHost(
             enterTransition = { fadeIn(tween(AnimationConstants.FADE_IN_MS)) },
             exitTransition = { fadeOut(tween(AnimationConstants.FADE_OUT_MS)) }
         ) {
-            PlaceholderScreen(title = "Home")
+            HomeScreen(
+                onNavigateToCourse = { courseId ->
+                    navController.navigate(Route.CourseDetail(courseId))
+                },
+                onNavigateToSearch = {
+                    navController.navigate(Route.Search)
+                },
+                onNavigateToNotifications = {
+                    navController.navigate(Route.Notifications)
+                },
+                onNavigateToVideo = { videoId, courseId ->
+                    navController.navigate(Route.VideoPlayer(videoId, courseId))
+                },
+                onNavigateToInstructor = { instructorId ->
+                    navController.navigate(Route.InstructorProfile(instructorId))
+                }
+            )
         }
 
         composable<Route.Explore>(
