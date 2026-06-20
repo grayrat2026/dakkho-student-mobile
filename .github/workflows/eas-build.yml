@@ -1,37 +1,63 @@
-name: EAS Build
+name: Build APK
 
 on:
   push:
     branches: [main, master]
   workflow_dispatch:
     inputs:
-      profile:
-        description: 'Build profile (development, preview, production)'
-        required: true
+      build_type:
+        description: 'Build type'
+        required: false
         default: 'preview'
+        type: choice
+        options:
+          - preview
+          - development
+          - production
 
 jobs:
-  build:
+  build-apk:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: 📦 Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: yarn
+          cache: npm
 
-      - name: Setup Expo
+      - name: 📱 Setup Expo
         uses: expo/expo-github-action@v8
         with:
           expo-version: latest
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile || npm ci
+      - name: 📥 Install dependencies
+        run: npm ci
 
-      - name: Build on EAS
-        run: eas build --platform android --profile ${{ github.event.inputs.profile || 'preview' }} --non-interactive
+      - name: 🔍 Run Expo Doctor
+        run: npx expo-doctor
+
+      - name: 🏗️ EAS Build (Android APK)
+        run: eas build --platform android --profile ${{ github.event.inputs.build_type || 'preview' }} --non-interactive --wait
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 📥 Download APK
+        run: |
+          BUILD_ID=$(eas build:list --platform android --limit 1 --json | jq -r '.[0].id')
+          if [ -n "$BUILD_ID" ]; then
+            eas build:download --id "$BUILD_ID" --output dakkho-student.apk
+            echo "APK downloaded: dakkho-student.apk"
+            ls -lh dakkho-student.apk
+          fi
+
+      - name: 📤 Upload APK as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dakkho-student-apk
+          path: dakkho-student.apk
+          retention-days: 30
