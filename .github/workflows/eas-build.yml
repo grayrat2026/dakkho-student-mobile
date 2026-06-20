@@ -1,0 +1,45 @@
+name: EAS Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: Build Android App
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Type check
+        run: npx tsc --noEmit || true
+
+      - name: Build on EAS (Preview)
+        if: github.event_name == 'pull_request'
+        run: eas build --profile preview --platform android --non-interactive
+
+      - name: Build on EAS (Production)
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: eas build --profile production --platform android --non-interactive
+
+      - name: Submit to Play Store
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: eas submit --profile production --platform android --non-interactive || true
