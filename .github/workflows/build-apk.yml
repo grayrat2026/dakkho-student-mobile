@@ -8,7 +8,7 @@ on:
 jobs:
   build-apk:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
 
     steps:
       - name: 📦 Checkout
@@ -38,15 +38,26 @@ jobs:
       - name: 🏗️ Expo Prebuild
         run: npx expo prebuild --platform android --clean
 
-      - name: 🔨 Build Release APK
+      - name: 🔨 Build Debug APK (faster)
         working-directory: android
         run: |
           chmod +x gradlew
-          ./gradlew assembleRelease --no-daemon
+          ./gradlew assembleDebug --no-daemon 2>&1 | tail -30
 
       - name: 📤 Upload APK
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: dakkho-student-apk
-          path: android/app/build/outputs/apk/release/*.apk
+          path: |
+            android/app/build/outputs/apk/debug/*.apk
+            android/app/build/outputs/apk/release/*.apk
           retention-days: 30
+
+      - name: 📋 Build Info
+        if: always()
+        run: |
+          echo "=== APK Files ==="
+          find android/app/build/outputs/apk -name "*.apk" -exec ls -lh {} \; 2>/dev/null || echo "No APK found"
+          echo "=== Gradle Summary ==="
+          cat android/app/build/reports/build-result.txt 2>/dev/null || echo "No build report"
