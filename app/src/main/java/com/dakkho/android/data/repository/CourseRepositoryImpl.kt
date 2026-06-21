@@ -1,12 +1,17 @@
 package com.dakkho.android.data.repository
 
 import com.dakkho.android.data.api.CourseApiService
+import com.dakkho.android.data.db.Converters
 import com.dakkho.android.data.db.dao.CourseDao
+import com.dakkho.android.data.db.dao.CourseDetailDao
+import com.dakkho.android.data.db.entity.CourseDetailEntity
 import com.dakkho.android.data.db.entity.CourseEntity
 import com.dakkho.android.domain.model.Course
 import com.dakkho.android.domain.model.CourseDetail
+import com.dakkho.android.domain.model.CoursePackage
 import com.dakkho.android.domain.model.Curriculum
 import com.dakkho.android.domain.model.Lesson
+import com.dakkho.android.domain.model.Review
 import com.dakkho.android.domain.model.Section
 import com.dakkho.android.domain.repository.CourseRepository
 import timber.log.Timber
@@ -16,8 +21,11 @@ import javax.inject.Singleton
 @Singleton
 class CourseRepositoryImpl @Inject constructor(
     private val courseApiService: CourseApiService,
-    private val courseDao: CourseDao
+    private val courseDao: CourseDao,
+    private val courseDetailDao: CourseDetailDao
 ) : CourseRepository {
+
+    private val converters = Converters()
 
     override suspend fun getCourses(params: Map<String, String>): Result<List<Course>> {
         return try {
@@ -47,16 +55,20 @@ class CourseRepositoryImpl @Inject constructor(
             if (response.isSuccessful) {
                 val body = response.body()
                 if (body != null && body.success && body.data != null) {
-                    Result.success(mapCourseDetailDtoToDomain(body.data))
+                    val detail = mapCourseDetailDtoToDomain(body.data)
+                    // Cache course detail for offline access
+                    cacheCourseDetail(detail)
+                    Result.success(detail)
                 } else {
-                    Result.failure(Exception(body?.message ?: "Course detail not found"))
+                    // Try offline cache
+                    getCachedCourseDetail(courseId)
                 }
             } else {
-                Result.failure(Exception("Course detail failed: ${response.code()}"))
+                getCachedCourseDetail(courseId)
             }
         } catch (e: Exception) {
-            Timber.e(e, "Get course detail error")
-            Result.failure(e)
+            Timber.e(e, "Get course detail error, falling back to cache")
+            getCachedCourseDetail(courseId)
         }
     }
 
@@ -97,6 +109,70 @@ class CourseRepositoryImpl @Inject constructor(
             }
         } catch (e: Exception) {
             Timber.e(e, "Get course curriculum error")
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun getCourseReviews(courseId: String, page: Int, limit: Int): Result<List<Review>> {
+        return try {
+            val response = courseApiService.getCourseReviews(courseId, page, limit)
+            if (response.isSuccessful) {
+                val body = response.body()
+                if (body != null && body.success && body.data != null) {
+                    Result.success(
+                        body.data.items.map { dto ->
+                            Review(
+                                id = dto.id,
+                                userId = dto.userId,
+                                courseId = dto.courseId,
+                                userName = dto.userName,
+                                userAvatar = dto.userAvatar,
+                                rating = dto.rating,
+                                comment = dto.comment,
+                                createdAt = dto.createdAt
+                            )
+                        }
+                    )
+                } else {
+                    Result.success(emptyList())
+                }
+            } else {
+                Result.success(emptyList())
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Get course reviews error")
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun getCoursePackages(courseId: String): Result<List<CoursePackage>> {
+        return try {
+            val response = courseApiService.getCoursePackages(courseId)
+            if (response.isSuccessful) {
+                val body = response.body()
+                if (body != null && body.success && body.data != null) {
+                    Result.success(
+                        body.data.map { dto ->
+                            CoursePackage(
+                                id = dto.id,
+                                name = dto.name,
+                                description = dto.description,
+                                price = dto.price,
+                                isFree = dto.isFree ?: false,
+                                features = dto.features ?: emptyList(),
+                                courseIds = dto.courseIds ?: emptyList(),
+                                isActive = dto.isActive ?: true
+                            )
+                        }
+                    )
+                } else {
+                    Result.success(emptyList())
+                }
+            } else {
+                Result.success(emptyList())
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Get course packages error")
             Result.failure(e)
         }
     }
@@ -143,6 +219,52 @@ class CourseRepositoryImpl @Inject constructor(
         }
     }
 
+    // ── Cache Helpers ──
+
+    private suspend fun cacheCourseDetail(detail: CourseDetail) {
+        try {
+            val entity = CourseDetailEntity(
+                id = detail.id,
+                courseId = detail.id,
+                title = detail.title,
+                description = detail.description,
+                instructorId = detail.instructorId,
+                instructorName = detail.instructorName,
+                instructorAvatar = detail.instructorAvatar,
+                technology = detail.technology,
+                price = detail.price,
+                discountedPrice = detail.discountedPrice,
+                thumbnailUrl = detail.thumbnailUrl,
+                isPublished = detail.isPublished,
+                rating = detail.rating,
+                reviewCount = detail.reviewCount,
+                enrollmentCount = detail.enrollmentCount,
+                durationHours = detail.durationHours,
+                level = detail.level,
+                whatYouLearn = converters.fromStringList(detail.whatYouLearn),
+                requirements = converters.fromStringList(detail.requirements),
+                targetAudience = converters.fromStringList(detail.targetAudience),
+                createdAt = detail.createdAt
+            )
+            courseDetailDao.insert(entity)
+        } catch (e: Exception) {
+            Timber.e(e, "Cache course detail error")
+        }
+    }
+
+    private suspend fun getCachedCourseDetail(courseId: String): Result<CourseDetail> {
+        return try {
+            val cached = courseDetailDao.getCourseDetail(courseId)
+            if (cached != null) {
+                Result.success(mapCourseDetailEntityToDomain(cached))
+            } else {
+                Result.failure(Exception("Course detail not found (offline)"))
+            }
+        } catch (e: Exception) {
+            Result.failure(Exception("Course detail not available offline"))
+        }
+    }
+
     private suspend fun getCachedCourses(): Result<List<Course>> {
         val cached = courseDao.getCourses()
         return if (cached.isNotEmpty()) {
@@ -160,6 +282,8 @@ class CourseRepositoryImpl @Inject constructor(
             Result.failure(Exception("No cached courses available for technology: $technology"))
         }
     }
+
+    // ── Mapping Functions ──
 
     private fun mapCourseDtoToDomain(dto: com.dakkho.android.domain.model.CourseDto): Course {
         return Course(
@@ -235,12 +359,39 @@ class CourseRepositoryImpl @Inject constructor(
             thumbnailUrl = dto.thumbnailUrl,
             isPublished = dto.isPublished ?: true,
             rating = dto.rating,
+            reviewCount = dto.reviewCount,
             enrollmentCount = dto.enrollmentCount,
             durationHours = dto.durationHours,
             level = dto.level,
             whatYouLearn = dto.whatYouLearn ?: emptyList(),
             requirements = dto.requirements ?: emptyList(),
+            targetAudience = dto.targetAudience ?: emptyList(),
             createdAt = dto.createdAt
+        )
+    }
+
+    private fun mapCourseDetailEntityToDomain(entity: CourseDetailEntity): CourseDetail {
+        return CourseDetail(
+            id = entity.id,
+            title = entity.title,
+            description = entity.description,
+            instructorId = entity.instructorId,
+            instructorName = entity.instructorName,
+            instructorAvatar = entity.instructorAvatar,
+            technology = entity.technology,
+            price = entity.price,
+            discountedPrice = entity.discountedPrice,
+            thumbnailUrl = entity.thumbnailUrl,
+            isPublished = entity.isPublished,
+            rating = entity.rating,
+            reviewCount = entity.reviewCount,
+            enrollmentCount = entity.enrollmentCount,
+            durationHours = entity.durationHours,
+            level = entity.level,
+            whatYouLearn = converters.toStringList(entity.whatYouLearn) ?: emptyList(),
+            requirements = converters.toStringList(entity.requirements) ?: emptyList(),
+            targetAudience = converters.toStringList(entity.targetAudience) ?: emptyList(),
+            createdAt = entity.createdAt
         )
     }
 }

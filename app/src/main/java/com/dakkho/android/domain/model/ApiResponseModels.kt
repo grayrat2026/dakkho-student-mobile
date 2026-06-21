@@ -103,11 +103,13 @@ data class CourseDetailDto(
     @Json(name = "thumbnail_url") val thumbnailUrl: String?,
     @Json(name = "is_published") val isPublished: Boolean?,
     @Json(name = "rating") val rating: Float?,
+    @Json(name = "review_count") val reviewCount: Int?,
     @Json(name = "enrollment_count") val enrollmentCount: Int?,
     @Json(name = "duration_hours") val durationHours: Float?,
     @Json(name = "level") val level: String?,
     @Json(name = "what_you_learn") val whatYouLearn: List<String>?,
     @Json(name = "requirements") val requirements: List<String>?,
+    @Json(name = "target_audience") val targetAudience: List<String>?,
     @Json(name = "created_at") val createdAt: String?
 )
 
@@ -259,4 +261,32 @@ data class CreateTicketRequest(
     @Json(name = "subject") val subject: String,
     @Json(name = "message") val message: String,
     @Json(name = "category") val category: String?
+)
+
+// ── Review Models ──
+
+@JsonClass(generateAdapter = true)
+data class ReviewDto(
+    @Json(name = "id") val id: String,
+    @Json(name = "user_id") val userId: String,
+    @Json(name = "course_id") val courseId: String,
+    @Json(name = "user_name") val userName: String?,
+    @Json(name = "user_avatar") val userAvatar: String?,
+    @Json(name = "rating") val rating: Float,
+    @Json(name = "comment") val comment: String?,
+    @Json(name = "created_at") val createdAt: String?
+)
+
+// ── Course Package Models ──
+
+@JsonClass(generateAdapter = true)
+data class CoursePackageDto(
+    @Json(name = "id") val id: String,
+    @Json(name = "name") val name: String,
+    @Json(name = "description") val description: String?,
+    @Json(name = "price") val price: Double?,
+    @Json(name = "is_free") val isFree: Boolean?,
+    @Json(name = "features") val features: List<String>?,
+    @Json(name = "course_ids") val courseIds: List<String>?,
+    @Json(name = "is_active") val isActive: Boolean?
 )

@@ -141,6 +141,17 @@ app/src/main/java/com/dakkho/android/
 │   │       ├── StatsCard.kt
 │   │       ├── ProfileMenuItem.kt
 │   │       └── ProfileHeader.kt
+│   │   └── coursedetail/        # Course detail screen components
+│   │       ├── RatingStars.kt
+│   │       ├── InstructorCard.kt
+│   │       ├── CourseHeroSection.kt
+│   │       ├── CourseOverviewTab.kt
+│   │       ├── CourseCurriculumTab.kt
+│   │       ├── CourseReviewsTab.kt
+│   │       ├── CourseQnATab.kt
+│   │       ├── CourseAnnouncementsTab.kt
+│   │       ├── CoursePackageCard.kt
+│   │       └── EnrollBottomSheet.kt
 │   ├── navigation/
 │   │   ├── Route.kt              # @Serializable routes
 │   │   ├── DakkhoNavHost.kt      # NavHost + transitions
@@ -181,6 +192,9 @@ app/src/main/java/com/dakkho/android/
 │   │   └── assignment/
 │   │       ├── AssignmentScreen.kt    # SAF upload + status badges
 │   │       └── AssignmentViewModel.kt
+│   │   └── coursedetail/
+│   │       ├── CourseDetailScreen.kt  # CollapsingToolbar + TabPager + 5 tabs
+│   │       └── CourseDetailViewModel.kt
 │   └── theme/                    # Design system
 │       ├── Color.kt              # DAKKHO palette (SkyBlue/DeepBlue/Green)
 │       ├── Theme.kt              # Light/Dark + Material You
@@ -202,7 +216,7 @@ app/src/main/java/com/dakkho/android/
 
 ## Implementation Progress
 
-### ✅ Completed (Phase 1–12)
+### ✅ Completed (Phase 1–13)
 
 | Phase | Title | Status | Files |
 |-------|-------|--------|-------|
@@ -218,12 +232,12 @@ app/src/main/java/com/dakkho/android/
 | 10 | Notifications #7-8 (Paging + Swipe + Worker) | ✅ Complete | 12 files |
 | 11 | Profile #9 + Category #10 + About #11 | ✅ Complete | 11 files |
 | 12 | Watch History #12 & Assignment #13 | ✅ Complete | 12 files |
+| 13 | Course Detail #14 (Tabs + Enroll + Offline) | ✅ Complete | 18 files |
 
-### 🚧 Upcoming (Phase 13–29)
+### 🚧 Upcoming (Phase 14–29)
 
 | Phase | Title | Est. Duration |
 |-------|-------|---------------|
-| 13 | Course Detail #14 | 4–5 days |
 | 14 | Secure Video Player #15 | 6–8 days |
 | 15 | Course Curriculum #16 & Reviews #17 | 3–4 days |
 | 16 | Course Q&A #18, Announcements #19, Resources #20 | 3 days |
@@ -299,6 +313,8 @@ The app connects to a **Cloudflare Workers** backend (Hono framework) with the f
 | GET | `/api/courses` | List courses (paginated, filterable) |
 | GET | `/api/courses/:id` | Get course detail |
 | GET | `/api/courses/:id/curriculum` | Get course curriculum tree |
+| GET | `/api/courses/:id/reviews` | Get course reviews (paginated) |
+| GET | `/api/course-packages` | Get course packages/pricing |
 | GET | `/api/notifications` | List notifications (paginated) |
 | PATCH | `/api/notifications/:id/read` | Mark notification as read |
 | PATCH | `/api/notifications/read-all` | Mark all notifications as read |

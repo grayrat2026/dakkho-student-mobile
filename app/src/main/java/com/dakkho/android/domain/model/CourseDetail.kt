@@ -13,11 +13,13 @@ data class CourseDetail(
     val thumbnailUrl: String? = null,
     val isPublished: Boolean = true,
     val rating: Float? = null,
+    val reviewCount: Int? = null,
     val enrollmentCount: Int? = null,
     val durationHours: Float? = null,
     val level: String? = null,
     val whatYouLearn: List<String> = emptyList(),
     val requirements: List<String> = emptyList(),
+    val targetAudience: List<String> = emptyList(),
     val curriculum: Curriculum? = null,
     val createdAt: String? = null
 )

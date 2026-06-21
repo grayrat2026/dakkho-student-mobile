@@ -7,6 +7,7 @@ import com.dakkho.android.data.db.DakkhoDatabase
 import com.dakkho.android.data.db.dao.AppSettingsDao
 import com.dakkho.android.data.db.dao.BookmarkDao
 import com.dakkho.android.data.db.dao.CourseDao
+import com.dakkho.android.data.db.dao.CourseDetailDao
 import com.dakkho.android.data.db.dao.DownloadDao
 import com.dakkho.android.data.db.dao.EnrollmentDao
 import com.dakkho.android.data.db.dao.NotificationDao
@@ -54,6 +55,11 @@ object DatabaseModule {
     @Provides
     fun provideCourseDao(database: DakkhoDatabase): CourseDao {
         return database.courseDao()
+    }
+
+    @Provides
+    fun provideCourseDetailDao(database: DakkhoDatabase): CourseDetailDao {
+        return database.courseDetailDao()
     }
 
     @Provides

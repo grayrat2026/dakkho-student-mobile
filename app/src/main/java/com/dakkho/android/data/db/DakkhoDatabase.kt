@@ -6,6 +6,7 @@ import androidx.room.TypeConverters
 import com.dakkho.android.data.db.dao.AppSettingsDao
 import com.dakkho.android.data.db.dao.BookmarkDao
 import com.dakkho.android.data.db.dao.CourseDao
+import com.dakkho.android.data.db.dao.CourseDetailDao
 import com.dakkho.android.data.db.dao.DownloadDao
 import com.dakkho.android.data.db.dao.EnrollmentDao
 import com.dakkho.android.data.db.dao.NotificationDao
@@ -16,6 +17,7 @@ import com.dakkho.android.data.db.dao.UserDao
 import com.dakkho.android.data.db.dao.WatchHistoryDao
 import com.dakkho.android.data.db.entity.AppSettingsEntity
 import com.dakkho.android.data.db.entity.BookmarkEntity
+import com.dakkho.android.data.db.entity.CourseDetailEntity
 import com.dakkho.android.data.db.entity.CourseEntity
 import com.dakkho.android.data.db.entity.DownloadEntity
 import com.dakkho.android.data.db.entity.EnrollmentEntity
@@ -30,6 +32,7 @@ import com.dakkho.android.data.db.entity.WatchHistoryEntity
     entities = [
         UserEntity::class,
         CourseEntity::class,
+        CourseDetailEntity::class,
         EnrollmentEntity::class,
         WatchHistoryEntity::class,
         NotificationEntity::class,
@@ -48,6 +51,7 @@ abstract class DakkhoDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao
     abstract fun courseDao(): CourseDao
+    abstract fun courseDetailDao(): CourseDetailDao
     abstract fun enrollmentDao(): EnrollmentDao
     abstract fun watchHistoryDao(): WatchHistoryDao
     abstract fun notificationDao(): NotificationDao

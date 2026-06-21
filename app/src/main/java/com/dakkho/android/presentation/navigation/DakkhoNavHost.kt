@@ -21,6 +21,7 @@ import com.dakkho.android.presentation.screens.auth.ForgotPasswordScreen
 import com.dakkho.android.presentation.screens.auth.LoginScreen
 import com.dakkho.android.presentation.screens.auth.SignupScreen
 import com.dakkho.android.presentation.screens.category.CategoryScreen
+import com.dakkho.android.presentation.screens.coursedetail.CourseDetailScreen
 import com.dakkho.android.presentation.screens.explore.ExploreScreen
 import com.dakkho.android.presentation.screens.home.HomeScreen
 import com.dakkho.android.presentation.screens.notifications.NotificationDetailScreen
@@ -261,8 +262,18 @@ fun DakkhoNavHost(
             exitTransition = { exitTransition },
             popEnterTransition = { popEnterTransition },
             popExitTransition = { popExitTransition }
-        ) {
-            PlaceholderScreen(title = "Course Detail")
+        ) { backStackEntry ->
+            val detailRoute = backStackEntry.toRoute<Route.CourseDetail>()
+            CourseDetailScreen(
+                courseId = detailRoute.courseId,
+                onBackClick = { navController.popBackStack() },
+                onNavigateToVideo = { videoId, courseId ->
+                    navController.navigate(Route.VideoPlayer(videoId, courseId))
+                },
+                onNavigateToInstructor = { instructorId ->
+                    navController.navigate(Route.InstructorProfile(instructorId))
+                }
+            )
         }
 
         composable<Route.VideoPlayer>(
