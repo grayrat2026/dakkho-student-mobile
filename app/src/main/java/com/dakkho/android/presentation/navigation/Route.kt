@@ -45,6 +45,9 @@ sealed class Route {
     data object Notifications : Route()
 
     @Serializable
+    data class NotificationDetail(val notificationId: String) : Route()
+
+    @Serializable
     data object Settings : Route()
 
     @Serializable

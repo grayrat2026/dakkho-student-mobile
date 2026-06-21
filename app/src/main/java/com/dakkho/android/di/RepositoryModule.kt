@@ -3,9 +3,11 @@ package com.dakkho.android.di
 import com.dakkho.android.data.repository.AuthRepositoryImpl
 import com.dakkho.android.data.repository.CourseRepositoryImpl
 import com.dakkho.android.data.repository.EnrollmentRepositoryImpl
+import com.dakkho.android.data.repository.NotificationRepositoryImpl
 import com.dakkho.android.domain.repository.AuthRepository
 import com.dakkho.android.domain.repository.CourseRepository
 import com.dakkho.android.domain.repository.EnrollmentRepository
+import com.dakkho.android.domain.repository.NotificationRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -27,4 +29,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindEnrollmentRepository(enrollmentRepositoryImpl: EnrollmentRepositoryImpl): EnrollmentRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindNotificationRepository(notificationRepositoryImpl: NotificationRepositoryImpl): NotificationRepository
 }

@@ -234,17 +234,6 @@ data class TechnologyDto(
 )
 
 @JsonClass(generateAdapter = true)
-data class NotificationDto(
-    @Json(name = "id") val id: String,
-    @Json(name = "title") val title: String,
-    @Json(name = "body") val body: String?,
-    @Json(name = "type") val type: String?,
-    @Json(name = "is_read") val isRead: Boolean?,
-    @Json(name = "action_url") val actionUrl: String?,
-    @Json(name = "created_at") val createdAt: String?
-)
-
-@JsonClass(generateAdapter = true)
 data class AchievementDto(
     @Json(name = "id") val id: String,
     @Json(name = "title") val title: String,

@@ -14,6 +14,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.dakkho.android.presentation.screens.notifications.NotificationsViewModel
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -122,8 +125,13 @@ fun DakkhoNavigation(
             modifier = modifier.fillMaxSize(),
             bottomBar = {
                 if (showBottomBar) {
+                    // Observe unread notification count from ViewModel
+                    val notificationsViewModel: NotificationsViewModel = hiltViewModel()
+                    val unreadCount by notificationsViewModel.unreadCount.collectAsStateWithLifecycle()
+
                     DakkhoBottomNav(
                         currentRoute = currentRoute,
+                        notificationCount = unreadCount,
                         onNavigate = { route ->
                             when (route) {
                                 "home" -> navController.navigate(Route.Home) {
@@ -155,8 +163,7 @@ fun DakkhoNavigation(
                                     restoreState = true
                                 }
                             }
-                        },
-                        notificationCount = 0
+                        }
                     )
                 }
             }

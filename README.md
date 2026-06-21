@@ -62,6 +62,7 @@ app/src/main/java/com/dakkho/android/
 │   │   ├── CourseApiService.kt
 │   │   ├── EnrollmentApiService.kt
 │   │   ├── InstructorApiService.kt
+│   │   ├── NotificationApiService.kt
 │   │   ├── AuthInterceptor.kt     # Bearer token injection
 │   │   └── ApiResponse.kt         # Generic response wrapper
 │   ├── db/
@@ -70,14 +71,20 @@ app/src/main/java/com/dakkho/android/
 │   │   ├── EncryptedPrefsHelper.kt # Secure token storage
 │   │   ├── dao/                   # 9 DAOs
 │   │   └── entity/               # 9 Room entities
+│   ├── notification/             # Android notification channels
+│   │   └── NotificationChannelManager.kt
+│   ├── work/                     # WorkManager workers
+│   │   └── NotificationSyncWorker.kt
 │   └── repository/               # Repository implementations
 │       ├── AuthRepositoryImpl.kt
 │       ├── CourseRepositoryImpl.kt
-│       └── EnrollmentRepositoryImpl.kt
+│       ├── EnrollmentRepositoryImpl.kt
+│       └── NotificationRepositoryImpl.kt
 │
 ├── paging/                       # Paging 3 components
 │   ├── CoursePagingSource.kt     # API-based PagingSource
-│   └── CourseRemoteMediator.kt   # Room + API sync mediator
+│   ├── CourseRemoteMediator.kt   # Room + API sync mediator
+│   └── NotificationPagingSource.kt # Notification API PagingSource
 │
 ├── domain/
 │   ├── model/                     # Domain models + API DTOs
@@ -106,16 +113,19 @@ app/src/main/java/com/dakkho/android/
 │   │   │   ├── TrendingCourses.kt
 │   │   │   ├── FeaturedInstructors.kt
 │   │   │   └── SectionHeader.kt
-│   │   └── explore/           # Explore screen components
-│   │       ├── ExploreCourseCard.kt
-│   │       ├── FilterChipsRow.kt
-│   │       ├── SortDropdown.kt
-│   │       ├── ExploreSearchBar.kt
-│   │       └── search/           # Search screen components
-│   │           ├── DakkhoSearchBar.kt
-│   │           ├── RecentSearchesRow.kt
-│   │           ├── SuggestionItem.kt
-│   │           └── SearchResultItem.kt
+│   │   ├── explore/           # Explore screen components
+│   │   │   ├── ExploreCourseCard.kt
+│   │   │   ├── FilterChipsRow.kt
+│   │   │   ├── SortDropdown.kt
+│   │   │   └── ExploreSearchBar.kt
+│   │   ├── search/           # Search screen components
+│   │   │   ├── DakkhoSearchBar.kt
+│   │   │   ├── RecentSearchesRow.kt
+│   │   │   ├── SuggestionItem.kt
+│   │   │   └── SearchResultItem.kt
+│   │   └── notifications/     # Notification screen components
+│   │       ├── NotificationItemCard.kt
+│   │       └── NotificationEmptyState.kt
 │   ├── navigation/
 │   │   ├── Route.kt              # @Serializable routes
 │   │   ├── DakkhoNavHost.kt      # NavHost + transitions
@@ -131,12 +141,16 @@ app/src/main/java/com/dakkho/android/
 │   │   ├── home/
 │   │   │   ├── HomeScreen.kt      # PullToRefresh + LazyColumn
 │   │   │   └── HomeViewModel.kt
-│   │   └── explore/
-│   │       ├── ExploreScreen.kt   # LazyVerticalGrid + Paging 3
-│   │       └── ExploreViewModel.kt
-│   │   └── search/
-│   │       ├── SearchScreen.kt    # FTS + debounced search + history
-│   │       └── SearchViewModel.kt
+│   │   ├── explore/
+│   │   │   ├── ExploreScreen.kt   # LazyVerticalGrid + Paging 3
+│   │   │   └── ExploreViewModel.kt
+│   │   ├── search/
+│   │   │   ├── SearchScreen.kt    # FTS + debounced search + history
+│   │   │   └── SearchViewModel.kt
+│   │   └── notifications/
+│   │       ├── NotificationsScreen.kt  # SwipeToDismiss + PullToRefresh
+│   │       ├── NotificationsViewModel.kt
+│   │       └── NotificationDetailScreen.kt
 │   └── theme/                    # Design system
 │       ├── Color.kt              # DAKKHO palette (SkyBlue/DeepBlue/Green)
 │       ├── Theme.kt              # Light/Dark + Material You
@@ -158,7 +172,7 @@ app/src/main/java/com/dakkho/android/
 
 ## Implementation Progress
 
-### ✅ Completed (Phase 1–9)
+### ✅ Completed (Phase 1–10)
 
 | Phase | Title | Status | Files |
 |-------|-------|--------|-------|
@@ -171,12 +185,12 @@ app/src/main/java/com/dakkho/android/
 | 7 | Home Screen #4 (6 Components) | ✅ Complete | 8 files |
 | 8 | Explore Screen #5 (Paging 3) | ✅ Complete | 11 files |
 | 9 | Search Screen #6 (FTS + History) | ✅ Complete | 8 files |
+| 10 | Notifications #7-8 (Paging + Swipe + Worker) | ✅ Complete | 12 files |
 
-### 🚧 Upcoming (Phase 10–29)
+### 🚧 Upcoming (Phase 11–29)
 
 | Phase | Title | Est. Duration |
 |-------|-------|---------------|
-| 10 | Notifications #7-8 | 2–3 days |
 | 11 | My Learning #8 & Stats #9 | 3–4 days |
 | 12 | Watch History #12 & Assignment #13 | 2–3 days |
 | 13 | Course Detail #14 | 4–5 days |
@@ -255,6 +269,9 @@ The app connects to a **Cloudflare Workers** backend (Hono framework) with the f
 | GET | `/api/courses` | List courses (paginated, filterable) |
 | GET | `/api/courses/:id` | Get course detail |
 | GET | `/api/courses/:id/curriculum` | Get course curriculum tree |
+| GET | `/api/notifications` | List notifications (paginated) |
+| PATCH | `/api/notifications/:id/read` | Mark notification as read |
+| PATCH | `/api/notifications/read-all` | Mark all notifications as read |
 | GET | `/api/enrollments/check` | Check enrollment status |
 | GET | `/api/instructors` | List instructors |
 | GET | `/api/institutes` | List polytechnic institutes |

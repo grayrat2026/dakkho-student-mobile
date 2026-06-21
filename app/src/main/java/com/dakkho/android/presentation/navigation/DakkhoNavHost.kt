@@ -20,6 +20,8 @@ import com.dakkho.android.presentation.screens.auth.LoginScreen
 import com.dakkho.android.presentation.screens.auth.SignupScreen
 import com.dakkho.android.presentation.screens.explore.ExploreScreen
 import com.dakkho.android.presentation.screens.home.HomeScreen
+import com.dakkho.android.presentation.screens.notifications.NotificationDetailScreen
+import com.dakkho.android.presentation.screens.notifications.NotificationsScreen
 import com.dakkho.android.presentation.screens.search.SearchScreen
 import com.dakkho.android.presentation.theme.AnimationConstants
 
@@ -235,7 +237,27 @@ fun DakkhoNavHost(
             enterTransition = { enterTransition },
             exitTransition = { exitTransition }
         ) {
-            PlaceholderScreen(title = "Notifications")
+            NotificationsScreen(
+                onBackClick = { navController.popBackStack() },
+                onNotificationClick = { notification ->
+                    navController.navigate(Route.NotificationDetail(notification.id))
+                }
+            )
+        }
+
+        composable<Route.NotificationDetail>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) { backStackEntry ->
+            val detailRoute = backStackEntry.toRoute<Route.NotificationDetail>()
+            NotificationDetailScreen(
+                notificationId = detailRoute.notificationId,
+                onBackClick = { navController.popBackStack() },
+                onActionClick = { actionUrl ->
+                    // Parse deep link URL and navigate accordingly
+                    handleDeepLink(navController, actionUrl)
+                }
+            )
         }
 
         composable<Route.Settings>(
@@ -325,5 +347,39 @@ private fun PlaceholderScreen(title: String) {
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onSurface
         )
+    }
+}
+
+/**
+ * Parse notification action URLs (deep links) and navigate to the relevant screen.
+ * Supported patterns:
+ * - dakkho://course/:id  → CourseDetail
+ * - dakkho://notification/:id → NotificationDetail
+ * - dakkho://payment/status → PaymentStatus
+ * - dakkho://certificate/:id → Certificates
+ */
+private fun handleDeepLink(navController: NavHostController, actionUrl: String) {
+    when {
+        actionUrl.contains("/course/") -> {
+            val courseId = actionUrl.substringAfterLast("/")
+            if (courseId.isNotEmpty()) {
+                navController.navigate(Route.CourseDetail(courseId))
+            }
+        }
+        actionUrl.contains("/notification/") -> {
+            val notificationId = actionUrl.substringAfterLast("/")
+            if (notificationId.isNotEmpty()) {
+                navController.navigate(Route.NotificationDetail(notificationId))
+            }
+        }
+        actionUrl.contains("/payment/status") -> {
+            navController.navigate(Route.PaymentStatus)
+        }
+        actionUrl.contains("/certificate/") -> {
+            navController.navigate(Route.Certificates)
+        }
+        else -> {
+            // Unknown deep link — no-op
+        }
     }
 }
