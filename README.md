@@ -216,7 +216,7 @@ app/src/main/java/com/dakkho/android/
 
 ## Implementation Progress
 
-### ✅ Completed (Phase 1–13)
+### ✅ Completed (Phase 1–14)
 
 | Phase | Title | Status | Files |
 |-------|-------|--------|-------|
@@ -233,12 +233,12 @@ app/src/main/java/com/dakkho/android/
 | 11 | Profile #9 + Category #10 + About #11 | ✅ Complete | 11 files |
 | 12 | Watch History #12 & Assignment #13 | ✅ Complete | 12 files |
 | 13 | Course Detail #14 (Tabs + Enroll + Offline) | ✅ Complete | 18 files |
+| 14 | Secure Video Player #15 (ExoPlayer + Audio Tracks + Bookmarks + Curriculum) | ✅ Complete | 15 files |
 
-### 🚧 Upcoming (Phase 14–29)
+### 🚧 Upcoming (Phase 15–29)
 
 | Phase | Title | Est. Duration |
 |-------|-------|---------------|
-| 14 | Secure Video Player #15 | 6–8 days |
 | 15 | Course Curriculum #16 & Reviews #17 | 3–4 days |
 | 16 | Course Q&A #18, Announcements #19, Resources #20 | 3 days |
 | 17 | Course Notes #21, Quizzes #22, Progress #23 | 3–4 days |
