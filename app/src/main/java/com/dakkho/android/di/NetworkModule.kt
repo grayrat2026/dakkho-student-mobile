@@ -3,6 +3,7 @@ package com.dakkho.android.di
 import com.dakkho.android.BuildConfig
 import com.dakkho.android.data.api.AuthApiService
 import com.dakkho.android.data.api.AuthInterceptor
+import com.dakkho.android.data.api.CertificateApiService
 import com.dakkho.android.data.api.CourseApiService
 import com.dakkho.android.data.api.EnrollmentApiService
 import com.dakkho.android.data.api.InstructorApiService
@@ -163,5 +164,11 @@ object NetworkModule {
     @Singleton
     fun provideLiveClassApiService(retrofit: Retrofit): LiveClassApiService {
         return retrofit.create(LiveClassApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCertificateApiService(retrofit: Retrofit): CertificateApiService {
+        return retrofit.create(CertificateApiService::class.java)
     }
 }

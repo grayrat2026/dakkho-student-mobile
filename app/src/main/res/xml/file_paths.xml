@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <cache-path name="certificates" path="certificates/" />
+    <external-files-path name="downloads" path="Movies/dakkho_downloads/" />
+    <cache-path name="shared_cache" path="." />
+</paths>

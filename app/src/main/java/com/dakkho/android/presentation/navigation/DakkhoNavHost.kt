@@ -44,6 +44,8 @@ import com.dakkho.android.presentation.screens.instructorschedule.InstructorSche
 import com.dakkho.android.presentation.screens.instructorcontact.InstructorContactScreen
 import com.dakkho.android.presentation.screens.videoplayer.VideoPlayerScreen
 import com.dakkho.android.presentation.screens.watchhistory.WatchHistoryScreen
+import com.dakkho.android.presentation.screens.downloads.DownloadsScreen
+import com.dakkho.android.presentation.screens.certificates.CertificatesScreen
 import com.dakkho.android.presentation.theme.AnimationConstants
 
 @Composable
@@ -421,7 +423,15 @@ fun DakkhoNavHost(
             enterTransition = { enterTransition },
             exitTransition = { exitTransition }
         ) {
-            PlaceholderScreen(title = "Downloads")
+            DownloadsScreen(
+                onBackClick = { navController.popBackStack() },
+                onPlayVideo = { videoId, courseId ->
+                    navController.navigate(Route.VideoPlayer(videoId, courseId))
+                },
+                onBrowseCourses = {
+                    navController.navigate(Route.Explore)
+                }
+            )
         }
 
         composable<Route.Bookmarks>(
@@ -447,7 +457,9 @@ fun DakkhoNavHost(
             enterTransition = { enterTransition },
             exitTransition = { exitTransition }
         ) {
-            PlaceholderScreen(title = "Certificates")
+            CertificatesScreen(
+                onBackClick = { navController.popBackStack() }
+            )
         }
 
         composable<Route.Achievements>(
@@ -692,6 +704,10 @@ private fun handleDeepLink(navController: NavHostController, actionUrl: String) 
             navController.navigate(Route.PaymentStatus)
         }
         actionUrl.contains("/certificate/") -> {
+            navController.navigate(Route.Certificates)
+        }
+        actionUrl.contains("dakkho://certificate") -> {
+            // Deep link: dakkho://certificate/:id
             navController.navigate(Route.Certificates)
         }
         else -> {
