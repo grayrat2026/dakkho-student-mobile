@@ -231,7 +231,7 @@ app/src/main/java/com/dakkho/android/
 
 ## Implementation Progress
 
-### ✅ Completed (Phase 1–17)
+### ✅ Completed (Phase 1–21)
 
 | Phase | Title | Status | Files |
 |-------|-------|--------|-------|
@@ -254,13 +254,13 @@ app/src/main/java/com/dakkho/android/
 | 17 | Course Notes #21, Quizzes #22, Progress #23 | ✅ Complete | 14 files |
 | 18 | Instructor List #24 & Profile #25 | ✅ Complete | 8 files |
 | 19 | Instructor Sub-pages #26–29 (Courses, Reviews, Schedule, Contact) | ✅ Complete | 10 files |
+| 20 | My Courses #30 & Bookmarks #31 | ✅ Complete | 12 files |
+| 21 | Downloads #32 & Certificates #33 | ✅ Complete | 13 files |
 
-### 🚧 Upcoming (Phase 20–29)
+### 🚧 Upcoming (Phase 22–29)
 
 | Phase | Title | Est. Duration |
 |-------|-------|---------------|
-| 20 | My Courses #30 & Bookmarks #31 | 2–3 days |
-| 21 | Downloads #32 & Certificates #33 | 3–4 days |
 | 22 | Live Sessions #34, Achievements #35, Discussion #36 | 3–4 days |
 | 23 | Department Pages Template #37–56 | 3–4 days |
 | 24 | Semester Pages Template #57–64 | 2–3 days |
