@@ -2,6 +2,8 @@ package com.dakkho.android.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.dakkho.android.data.db.Converters
 import com.dakkho.android.data.db.DakkhoDatabase
 import com.dakkho.android.data.db.dao.AppSettingsDao
@@ -16,6 +18,7 @@ import com.dakkho.android.data.db.dao.SearchHistoryDao
 import com.dakkho.android.data.db.dao.SearchSuggestionDao
 import com.dakkho.android.data.db.dao.UserDao
 import com.dakkho.android.data.db.dao.CourseNoteDao
+import com.dakkho.android.data.db.dao.DepartmentDao
 import com.dakkho.android.data.db.dao.VideoBookmarkDao
 import com.dakkho.android.data.db.dao.WatchHistoryDao
 import com.dakkho.android.data.db.EncryptedPrefsHelper
@@ -33,12 +36,41 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideDakkhoDatabase(@ApplicationContext context: Context): DakkhoDatabase {
+        val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS `departments` (
+                        `id` TEXT NOT NULL,
+                        `slug` TEXT NOT NULL,
+                        `name` TEXT NOT NULL,
+                        `shortCode` TEXT NOT NULL,
+                        `description` TEXT,
+                        `iconUrl` TEXT,
+                        `bannerUrl` TEXT,
+                        `courseCount` INTEGER NOT NULL,
+                        `instructorCount` INTEGER NOT NULL,
+                        `studentCount` INTEGER NOT NULL,
+                        `semesterCount` INTEGER NOT NULL,
+                        `isActive` INTEGER NOT NULL,
+                        `updatedAt` INTEGER NOT NULL,
+                        PRIMARY KEY(`id`)
+                    )
+                    """.trimIndent()
+                )
+                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_departments_slug` ON `departments` (`slug`)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_departments_shortCode` ON `departments` (`shortCode`)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_departments_courseCount` ON `departments` (`courseCount`)")
+            }
+        }
+
         return Room.databaseBuilder(
             context,
             DakkhoDatabase::class.java,
             "dakkho_database"
         )
             .addTypeConverter(Converters())
+            .addMigration(MIGRATION_1_2)
             .fallbackToDestructiveMigration()
             .build()
     }
@@ -117,5 +149,10 @@ object DatabaseModule {
     @Provides
     fun provideCourseNoteDao(database: DakkhoDatabase): CourseNoteDao {
         return database.courseNoteDao()
+    }
+
+    @Provides
+    fun provideDepartmentDao(database: DakkhoDatabase): DepartmentDao {
+        return database.departmentDao()
     }
 }

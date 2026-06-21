@@ -24,7 +24,8 @@ fun CategoryPills(
     technologies: List<Technology>,
     selectedTechnology: String?,
     onTechnologySelected: (String?) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onSeeAllDepartments: (() -> Unit)? = null
 ) {
     Row(
         modifier = modifier
@@ -60,7 +61,7 @@ fun CategoryPills(
             contentPadding = PaddingValues(horizontal = DesignToken.Space.dp12)
         )
 
-        // Technology chips
+        // Technology chips (dynamic — only what API returns)
         technologies.forEach { technology ->
             FilterChip(
                 selected = selectedTechnology == technology.name,
@@ -84,6 +85,32 @@ fun CategoryPills(
                     selectedBorderColor = SkyBlue,
                     enabled = true,
                     selected = selectedTechnology == technology.name
+                ),
+                contentPadding = PaddingValues(horizontal = DesignToken.Space.dp12)
+            )
+        }
+
+        // "See All Departments" chip
+        if (onSeeAllDepartments != null) {
+            FilterChip(
+                selected = false,
+                onClick = { onSeeAllDepartments() },
+                label = {
+                    Text(
+                        text = "All Depts",
+                        style = MaterialTheme.typography.labelLarge.copy(
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    )
+                },
+                colors = FilterChipDefaults.filterChipColors(
+                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                    labelColor = MaterialTheme.colorScheme.onTertiaryContainer
+                ),
+                border = FilterChipDefaults.filterChipBorder(
+                    borderColor = MaterialTheme.colorScheme.outlineVariant,
+                    enabled = true,
+                    selected = false
                 ),
                 contentPadding = PaddingValues(horizontal = DesignToken.Space.dp12)
             )

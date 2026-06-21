@@ -257,12 +257,12 @@ app/src/main/java/com/dakkho/android/
 | 20 | My Courses #30 & Bookmarks #31 | ✅ Complete | 12 files |
 | 21 | Downloads #32 & Certificates #33 | ✅ Complete | 13 files |
 | 22 | Live Sessions #34, Achievements #35, Discussion #36 | ✅ Complete | 21 files |
+| 23 | Department Pages (Dynamic, API-driven) #37–56 | ✅ Complete | 10 files |
 
-### 🚧 Upcoming (Phase 23–29)
+### 🚧 Upcoming (Phase 24–29)
 
 | Phase | Title | Est. Duration |
 |-------|-------|---------------|
-| 23 | Department Pages Template #37–56 | 3–4 days |
 | 24 | Semester Pages Template #57–64 | 2–3 days |
 | 25 | Profile Sub-pages #65–71 | 4–5 days |
 | 26 | Settings Part 1 #72–76 | 3 days |

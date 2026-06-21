@@ -179,4 +179,14 @@ sealed class Route {
 
     @Serializable
     data class DiscussionThread(val threadId: String) : Route()
+
+    // ── Phase 23: Dynamic Department Routes ──
+    // No hardcoded 20 departments — all departments come from the API
+    // Admin/Instructor adds departments → API returns them → Student sees them
+
+    @Serializable
+    data object DepartmentList : Route()
+
+    @Serializable
+    data class Department(val slug: String) : Route()
 }

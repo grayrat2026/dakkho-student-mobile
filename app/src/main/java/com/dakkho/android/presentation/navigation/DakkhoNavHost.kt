@@ -42,6 +42,8 @@ import com.dakkho.android.presentation.screens.instructorcourses.InstructorCours
 import com.dakkho.android.presentation.screens.instructorreviews.InstructorReviewsScreen
 import com.dakkho.android.presentation.screens.instructorschedule.InstructorScheduleScreen
 import com.dakkho.android.presentation.screens.instructorcontact.InstructorContactScreen
+import com.dakkho.android.presentation.screens.department.DepartmentListScreen
+import com.dakkho.android.presentation.screens.department.DepartmentScreen
 import com.dakkho.android.presentation.screens.videoplayer.VideoPlayerScreen
 import com.dakkho.android.presentation.screens.watchhistory.WatchHistoryScreen
 import com.dakkho.android.presentation.screens.downloads.DownloadsScreen
@@ -183,6 +185,12 @@ fun DakkhoNavHost(
                 },
                 onNavigateToInstructorList = {
                     navController.navigate(Route.InstructorList)
+                },
+                onNavigateToDepartment = { slug ->
+                    navController.navigate(Route.Department(slug))
+                },
+                onNavigateToDepartmentList = {
+                    navController.navigate(Route.DepartmentList)
                 }
             )
         }
@@ -688,6 +696,41 @@ fun DakkhoNavHost(
         ) {
             InstructorContactScreen(
                 onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        // ── Phase 23: Dynamic Department Routes ──
+        // No hardcoded 20 departments — all from API
+
+        composable<Route.DepartmentList>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            DepartmentListScreen(
+                onBackClick = { navController.popBackStack() },
+                onDepartmentClick = { slug ->
+                    navController.navigate(Route.Department(slug))
+                }
+            )
+        }
+
+        composable<Route.Department>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) { backStackEntry ->
+            val deptRoute = backStackEntry.toRoute<Route.Department>()
+            DepartmentScreen(
+                slug = deptRoute.slug,
+                onBackClick = { navController.popBackStack() },
+                onCourseClick = { courseId ->
+                    navController.navigate(Route.CourseDetail(courseId))
+                },
+                onInstructorClick = { instructorId ->
+                    navController.navigate(Route.InstructorProfile(instructorId))
+                },
+                onSearchClick = {
+                    navController.navigate(Route.Search)
+                }
             )
         }
     }

@@ -34,6 +34,8 @@ fun HomeScreen(
     onNavigateToVideo: (String, String) -> Unit,
     onNavigateToInstructor: (String) -> Unit,
     onNavigateToInstructorList: () -> Unit = {},
+    onNavigateToDepartment: (String) -> Unit = {},
+    onNavigateToDepartmentList: () -> Unit = {},
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -85,13 +87,26 @@ fun HomeScreen(
                         )
                     }
 
-                    // 2. Category Pills
+                    // 2. Category Pills (Dynamic — from API)
                     item {
                         Spacer(modifier = Modifier.height(DesignToken.Space.dp16))
                         CategoryPills(
                             technologies = uiState.technologies,
                             selectedTechnology = selectedTechnology,
-                            onTechnologySelected = { viewModel.selectTechnology(it) }
+                            onTechnologySelected = { techName ->
+                                if (techName != null) {
+                                    // Find the technology slug and navigate to Department page
+                                    val tech = uiState.technologies.find { it.name == techName }
+                                    if (tech != null && tech.slug.isNotBlank()) {
+                                        onNavigateToDepartment(tech.slug)
+                                    } else {
+                                        viewModel.selectTechnology(techName)
+                                    }
+                                } else {
+                                    viewModel.selectTechnology(null)
+                                }
+                            },
+                            onSeeAllDepartments = onNavigateToDepartmentList
                         )
                     }
 

@@ -305,8 +305,16 @@ data class InstituteDto(
 data class TechnologyDto(
     @Json(name = "id") val id: String,
     @Json(name = "name") val name: String,
-    @Json(name = "icon_url") val iconUrl: String?,
-    @Json(name = "course_count") val courseCount: Int?
+    @Json(name = "slug") val slug: String? = null,
+    @Json(name = "short_code") val shortCode: String? = null,
+    @Json(name = "description") val description: String? = null,
+    @Json(name = "icon_url") val iconUrl: String? = null,
+    @Json(name = "banner_url") val bannerUrl: String? = null,
+    @Json(name = "course_count") val courseCount: Int? = null,
+    @Json(name = "instructor_count") val instructorCount: Int? = null,
+    @Json(name = "student_count") val studentCount: Int? = null,
+    @Json(name = "semester_count") val semesterCount: Int? = null,
+    @Json(name = "is_active") val isActive: Boolean? = null
 )
 
 @JsonClass(generateAdapter = true)
