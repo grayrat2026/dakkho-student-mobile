@@ -12,6 +12,7 @@ import com.dakkho.android.data.db.dao.EnrollmentDao
 import com.dakkho.android.data.db.dao.NotificationDao
 import com.dakkho.android.data.db.dao.RemoteKeysDao
 import com.dakkho.android.data.db.dao.SearchHistoryDao
+import com.dakkho.android.data.db.dao.SearchSuggestionDao
 import com.dakkho.android.data.db.dao.UserDao
 import com.dakkho.android.data.db.dao.WatchHistoryDao
 import com.dakkho.android.data.db.EncryptedPrefsHelper
@@ -93,5 +94,10 @@ object DatabaseModule {
     @Provides
     fun provideRemoteKeysDao(database: DakkhoDatabase): RemoteKeysDao {
         return database.remoteKeysDao()
+    }
+
+    @Provides
+    fun provideSearchSuggestionDao(database: DakkhoDatabase): SearchSuggestionDao {
+        return database.searchSuggestionDao()
     }
 }

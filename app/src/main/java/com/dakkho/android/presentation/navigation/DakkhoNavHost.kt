@@ -20,6 +20,7 @@ import com.dakkho.android.presentation.screens.auth.LoginScreen
 import com.dakkho.android.presentation.screens.auth.SignupScreen
 import com.dakkho.android.presentation.screens.explore.ExploreScreen
 import com.dakkho.android.presentation.screens.home.HomeScreen
+import com.dakkho.android.presentation.screens.search.SearchScreen
 import com.dakkho.android.presentation.theme.AnimationConstants
 
 @Composable
@@ -217,7 +218,17 @@ fun DakkhoNavHost(
             enterTransition = { enterTransition },
             exitTransition = { exitTransition }
         ) {
-            PlaceholderScreen(title = "Search")
+            SearchScreen(
+                onNavigateToCourse = { courseId ->
+                    navController.navigate(Route.CourseDetail(courseId))
+                },
+                onNavigateToInstructor = { instructorId ->
+                    navController.navigate(Route.InstructorProfile(instructorId))
+                },
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
         }
 
         composable<Route.Notifications>(
