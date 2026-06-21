@@ -20,12 +20,16 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.FontDownload
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.PlayCircle
 import androidx.compose.material.icons.filled.PictureInPicture
 import androidx.compose.material.icons.filled.Security
+import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.filled.VideoSettings
+import androidx.compose.material.icons.filled.DataSaverOn
+import androidx.compose.material.icons.filled.Accessibility
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -63,6 +67,11 @@ import com.dakkho.android.presentation.theme.SkyBlue
 fun SettingsScreen(
     onBackClick: () -> Unit,
     onDeleteAccount: () -> Unit = {},
+    onNavigateToStorageManagement: () -> Unit = {},
+    onNavigateToNotificationPreferences: () -> Unit = {},
+    onNavigateToDataSaver: () -> Unit = {},
+    onNavigateToAccessibilitySettings: () -> Unit = {},
+    onNavigateToAboutLegal: () -> Unit = {},
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -219,20 +228,11 @@ fun SettingsScreen(
             SettingsSectionHeader(title = "বিজ্ঞপ্তি")
 
             GlassCard(modifier = Modifier.fillMaxWidth()) {
-                SettingsToggleItem(
+                SettingsNavigationItem(
                     icon = Icons.Default.Notifications,
-                    title = "পুশ বিজ্ঞপ্তি",
-                    subtitle = "কোর্স আপডেট ও রিমাইন্ডার পান",
-                    checked = settings.isNotificationsEnabled,
-                    onCheckedChange = viewModel::setNotificationsEnabled
-                )
-                SettingsDivider()
-                SettingsToggleItem(
-                    icon = Icons.Default.Email,
-                    title = "ইমেইল বিজ্ঞপ্তি",
-                    subtitle = "ইমেইলে আপডেট পান",
-                    checked = settings.isEmailNotificationsEnabled,
-                    onCheckedChange = viewModel::setEmailNotificationsEnabled
+                    title = "বিজ্ঞপ্তি পছন্দ",
+                    subtitle = "বিভাগ, সাউন্ড, শান্ত সময়",
+                    onClick = onNavigateToNotificationPreferences
                 )
             }
 
@@ -253,6 +253,41 @@ fun SettingsScreen(
 
             Spacer(modifier = Modifier.height(DesignToken.Space.dp16))
 
+            // ── Storage & Data ──
+            SettingsSectionHeader(title = "স্টোরেজ ও ডেটা")
+
+            GlassCard(modifier = Modifier.fillMaxWidth()) {
+                SettingsNavigationItem(
+                    icon = Icons.Default.Storage,
+                    title = "স্টোরেজ ব্যবস্থাপনা",
+                    subtitle = "ক্যাশে, ডাউনলোড, স্টোরেজ তথ্য",
+                    onClick = onNavigateToStorageManagement
+                )
+                SettingsDivider()
+                SettingsNavigationItem(
+                    icon = Icons.Default.DataSaverOn,
+                    title = "ডেটা সেভার",
+                    subtitle = "মোবাইল ডেটা ব্যবহার নিয়ন্ত্রণ",
+                    onClick = onNavigateToDataSaver
+                )
+            }
+
+            Spacer(modifier = Modifier.height(DesignToken.Space.dp16))
+
+            // ── Accessibility ──
+            SettingsSectionHeader(title = "প্রবেশযোগ্যতা")
+
+            GlassCard(modifier = Modifier.fillMaxWidth()) {
+                SettingsNavigationItem(
+                    icon = Icons.Default.Accessibility,
+                    title = "প্রবেশযোগ্যতা সেটিংস",
+                    subtitle = "উচ্চ বৈসাদৃশ্য, গতি কমান, টেক্সট",
+                    onClick = onNavigateToAccessibilitySettings
+                )
+            }
+
+            Spacer(modifier = Modifier.height(DesignToken.Space.dp16))
+
             // ── Privacy & Data ──
             SettingsSectionHeader(title = "গোপনীয়তা ও ডেটা")
 
@@ -263,6 +298,20 @@ fun SettingsScreen(
                     subtitle = "অ্যাপ উন্নতির জন্য ডেটা শেয়ার করুন",
                     checked = settings.isAnalyticsEnabled,
                     onCheckedChange = viewModel::setAnalyticsEnabled
+                )
+            }
+
+            Spacer(modifier = Modifier.height(DesignToken.Space.dp16))
+
+            // ── About ──
+            SettingsSectionHeader(title = "অ্যাপ সম্পর্কে")
+
+            GlassCard(modifier = Modifier.fillMaxWidth()) {
+                SettingsNavigationItem(
+                    icon = Icons.Default.Info,
+                    title = "অ্যাপ তথ্য ও আইনি",
+                    subtitle = "ভার্সন, লাইসেন্স, গোপনীয়তা নীতি",
+                    onClick = onNavigateToAboutLegal
                 )
             }
 
@@ -343,6 +392,48 @@ private fun SettingsToggleItem(
 
 @Composable
 private fun SettingsClickItem(
+    icon: ImageVector,
+    title: String,
+    subtitle: String,
+    onClick: () -> Unit,
+    tint: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.onSurface
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = DesignToken.Space.dp16, vertical = DesignToken.Space.dp12),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = tint,
+            modifier = Modifier.size(DesignToken.IconSize.medium)
+        )
+        Spacer(modifier = Modifier.width(DesignToken.Space.dp16))
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium),
+                color = tint
+            )
+            Text(
+                text = subtitle,
+                style = MaterialTheme.typography.bodySmall,
+                color = Neutral500
+            )
+        }
+        Icon(
+            imageVector = Icons.Default.ChevronRight,
+            contentDescription = null,
+            tint = tint.copy(alpha = 0.5f),
+            modifier = Modifier.size(DesignToken.IconSize.medium)
+        )
+    }
+}
+
+@Composable
+private fun SettingsNavigationItem(
     icon: ImageVector,
     title: String,
     subtitle: String,

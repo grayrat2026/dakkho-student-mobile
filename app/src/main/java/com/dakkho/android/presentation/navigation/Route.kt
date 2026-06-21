@@ -218,4 +218,22 @@ sealed class Route {
 
     @Serializable
     data object Referral : Route()
+
+    // ── Phase 26: Settings Part 1 #72-76 ──
+    // Storage Management, Notification Preferences, Data Saver, Accessibility, About & Legal
+
+    @Serializable
+    data object StorageManagement : Route()
+
+    @Serializable
+    data object NotificationPreferences : Route()
+
+    @Serializable
+    data object DataSaver : Route()
+
+    @Serializable
+    data object AccessibilitySettings : Route()
+
+    @Serializable
+    data object AboutLegal : Route()
 }

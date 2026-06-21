@@ -442,6 +442,21 @@ fun DakkhoNavHost(
                     navController.navigate(Route.Login) {
                         popUpTo(0) { inclusive = true }
                     }
+                },
+                onNavigateToStorageManagement = {
+                    navController.navigate(Route.StorageManagement)
+                },
+                onNavigateToNotificationPreferences = {
+                    navController.navigate(Route.NotificationPreferences)
+                },
+                onNavigateToDataSaver = {
+                    navController.navigate(Route.DataSaver)
+                },
+                onNavigateToAccessibilitySettings = {
+                    navController.navigate(Route.AccessibilitySettings)
+                },
+                onNavigateToAboutLegal = {
+                    navController.navigate(Route.AboutLegal)
                 }
             )
         }
@@ -826,6 +841,53 @@ fun DakkhoNavHost(
             exitTransition = { exitTransition }
         ) {
             ReferralScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        // ── Phase 26: Settings Part 1 #72-76 ──
+
+        composable<Route.StorageManagement>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            com.dakkho.android.presentation.screens.storagemanagement.StorageManagementScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.NotificationPreferences>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            com.dakkho.android.presentation.screens.notificationpreferences.NotificationPreferencesScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.DataSaver>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            com.dakkho.android.presentation.screens.datasaver.DataSaverScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.AccessibilitySettings>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            com.dakkho.android.presentation.screens.accessibilitysettings.AccessibilitySettingsScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.AboutLegal>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            com.dakkho.android.presentation.screens.aboutlegal.AboutLegalScreen(
                 onBackClick = { navController.popBackStack() }
             )
         }
