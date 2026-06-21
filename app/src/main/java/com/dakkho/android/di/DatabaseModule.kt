@@ -10,6 +10,7 @@ import com.dakkho.android.data.db.dao.CourseDao
 import com.dakkho.android.data.db.dao.DownloadDao
 import com.dakkho.android.data.db.dao.EnrollmentDao
 import com.dakkho.android.data.db.dao.NotificationDao
+import com.dakkho.android.data.db.dao.RemoteKeysDao
 import com.dakkho.android.data.db.dao.SearchHistoryDao
 import com.dakkho.android.data.db.dao.UserDao
 import com.dakkho.android.data.db.dao.WatchHistoryDao
@@ -87,5 +88,10 @@ object DatabaseModule {
     @Provides
     fun provideAppSettingsDao(database: DakkhoDatabase): AppSettingsDao {
         return database.appSettingsDao()
+    }
+
+    @Provides
+    fun provideRemoteKeysDao(database: DakkhoDatabase): RemoteKeysDao {
+        return database.remoteKeysDao()
     }
 }

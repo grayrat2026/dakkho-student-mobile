@@ -1,5 +1,6 @@
 package com.dakkho.android.data.db.dao
 
+import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -50,4 +51,13 @@ interface CourseDao {
 
     @Query("DELETE FROM courses")
     suspend fun deleteAll()
+
+    @Query("SELECT * FROM courses ORDER BY cached_at DESC LIMIT :limit OFFSET :offset")
+    suspend fun getCoursesPaged(limit: Int, offset: Int): List<CourseEntity>
+
+    @Query("SELECT COUNT(*) FROM courses")
+    suspend fun getCoursesCount(): Int
+
+    @Query("SELECT * FROM courses ORDER BY cached_at DESC")
+    fun getCoursesPagingSource(): PagingSource<Int, CourseEntity>
 }

@@ -18,6 +18,7 @@ import androidx.navigation.toRoute
 import com.dakkho.android.presentation.screens.auth.ForgotPasswordScreen
 import com.dakkho.android.presentation.screens.auth.LoginScreen
 import com.dakkho.android.presentation.screens.auth.SignupScreen
+import com.dakkho.android.presentation.screens.explore.ExploreScreen
 import com.dakkho.android.presentation.screens.home.HomeScreen
 import com.dakkho.android.presentation.theme.AnimationConstants
 
@@ -158,7 +159,20 @@ fun DakkhoNavHost(
             enterTransition = { fadeIn(tween(AnimationConstants.FADE_IN_MS)) },
             exitTransition = { fadeOut(tween(AnimationConstants.FADE_OUT_MS)) }
         ) {
-            PlaceholderScreen(title = "Explore")
+            ExploreScreen(
+                onNavigateToCourse = { courseId ->
+                    navController.navigate(Route.CourseDetail(courseId))
+                },
+                onNavigateToSearch = {
+                    navController.navigate(Route.Search)
+                },
+                onNavigateToNotifications = {
+                    navController.navigate(Route.Notifications)
+                },
+                onBookmarkClick = { courseId ->
+                    // Bookmark toggle handled by ViewModel later
+                }
+            )
         }
 
         composable<Route.MyCourses>(

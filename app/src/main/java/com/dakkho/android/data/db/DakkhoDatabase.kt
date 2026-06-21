@@ -9,6 +9,7 @@ import com.dakkho.android.data.db.dao.CourseDao
 import com.dakkho.android.data.db.dao.DownloadDao
 import com.dakkho.android.data.db.dao.EnrollmentDao
 import com.dakkho.android.data.db.dao.NotificationDao
+import com.dakkho.android.data.db.dao.RemoteKeysDao
 import com.dakkho.android.data.db.dao.SearchHistoryDao
 import com.dakkho.android.data.db.dao.UserDao
 import com.dakkho.android.data.db.dao.WatchHistoryDao
@@ -18,6 +19,7 @@ import com.dakkho.android.data.db.entity.CourseEntity
 import com.dakkho.android.data.db.entity.DownloadEntity
 import com.dakkho.android.data.db.entity.EnrollmentEntity
 import com.dakkho.android.data.db.entity.NotificationEntity
+import com.dakkho.android.data.db.entity.RemoteKeysEntity
 import com.dakkho.android.data.db.entity.SearchHistoryEntity
 import com.dakkho.android.data.db.entity.UserEntity
 import com.dakkho.android.data.db.entity.WatchHistoryEntity
@@ -32,7 +34,8 @@ import com.dakkho.android.data.db.entity.WatchHistoryEntity
         DownloadEntity::class,
         SearchHistoryEntity::class,
         BookmarkEntity::class,
-        AppSettingsEntity::class
+        AppSettingsEntity::class,
+        RemoteKeysEntity::class
     ],
     version = 1,
     exportSchema = true
@@ -49,4 +52,5 @@ abstract class DakkhoDatabase : RoomDatabase() {
     abstract fun searchHistoryDao(): SearchHistoryDao
     abstract fun bookmarkDao(): BookmarkDao
     abstract fun appSettingsDao(): AppSettingsDao
+    abstract fun remoteKeysDao(): RemoteKeysDao
 }
