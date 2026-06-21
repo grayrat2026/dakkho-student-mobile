@@ -14,6 +14,7 @@ import com.dakkho.android.data.db.dao.RemoteKeysDao
 import com.dakkho.android.data.db.dao.SearchHistoryDao
 import com.dakkho.android.data.db.dao.SearchSuggestionDao
 import com.dakkho.android.data.db.dao.UserDao
+import com.dakkho.android.data.db.dao.CourseNoteDao
 import com.dakkho.android.data.db.dao.VideoBookmarkDao
 import com.dakkho.android.data.db.dao.WatchHistoryDao
 import com.dakkho.android.data.db.entity.AppSettingsEntity
@@ -27,6 +28,7 @@ import com.dakkho.android.data.db.entity.RemoteKeysEntity
 import com.dakkho.android.data.db.entity.SearchHistoryEntity
 import com.dakkho.android.data.db.entity.SearchSuggestionEntity
 import com.dakkho.android.data.db.entity.UserEntity
+import com.dakkho.android.data.db.entity.CourseNoteEntity
 import com.dakkho.android.data.db.entity.VideoBookmarkEntity
 import com.dakkho.android.data.db.entity.WatchHistoryEntity
 
@@ -44,7 +46,8 @@ import com.dakkho.android.data.db.entity.WatchHistoryEntity
         AppSettingsEntity::class,
         RemoteKeysEntity::class,
         SearchSuggestionEntity::class,
-        VideoBookmarkEntity::class
+        VideoBookmarkEntity::class,
+        CourseNoteEntity::class
     ],
     version = 1,
     exportSchema = true
@@ -65,4 +68,5 @@ abstract class DakkhoDatabase : RoomDatabase() {
     abstract fun remoteKeysDao(): RemoteKeysDao
     abstract fun searchSuggestionDao(): SearchSuggestionDao
     abstract fun videoBookmarkDao(): VideoBookmarkDao
+    abstract fun courseNoteDao(): CourseNoteDao
 }

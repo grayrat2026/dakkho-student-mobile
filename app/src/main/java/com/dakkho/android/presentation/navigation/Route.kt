@@ -115,4 +115,23 @@ sealed class Route {
         val courseTitle: String,
         val isEnrolled: Boolean
     ) : Route()
+
+    @Serializable
+    data class CourseNotes(
+        val courseId: String,
+        val courseTitle: String,
+        val videoId: String = ""
+    ) : Route()
+
+    @Serializable
+    data class CourseQuizzes(
+        val courseId: String,
+        val courseTitle: String
+    ) : Route()
+
+    @Serializable
+    data class CourseProgress(
+        val courseId: String,
+        val courseTitle: String
+    ) : Route()
 }

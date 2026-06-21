@@ -76,6 +76,9 @@ fun CourseDetailScreen(
     onNavigateToQnA: (courseId: String, courseTitle: String, isEnrolled: Boolean) -> Unit = { _, _, _ -> },
     onNavigateToAnnouncements: (courseId: String, courseTitle: String) -> Unit = { _, _ -> },
     onNavigateToResources: (courseId: String, courseTitle: String, isEnrolled: Boolean) -> Unit = { _, _, _ -> },
+    onNavigateToNotes: (courseId: String, courseTitle: String) -> Unit = { _, _ -> },
+    onNavigateToQuizzes: (courseId: String, courseTitle: String) -> Unit = { _, _ -> },
+    onNavigateToProgress: (courseId: String, courseTitle: String) -> Unit = { _, _ -> },
     viewModel: CourseDetailViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -237,6 +240,18 @@ fun CourseDetailScreen(
                     val course = uiState.course ?: return@CourseDetailContent
                     onNavigateToResources(course.id, course.title, uiState.isEnrolled)
                 },
+                onViewAllNotes = {
+                    val course = uiState.course ?: return@CourseDetailContent
+                    onNavigateToNotes(course.id, course.title)
+                },
+                onViewAllQuizzes = {
+                    val course = uiState.course ?: return@CourseDetailContent
+                    onNavigateToQuizzes(course.id, course.title)
+                },
+                onViewProgress = {
+                    val course = uiState.course ?: return@CourseDetailContent
+                    onNavigateToProgress(course.id, course.title)
+                },
                 isEnrolled = uiState.isEnrolled
             )
         }
@@ -263,6 +278,9 @@ private fun CourseDetailContent(
     onViewAllQnA: () -> Unit = {},
     onViewAllAnnouncements: () -> Unit = {},
     onViewAllResources: () -> Unit = {},
+    onViewAllNotes: () -> Unit = {},
+    onViewAllQuizzes: () -> Unit = {},
+    onViewProgress: () -> Unit = {},
     isEnrolled: Boolean = false
 ) {
     val course = uiState.course ?: return

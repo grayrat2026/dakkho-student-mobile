@@ -33,6 +33,9 @@ import com.dakkho.android.presentation.screens.qna.QnAScreen
 import com.dakkho.android.presentation.screens.resources.ResourcesScreen
 import com.dakkho.android.presentation.screens.reviews.CourseReviewsScreen
 import com.dakkho.android.presentation.screens.search.SearchScreen
+import com.dakkho.android.presentation.screens.notes.CourseNotesScreen
+import com.dakkho.android.presentation.screens.quizzes.CourseQuizzesScreen
+import com.dakkho.android.presentation.screens.progress.CourseProgressScreen
 import com.dakkho.android.presentation.screens.videoplayer.VideoPlayerScreen
 import com.dakkho.android.presentation.screens.watchhistory.WatchHistoryScreen
 import com.dakkho.android.presentation.theme.AnimationConstants
@@ -293,6 +296,15 @@ fun DakkhoNavHost(
                 },
                 onNavigateToResources = { courseId, courseTitle, isEnrolled ->
                     navController.navigate(Route.CourseResources(courseId, courseTitle, isEnrolled))
+                },
+                onNavigateToNotes = { courseId, courseTitle ->
+                    navController.navigate(Route.CourseNotes(courseId, courseTitle))
+                },
+                onNavigateToQuizzes = { courseId, courseTitle ->
+                    navController.navigate(Route.CourseQuizzes(courseId, courseTitle))
+                },
+                onNavigateToProgress = { courseId, courseTitle ->
+                    navController.navigate(Route.CourseProgress(courseId, courseTitle))
                 }
             )
         }
@@ -500,6 +512,43 @@ fun DakkhoNavHost(
                 courseId = resRoute.courseId,
                 courseTitle = resRoute.courseTitle,
                 isEnrolled = resRoute.isEnrolled,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.CourseNotes>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) { backStackEntry ->
+            val notesRoute = backStackEntry.toRoute<Route.CourseNotes>()
+            CourseNotesScreen(
+                courseId = notesRoute.courseId,
+                courseTitle = notesRoute.courseTitle,
+                videoId = notesRoute.videoId,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.CourseQuizzes>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) { backStackEntry ->
+            val quizzesRoute = backStackEntry.toRoute<Route.CourseQuizzes>()
+            CourseQuizzesScreen(
+                courseId = quizzesRoute.courseId,
+                courseTitle = quizzesRoute.courseTitle,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.CourseProgress>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) { backStackEntry ->
+            val progressRoute = backStackEntry.toRoute<Route.CourseProgress>()
+            CourseProgressScreen(
+                courseId = progressRoute.courseId,
+                courseTitle = progressRoute.courseTitle,
                 onBackClick = { navController.popBackStack() }
             )
         }

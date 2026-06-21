@@ -201,6 +201,15 @@ app/src/main/java/com/dakkho/android/
 │   │   └── reviews/
 │   │       ├── CourseReviewsScreen.kt  # Rating breakdown + filter chips + write review bottom sheet
 │   │       └── CourseReviewsViewModel.kt
+│   │   └── notes/
+│   │       ├── CourseNotesScreen.kt    # Timestamp-linked notes + debounced auto-save + add/delete
+│   │       └── CourseNotesViewModel.kt
+│   │   └── quizzes/
+│   │       ├── CourseQuizzesScreen.kt  # Quiz list + countdown timer + haptic feedback + score circle
+│   │       └── CourseQuizzesViewModel.kt
+│   │   └── progress/
+│   │       ├── CourseProgressScreen.kt # Circular progress + weekly chart + learning path tracker
+│   │       └── CourseProgressViewModel.kt
 │   └── theme/                    # Design system
 │       ├── Color.kt              # DAKKHO palette (SkyBlue/DeepBlue/Green)
 │       ├── Theme.kt              # Light/Dark + Material You
@@ -222,7 +231,7 @@ app/src/main/java/com/dakkho/android/
 
 ## Implementation Progress
 
-### ✅ Completed (Phase 1–16)
+### ✅ Completed (Phase 1–17)
 
 | Phase | Title | Status | Files |
 |-------|-------|--------|-------|
@@ -242,12 +251,12 @@ app/src/main/java/com/dakkho/android/
 | 14 | Secure Video Player #15 (ExoPlayer + Audio Tracks + Bookmarks + Curriculum) | ✅ Complete | 15 files |
 | 15 | Course Curriculum #16 & Reviews #17 | ✅ Complete | 6 files |
 | 16 | Course Q&A #18, Announcements #19, Resources #20 | ✅ Complete | 12 files |
+| 17 | Course Notes #21, Quizzes #22, Progress #23 | ✅ Complete | 14 files |
 
-### 🚧 Upcoming (Phase 17–29)
+### 🚧 Upcoming (Phase 18–29)
 
 | Phase | Title | Est. Duration |
 |-------|-------|---------------|
-| 17 | Course Notes #21, Quizzes #22, Progress #23 | 3–4 days |
 | 18 | Instructor List #24 & Profile #25 | 3 days |
 | 19 | Instructor Sub-pages #26–29 | 2–3 days |
 | 20 | My Courses #30 & Bookmarks #31 | 2–3 days |
@@ -343,6 +352,9 @@ The app connects to a **Cloudflare Workers** backend (Hono framework) with the f
 | POST | `/student/discussions/:id/reply` | Reply to a discussion thread |
 | PUT | `/student/discussions/:id/like` | Toggle like on a thread |
 | GET | `/api/courses/:id/announcements` | List course announcements |
+| GET | `/student/quizzes/:courseId` | List quizzes for a course |
+| GET | `/student/quizzes/:courseId/:quizId` | Get quiz with questions (no correct answers) |
+| POST | `/student/quizzes/:quizId/submit` | Submit quiz answers |
 
 ---
 
