@@ -15,13 +15,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.dakkho.android.presentation.screens.about.AboutScreen
 import com.dakkho.android.presentation.screens.auth.ForgotPasswordScreen
 import com.dakkho.android.presentation.screens.auth.LoginScreen
 import com.dakkho.android.presentation.screens.auth.SignupScreen
+import com.dakkho.android.presentation.screens.category.CategoryScreen
 import com.dakkho.android.presentation.screens.explore.ExploreScreen
 import com.dakkho.android.presentation.screens.home.HomeScreen
 import com.dakkho.android.presentation.screens.notifications.NotificationDetailScreen
 import com.dakkho.android.presentation.screens.notifications.NotificationsScreen
+import com.dakkho.android.presentation.screens.profile.ProfileScreen
 import com.dakkho.android.presentation.screens.search.SearchScreen
 import com.dakkho.android.presentation.theme.AnimationConstants
 
@@ -189,10 +192,68 @@ fun DakkhoNavHost(
             enterTransition = { fadeIn(tween(AnimationConstants.FADE_IN_MS)) },
             exitTransition = { fadeOut(tween(AnimationConstants.FADE_OUT_MS)) }
         ) {
-            PlaceholderScreen(title = "Profile")
+            ProfileScreen(
+                onNavigateToEditProfile = {
+                    // Navigate to edit profile (future phase)
+                },
+                onNavigateToChangePassword = {
+                    // Navigate to change password (future phase)
+                },
+                onNavigateToLearningStats = {
+                    // Navigate to learning stats (future phase)
+                },
+                onNavigateToSubscription = {
+                    // Navigate to subscription (future phase)
+                },
+                onNavigateToReferral = {
+                    // Navigate to referral (future phase)
+                },
+                onNavigateToDownloads = {
+                    navController.navigate(Route.Downloads)
+                },
+                onNavigateToBookmarks = {
+                    navController.navigate(Route.Bookmarks)
+                },
+                onNavigateToSettings = {
+                    navController.navigate(Route.Settings)
+                },
+                onNavigateToAbout = {
+                    navController.navigate(Route.About)
+                },
+                onNavigateToLogin = {
+                    navController.navigate(Route.Login) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+            )
         }
 
         // ── Detail Screens ──
+        composable<Route.Category>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition },
+            popEnterTransition = { popEnterTransition },
+            popExitTransition = { popExitTransition }
+        ) {
+            CategoryScreen(
+                onBackClick = { navController.popBackStack() },
+                onNavigateToCourse = { courseId ->
+                    navController.navigate(Route.CourseDetail(courseId))
+                }
+            )
+        }
+
+        composable<Route.About>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition },
+            popEnterTransition = { popEnterTransition },
+            popExitTransition = { popExitTransition }
+        ) {
+            AboutScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
         composable<Route.CourseDetail>(
             enterTransition = { enterTransition },
             exitTransition = { exitTransition },

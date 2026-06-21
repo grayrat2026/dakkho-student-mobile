@@ -7,6 +7,7 @@ import com.dakkho.android.data.api.CourseApiService
 import com.dakkho.android.data.api.EnrollmentApiService
 import com.dakkho.android.data.api.InstructorApiService
 import com.dakkho.android.data.api.NotificationApiService
+import com.dakkho.android.data.api.AboutApiService
 import com.dakkho.android.data.db.EncryptedPrefsHelper
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -114,5 +115,11 @@ object NetworkModule {
     @Singleton
     fun provideNotificationApiService(retrofit: Retrofit): NotificationApiService {
         return retrofit.create(NotificationApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAboutApiService(retrofit: Retrofit): AboutApiService {
+        return retrofit.create(AboutApiService::class.java)
     }
 }

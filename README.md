@@ -63,6 +63,7 @@ app/src/main/java/com/dakkho/android/
 │   │   ├── EnrollmentApiService.kt
 │   │   ├── InstructorApiService.kt
 │   │   ├── NotificationApiService.kt
+│   │   ├── AboutApiService.kt
 │   │   ├── AuthInterceptor.kt     # Bearer token injection
 │   │   └── ApiResponse.kt         # Generic response wrapper
 │   ├── db/
@@ -126,6 +127,10 @@ app/src/main/java/com/dakkho/android/
 │   │   └── notifications/     # Notification screen components
 │   │       ├── NotificationItemCard.kt
 │   │       └── NotificationEmptyState.kt
+│   │   └── profile/            # Profile screen components
+│   │       ├── StatsCard.kt
+│   │       ├── ProfileMenuItem.kt
+│   │       └── ProfileHeader.kt
 │   ├── navigation/
 │   │   ├── Route.kt              # @Serializable routes
 │   │   ├── DakkhoNavHost.kt      # NavHost + transitions
@@ -151,6 +156,15 @@ app/src/main/java/com/dakkho/android/
 │   │       ├── NotificationsScreen.kt  # SwipeToDismiss + PullToRefresh
 │   │       ├── NotificationsViewModel.kt
 │   │       └── NotificationDetailScreen.kt
+│   │   ├── profile/
+│   │   │   ├── ProfileScreen.kt    # LargeTopAppBar + stats + menu
+│   │   │   └── ProfileViewModel.kt
+│   │   ├── category/
+│   │   │   ├── CategoryScreen.kt    # Technology-filtered course grid
+│   │   │   └── CategoryViewModel.kt
+│   │   └── about/
+│   │       ├── AboutScreen.kt      # Mission + Vision + Team
+│   │       └── AboutViewModel.kt
 │   └── theme/                    # Design system
 │       ├── Color.kt              # DAKKHO palette (SkyBlue/DeepBlue/Green)
 │       ├── Theme.kt              # Light/Dark + Material You
@@ -172,7 +186,7 @@ app/src/main/java/com/dakkho/android/
 
 ## Implementation Progress
 
-### ✅ Completed (Phase 1–10)
+### ✅ Completed (Phase 1–11)
 
 | Phase | Title | Status | Files |
 |-------|-------|--------|-------|
@@ -186,12 +200,12 @@ app/src/main/java/com/dakkho/android/
 | 8 | Explore Screen #5 (Paging 3) | ✅ Complete | 11 files |
 | 9 | Search Screen #6 (FTS + History) | ✅ Complete | 8 files |
 | 10 | Notifications #7-8 (Paging + Swipe + Worker) | ✅ Complete | 12 files |
+| 11 | Profile #9 + Category #10 + About #11 | ✅ Complete | 11 files |
 
-### 🚧 Upcoming (Phase 11–29)
+### 🚧 Upcoming (Phase 12–29)
 
 | Phase | Title | Est. Duration |
 |-------|-------|---------------|
-| 11 | My Learning #8 & Stats #9 | 3–4 days |
 | 12 | Watch History #12 & Assignment #13 | 2–3 days |
 | 13 | Course Detail #14 | 4–5 days |
 | 14 | Secure Video Player #15 | 6–8 days |
@@ -272,6 +286,7 @@ The app connects to a **Cloudflare Workers** backend (Hono framework) with the f
 | GET | `/api/notifications` | List notifications (paginated) |
 | PATCH | `/api/notifications/:id/read` | Mark notification as read |
 | PATCH | `/api/notifications/read-all` | Mark all notifications as read |
+| GET | `/api/about` | Get about page data |
 | GET | `/api/enrollments/check` | Check enrollment status |
 | GET | `/api/instructors` | List instructors |
 | GET | `/api/institutes` | List polytechnic institutes |
