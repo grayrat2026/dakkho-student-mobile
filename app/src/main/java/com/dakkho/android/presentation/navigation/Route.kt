@@ -76,4 +76,7 @@ sealed class Route {
 
     @Serializable
     data class OtpVerification(val email: String) : Route()
+
+    @Serializable
+    data class Assignments(val courseId: String) : Route()
 }

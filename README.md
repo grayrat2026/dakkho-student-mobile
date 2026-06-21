@@ -64,6 +64,8 @@ app/src/main/java/com/dakkho/android/
 │   │   ├── InstructorApiService.kt
 │   │   ├── NotificationApiService.kt
 │   │   ├── AboutApiService.kt
+│   │   ├── WatchHistoryApiService.kt
+│   │   ├── AssignmentApiService.kt
 │   │   ├── AuthInterceptor.kt     # Bearer token injection
 │   │   └── ApiResponse.kt         # Generic response wrapper
 │   ├── db/
@@ -80,7 +82,9 @@ app/src/main/java/com/dakkho/android/
 │       ├── AuthRepositoryImpl.kt
 │       ├── CourseRepositoryImpl.kt
 │       ├── EnrollmentRepositoryImpl.kt
-│       └── NotificationRepositoryImpl.kt
+│       ├── NotificationRepositoryImpl.kt
+│       ├── WatchHistoryRepositoryImpl.kt
+│       └── AssignmentRepositoryImpl.kt
 │
 ├── paging/                       # Paging 3 components
 │   ├── CoursePagingSource.kt     # API-based PagingSource
@@ -127,6 +131,12 @@ app/src/main/java/com/dakkho/android/
 │   │   └── notifications/     # Notification screen components
 │   │       ├── NotificationItemCard.kt
 │   │       └── NotificationEmptyState.kt
+│   │   ├── watchhistory/      # Watch history screen components
+│   │   │   ├── WatchHistoryItemCard.kt
+│   │   │   └── WatchHistoryEmptyState.kt
+│   │   ├── assignment/         # Assignment screen components
+│   │   │   ├── AssignmentItemCard.kt
+│   │   │   └── AssignmentEmptyState.kt
 │   │   └── profile/            # Profile screen components
 │   │       ├── StatsCard.kt
 │   │       ├── ProfileMenuItem.kt
@@ -165,6 +175,12 @@ app/src/main/java/com/dakkho/android/
 │   │   └── about/
 │   │       ├── AboutScreen.kt      # Mission + Vision + Team
 │   │       └── AboutViewModel.kt
+│   │   ├── watchhistory/
+│   │       ├── WatchHistoryScreen.kt  # SwipeToDelete + ClearAll
+│   │       └── WatchHistoryViewModel.kt
+│   │   └── assignment/
+│   │       ├── AssignmentScreen.kt    # SAF upload + status badges
+│   │       └── AssignmentViewModel.kt
 │   └── theme/                    # Design system
 │       ├── Color.kt              # DAKKHO palette (SkyBlue/DeepBlue/Green)
 │       ├── Theme.kt              # Light/Dark + Material You
@@ -186,7 +202,7 @@ app/src/main/java/com/dakkho/android/
 
 ## Implementation Progress
 
-### ✅ Completed (Phase 1–11)
+### ✅ Completed (Phase 1–12)
 
 | Phase | Title | Status | Files |
 |-------|-------|--------|-------|
@@ -201,12 +217,12 @@ app/src/main/java/com/dakkho/android/
 | 9 | Search Screen #6 (FTS + History) | ✅ Complete | 8 files |
 | 10 | Notifications #7-8 (Paging + Swipe + Worker) | ✅ Complete | 12 files |
 | 11 | Profile #9 + Category #10 + About #11 | ✅ Complete | 11 files |
+| 12 | Watch History #12 & Assignment #13 | ✅ Complete | 12 files |
 
-### 🚧 Upcoming (Phase 12–29)
+### 🚧 Upcoming (Phase 13–29)
 
 | Phase | Title | Est. Duration |
 |-------|-------|---------------|
-| 12 | Watch History #12 & Assignment #13 | 2–3 days |
 | 13 | Course Detail #14 | 4–5 days |
 | 14 | Secure Video Player #15 | 6–8 days |
 | 15 | Course Curriculum #16 & Reviews #17 | 3–4 days |
@@ -287,6 +303,11 @@ The app connects to a **Cloudflare Workers** backend (Hono framework) with the f
 | PATCH | `/api/notifications/:id/read` | Mark notification as read |
 | PATCH | `/api/notifications/read-all` | Mark all notifications as read |
 | GET | `/api/about` | Get about page data |
+| GET | `/api/watch-history` | List watch history |
+| DELETE | `/api/watch-history/:id` | Delete watch history entry |
+| DELETE | `/api/watch-history` | Clear all watch history |
+| GET | `/api/courses/:id/assignments` | List assignments for course |
+| POST | `/api/courses/:id/assignments/:id/submit` | Submit assignment file |
 | GET | `/api/enrollments/check` | Check enrollment status |
 | GET | `/api/instructors` | List instructors |
 | GET | `/api/institutes` | List polytechnic institutes |

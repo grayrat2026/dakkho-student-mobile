@@ -8,6 +8,8 @@ import com.dakkho.android.data.api.EnrollmentApiService
 import com.dakkho.android.data.api.InstructorApiService
 import com.dakkho.android.data.api.NotificationApiService
 import com.dakkho.android.data.api.AboutApiService
+import com.dakkho.android.data.api.AssignmentApiService
+import com.dakkho.android.data.api.WatchHistoryApiService
 import com.dakkho.android.data.db.EncryptedPrefsHelper
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -121,5 +123,17 @@ object NetworkModule {
     @Singleton
     fun provideAboutApiService(retrofit: Retrofit): AboutApiService {
         return retrofit.create(AboutApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideWatchHistoryApiService(retrofit: Retrofit): WatchHistoryApiService {
+        return retrofit.create(WatchHistoryApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAssignmentApiService(retrofit: Retrofit): AssignmentApiService {
+        return retrofit.create(AssignmentApiService::class.java)
     }
 }

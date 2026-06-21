@@ -16,6 +16,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.dakkho.android.presentation.screens.about.AboutScreen
+import com.dakkho.android.presentation.screens.assignment.AssignmentScreen
 import com.dakkho.android.presentation.screens.auth.ForgotPasswordScreen
 import com.dakkho.android.presentation.screens.auth.LoginScreen
 import com.dakkho.android.presentation.screens.auth.SignupScreen
@@ -26,6 +27,7 @@ import com.dakkho.android.presentation.screens.notifications.NotificationDetailS
 import com.dakkho.android.presentation.screens.notifications.NotificationsScreen
 import com.dakkho.android.presentation.screens.profile.ProfileScreen
 import com.dakkho.android.presentation.screens.search.SearchScreen
+import com.dakkho.android.presentation.screens.watchhistory.WatchHistoryScreen
 import com.dakkho.android.presentation.theme.AnimationConstants
 
 @Composable
@@ -346,7 +348,12 @@ fun DakkhoNavHost(
             enterTransition = { enterTransition },
             exitTransition = { exitTransition }
         ) {
-            PlaceholderScreen(title = "Watch History")
+            WatchHistoryScreen(
+                onBackClick = { navController.popBackStack() },
+                onResumeVideo = { videoId, courseId ->
+                    navController.navigate(Route.VideoPlayer(videoId, courseId))
+                }
+            )
         }
 
         composable<Route.Certificates>(
@@ -376,6 +383,17 @@ fun DakkhoNavHost(
         ) { backStackEntry ->
             val otpRoute = backStackEntry.toRoute<Route.OtpVerification>()
             PlaceholderScreen(title = "OTP Verification - ${otpRoute.email}")
+        }
+
+        composable<Route.Assignments>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) { backStackEntry ->
+            val assignmentsRoute = backStackEntry.toRoute<Route.Assignments>()
+            AssignmentScreen(
+                courseId = assignmentsRoute.courseId,
+                onBackClick = { navController.popBackStack() }
+            )
         }
     }
 }
