@@ -78,6 +78,20 @@ import com.dakkho.android.presentation.screens.examschedule.ExamScheduleScreen
 import com.dakkho.android.presentation.screens.examresults.ExamResultsScreen
 import com.dakkho.android.presentation.screens.exampractice.ExamPracticeScreen
 import com.dakkho.android.presentation.screens.examtips.ExamTipsScreen
+import com.dakkho.android.presentation.screens.leaderboard.LeaderboardScreen
+import com.dakkho.android.presentation.screens.studygroups.StudyGroupsScreen
+import com.dakkho.android.presentation.screens.peerconnections.PeerConnectionsScreen
+import com.dakkho.android.presentation.screens.community.CommunityScreen
+import com.dakkho.android.presentation.screens.feedback.FeedbackScreen
+import com.dakkho.android.presentation.screens.roadmap.RoadmapScreen
+import com.dakkho.android.presentation.screens.paymentsuccess.PaymentSuccessScreen
+import com.dakkho.android.presentation.screens.paymentfailed.PaymentFailedScreen
+import com.dakkho.android.presentation.screens.paymentcancel.PaymentCancelScreen
+import com.dakkho.android.presentation.screens.pricing.PricingScreen
+import com.dakkho.android.presentation.screens.changelog.ChangelogScreen
+import com.dakkho.android.presentation.screens.maintenance.MaintenanceScreen
+import com.dakkho.android.presentation.screens.error.Error404Screen
+import com.dakkho.android.presentation.screens.error.Error500Screen
 import com.dakkho.android.presentation.theme.AnimationConstants
 
 @Composable
@@ -1108,6 +1122,144 @@ fun DakkhoNavHost(
                 onBackClick = { navController.popBackStack() }
             )
         }
+
+        // ── Phase 29: Social #96-101 ──
+
+        composable<Route.Leaderboard>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            LeaderboardScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.StudyGroups>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            StudyGroupsScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.PeerConnections>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            PeerConnectionsScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.Community>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            CommunityScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.Feedback>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            FeedbackScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.Roadmap>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            RoadmapScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        // ── Phase 29: Payment #102-104 ──
+
+        composable<Route.PaymentSuccess>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            PaymentSuccessScreen(
+                onGoToCourse = { courseId -> navController.navigate(Route.CourseDetail(courseId)) },
+                onGoHome = { navController.navigate(Route.Home) { popUpTo(Route.Home) { inclusive = true } } }
+            )
+        }
+
+        composable<Route.PaymentFailed>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            PaymentFailedScreen(
+                onRetry = { navController.popBackStack() },
+                onGoHome = { navController.navigate(Route.Home) { popUpTo(Route.Home) { inclusive = true } } },
+                onContactSupport = { navController.navigate(Route.ContactSupport) }
+            )
+        }
+
+        composable<Route.PaymentCancel>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            PaymentCancelScreen(
+                onReturnToCourse = { navController.popBackStack() },
+                onGoHome = { navController.navigate(Route.Home) { popUpTo(Route.Home) { inclusive = true } } }
+            )
+        }
+
+        composable<Route.Pricing>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            PricingScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        // ── Phase 29: Misc #105-109 ──
+
+        composable<Route.Changelog>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            ChangelogScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.Maintenance>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            MaintenanceScreen()
+        }
+
+        // ── Phase 29: Error #110-111 ──
+
+        composable<Route.Error404>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            Error404Screen(
+                onGoHome = { navController.navigate(Route.Home) { popUpTo(Route.Home) { inclusive = true } } }
+            )
+        }
+
+        composable<Route.Error500>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            Error500Screen(
+                onRetry = { navController.popBackStack() },
+                onContactSupport = { navController.navigate(Route.ContactSupport) },
+                onGoHome = { navController.navigate(Route.Home) { popUpTo(Route.Home) { inclusive = true } } }
+            )
+        }
     }
 }
 
@@ -1165,7 +1317,14 @@ private fun handleDeepLink(navController: NavHostController, actionUrl: String) 
             }
         }
         actionUrl.contains("/payment/status") -> {
-            navController.navigate(Route.PaymentStatus)
+            val uri = android.net.Uri.parse(actionUrl)
+            val orderId = uri.getQueryParameter("order_id") ?: ""
+            val status = uri.getQueryParameter("status") ?: "success"
+            when (status.lowercase()) {
+                "failed", "error", "declined" -> navController.navigate(Route.PaymentFailed(orderId))
+                "cancelled", "canceled" -> navController.navigate(Route.PaymentCancel)
+                else -> navController.navigate(Route.PaymentSuccess(orderId))
+            }
         }
         actionUrl.contains("/certificate/") -> {
             navController.navigate(Route.Certificates)

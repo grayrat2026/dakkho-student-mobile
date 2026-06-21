@@ -24,6 +24,8 @@ import com.dakkho.android.data.api.ProfileApiService
 import com.dakkho.android.data.api.SettingsApiService
 import com.dakkho.android.data.api.SupportApiService
 import com.dakkho.android.data.api.ExamApiService
+import com.dakkho.android.data.api.SocialApiService
+import com.dakkho.android.data.api.PaymentMiscApiService
 import com.dakkho.android.data.db.EncryptedPrefsHelper
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -233,5 +235,17 @@ object NetworkModule {
     @Singleton
     fun provideExamApiService(retrofit: Retrofit): ExamApiService {
         return retrofit.create(ExamApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSocialApiService(retrofit: Retrofit): SocialApiService {
+        return retrofit.create(SocialApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providePaymentMiscApiService(retrofit: Retrofit): PaymentMiscApiService {
+        return retrofit.create(PaymentMiscApiService::class.java)
     }
 }

@@ -301,4 +301,50 @@ sealed class Route {
 
     @Serializable
     data object ExamTips : Route()
+
+    // ── Phase 29: Social #96-101 + Payment #102-104 + Misc #105-109 + Error #110-111 ──
+    // Leaderboard, Study Groups, Peer Connections, Community, Feedback, Roadmap,
+    // Payment Success/Failed/Cancel, Pricing, Changelog, Maintenance, Error screens
+
+    @Serializable
+    data object Leaderboard : Route()
+
+    @Serializable
+    data object StudyGroups : Route()
+
+    @Serializable
+    data object PeerConnections : Route()
+
+    @Serializable
+    data object Community : Route()
+
+    @Serializable
+    data object Feedback : Route()
+
+    @Serializable
+    data object Roadmap : Route()
+
+    @Serializable
+    data class PaymentSuccess(val orderId: String) : Route()
+
+    @Serializable
+    data class PaymentFailed(val orderId: String = "") : Route()
+
+    @Serializable
+    data object PaymentCancel : Route()
+
+    @Serializable
+    data object Pricing : Route()
+
+    @Serializable
+    data object Changelog : Route()
+
+    @Serializable
+    data object Maintenance : Route()
+
+    @Serializable
+    data object Error404 : Route()
+
+    @Serializable
+    data object Error500 : Route()
 }
