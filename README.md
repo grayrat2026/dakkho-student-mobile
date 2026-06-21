@@ -75,6 +75,10 @@ app/src/main/java/com/dakkho/android/
 │       ├── CourseRepositoryImpl.kt
 │       └── EnrollmentRepositoryImpl.kt
 │
+├── paging/                       # Paging 3 components
+│   ├── CoursePagingSource.kt     # API-based PagingSource
+│   └── CourseRemoteMediator.kt   # Room + API sync mediator
+│
 ├── domain/
 │   ├── model/                     # Domain models + API DTOs
 │   └── repository/               # Repository interfaces
@@ -94,19 +98,37 @@ app/src/main/java/com/dakkho/android/
 │   │   ├── CourseCardGrid.kt
 │   │   ├── SensitiveActionPrompt.kt
 │   │   ├── ContentProtection.kt
-│   │   └── CustomContextMenu.kt
+│   │   ├── CustomContextMenu.kt
+│   │   ├── home/              # Home screen components
+│   │   │   ├── HeroSection.kt
+│   │   │   ├── CategoryPills.kt
+│   │   │   ├── ContinueWatching.kt
+│   │   │   ├── TrendingCourses.kt
+│   │   │   ├── FeaturedInstructors.kt
+│   │   │   └── SectionHeader.kt
+│   │   └── explore/           # Explore screen components
+│   │       ├── ExploreCourseCard.kt
+│   │       ├── FilterChipsRow.kt
+│   │       ├── SortDropdown.kt
+│   │       └── ExploreSearchBar.kt
 │   ├── navigation/
 │   │   ├── Route.kt              # @Serializable routes
 │   │   ├── DakkhoNavHost.kt      # NavHost + transitions
 │   │   └── DakkhoNavigation.kt   # Scaffold + drawer + bottom bar
 │   ├── screens/
-│   │   └── auth/
-│   │       ├── LoginScreen.kt     # Gradient + GlassCard login
-│   │       ├── LoginViewModel.kt
-│   │       ├── SignupScreen.kt    # 4-step wizard
-│   │       ├── SignupViewModel.kt
-│   │       ├── ForgotPasswordScreen.kt
-│   │       └── ForgotPasswordViewModel.kt
+│   │   ├── auth/
+│   │   │   ├── LoginScreen.kt     # Gradient + GlassCard login
+│   │   │   ├── LoginViewModel.kt
+│   │   │   ├── SignupScreen.kt    # 4-step wizard
+│   │   │   ├── SignupViewModel.kt
+│   │   │   ├── ForgotPasswordScreen.kt
+│   │   │   └── ForgotPasswordViewModel.kt
+│   │   ├── home/
+│   │   │   ├── HomeScreen.kt      # PullToRefresh + LazyColumn
+│   │   │   └── HomeViewModel.kt
+│   │   └── explore/
+│   │       ├── ExploreScreen.kt   # LazyVerticalGrid + Paging 3
+│   │       └── ExploreViewModel.kt
 │   └── theme/                    # Design system
 │       ├── Color.kt              # DAKKHO palette (SkyBlue/DeepBlue/Green)
 │       ├── Theme.kt              # Light/Dark + Material You
@@ -128,7 +150,7 @@ app/src/main/java/com/dakkho/android/
 
 ## Implementation Progress
 
-### ✅ Completed (Phase 1–6)
+### ✅ Completed (Phase 1–8)
 
 | Phase | Title | Status | Files |
 |-------|-------|--------|-------|
@@ -138,13 +160,13 @@ app/src/main/java/com/dakkho/android/
 | 4 | Login Page #1 | ✅ Complete | 2 files |
 | 5 | Signup Page #2 (4-Step Wizard) | ✅ Complete | 2 files |
 | 6 | Forgot Password Page #3 | ✅ Complete | 2 files |
+| 7 | Home Screen #4 (6 Components) | ✅ Complete | 8 files |
+| 8 | Explore Screen #5 (Paging 3) | ✅ Complete | 11 files |
 
-### 🚧 Upcoming (Phase 7–29)
+### 🚧 Upcoming (Phase 9–29)
 
 | Phase | Title | Est. Duration |
 |-------|-------|---------------|
-| 7 | Home Screen #4 (6 Components) | 4–5 days |
-| 8 | Explore Screen #5 | 2–3 days |
 | 9 | Search Screen #6 | 2–3 days |
 | 10 | Profile Screen #7 | 3–4 days |
 | 11 | My Learning #8 & Stats #9 | 3–4 days |
