@@ -258,4 +258,47 @@ sealed class Route {
 
     @Serializable
     data object ActiveSessions : Route()
+
+    // ── Phase 28: Help & Support #83-90 + Exam #91-95 ──
+    // Help Hub, FAQ, Contact Support, Ticket Detail, Report Issue,
+    // Legal screens, Exam Prep, Schedule, Results, Practice, Tips
+
+    @Serializable
+    data object Help : Route()
+
+    @Serializable
+    data object FAQ : Route()
+
+    @Serializable
+    data object ContactSupport : Route()
+
+    @Serializable
+    data class TicketDetail(val ticketId: String) : Route()
+
+    @Serializable
+    data object ReportIssue : Route()
+
+    @Serializable
+    data object TermsOfService : Route()
+
+    @Serializable
+    data object PrivacyPolicy : Route()
+
+    @Serializable
+    data object RefundPolicy : Route()
+
+    @Serializable
+    data object ExamPrep : Route()
+
+    @Serializable
+    data object ExamSchedule : Route()
+
+    @Serializable
+    data object ExamResults : Route()
+
+    @Serializable
+    data object ExamPractice : Route()
+
+    @Serializable
+    data object ExamTips : Route()
 }

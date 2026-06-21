@@ -65,6 +65,19 @@ import com.dakkho.android.presentation.screens.videoquality.VideoQualityScreen
 import com.dakkho.android.presentation.screens.networkdata.NetworkDataScreen
 import com.dakkho.android.presentation.screens.contentprotection.ContentProtectionScreen
 import com.dakkho.android.presentation.screens.activesessions.ActiveSessionsScreen
+import com.dakkho.android.presentation.screens.help.HelpScreen
+import com.dakkho.android.presentation.screens.faq.FAQScreen
+import com.dakkho.android.presentation.screens.contactsupport.ContactSupportScreen
+import com.dakkho.android.presentation.screens.ticketdetail.TicketDetailScreen
+import com.dakkho.android.presentation.screens.reportissue.ReportIssueScreen
+import com.dakkho.android.presentation.screens.termsofservice.TermsOfServiceScreen
+import com.dakkho.android.presentation.screens.privacypolicy.PrivacyPolicyScreen
+import com.dakkho.android.presentation.screens.refundpolicy.RefundPolicyScreen
+import com.dakkho.android.presentation.screens.examprep.ExamPrepScreen
+import com.dakkho.android.presentation.screens.examschedule.ExamScheduleScreen
+import com.dakkho.android.presentation.screens.examresults.ExamResultsScreen
+import com.dakkho.android.presentation.screens.exampractice.ExamPracticeScreen
+import com.dakkho.android.presentation.screens.examtips.ExamTipsScreen
 import com.dakkho.android.presentation.theme.AnimationConstants
 
 @Composable
@@ -968,6 +981,130 @@ fun DakkhoNavHost(
             exitTransition = { exitTransition }
         ) {
             ActiveSessionsScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        // ── Phase 28: Help & Support #83-90 + Exam #91-95 ──
+
+        composable<Route.Help>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            HelpScreen(
+                onBackClick = { navController.popBackStack() },
+                onNavigateToFAQ = { navController.navigate(Route.FAQ) },
+                onNavigateToContactSupport = { navController.navigate(Route.ContactSupport) },
+                onNavigateToReportIssue = { navController.navigate(Route.ReportIssue) }
+            )
+        }
+
+        composable<Route.FAQ>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            FAQScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.ContactSupport>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            ContactSupportScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.TicketDetail>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) { backStackEntry ->
+            val route = backStackEntry.toRoute<Route.TicketDetail>()
+            TicketDetailScreen(
+                ticketId = route.ticketId,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.ReportIssue>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            ReportIssueScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.TermsOfService>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            TermsOfServiceScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.PrivacyPolicy>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            PrivacyPolicyScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.RefundPolicy>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            RefundPolicyScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.ExamPrep>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            ExamPrepScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.ExamSchedule>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            ExamScheduleScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.ExamResults>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            ExamResultsScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.ExamPractice>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            ExamPracticeScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.ExamTips>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            ExamTipsScreen(
                 onBackClick = { navController.popBackStack() }
             )
         }
