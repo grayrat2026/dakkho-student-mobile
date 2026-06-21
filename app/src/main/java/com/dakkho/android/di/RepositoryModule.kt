@@ -1,14 +1,18 @@
 package com.dakkho.android.di
 
+import com.dakkho.android.data.repository.AnnouncementRepositoryImpl
 import com.dakkho.android.data.repository.AssignmentRepositoryImpl
 import com.dakkho.android.data.repository.AuthRepositoryImpl
+import com.dakkho.android.data.repository.DiscussionRepositoryImpl
 import com.dakkho.android.data.repository.WatchHistoryRepositoryImpl
 import com.dakkho.android.data.repository.CourseRepositoryImpl
 import com.dakkho.android.data.repository.EnrollmentRepositoryImpl
 import com.dakkho.android.data.repository.NotificationRepositoryImpl
+import com.dakkho.android.domain.repository.AnnouncementRepository
 import com.dakkho.android.domain.repository.AssignmentRepository
 import com.dakkho.android.domain.repository.AuthRepository
 import com.dakkho.android.domain.repository.CourseRepository
+import com.dakkho.android.domain.repository.DiscussionRepository
 import com.dakkho.android.domain.repository.EnrollmentRepository
 import com.dakkho.android.domain.repository.NotificationRepository
 import com.dakkho.android.domain.repository.WatchHistoryRepository
@@ -45,4 +49,12 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindAssignmentRepository(assignmentRepositoryImpl: AssignmentRepositoryImpl): AssignmentRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindDiscussionRepository(discussionRepositoryImpl: DiscussionRepositoryImpl): DiscussionRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindAnnouncementRepository(announcementRepositoryImpl: AnnouncementRepositoryImpl): AnnouncementRepository
 }

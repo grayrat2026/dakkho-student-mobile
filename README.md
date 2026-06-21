@@ -222,7 +222,7 @@ app/src/main/java/com/dakkho/android/
 
 ## Implementation Progress
 
-### ✅ Completed (Phase 1–15)
+### ✅ Completed (Phase 1–16)
 
 | Phase | Title | Status | Files |
 |-------|-------|--------|-------|
@@ -241,12 +241,12 @@ app/src/main/java/com/dakkho/android/
 | 13 | Course Detail #14 (Tabs + Enroll + Offline) | ✅ Complete | 18 files |
 | 14 | Secure Video Player #15 (ExoPlayer + Audio Tracks + Bookmarks + Curriculum) | ✅ Complete | 15 files |
 | 15 | Course Curriculum #16 & Reviews #17 | ✅ Complete | 6 files |
+| 16 | Course Q&A #18, Announcements #19, Resources #20 | ✅ Complete | 12 files |
 
-### 🚧 Upcoming (Phase 16–29)
+### 🚧 Upcoming (Phase 17–29)
 
 | Phase | Title | Est. Duration |
 |-------|-------|---------------|
-| 16 | Course Q&A #18, Announcements #19, Resources #20 | 3 days |
 | 17 | Course Notes #21, Quizzes #22, Progress #23 | 3–4 days |
 | 18 | Instructor List #24 & Profile #25 | 3 days |
 | 19 | Instructor Sub-pages #26–29 | 2–3 days |
@@ -337,6 +337,12 @@ The app connects to a **Cloudflare Workers** backend (Hono framework) with the f
 | GET | `/api/technologies` | List technologies/departments |
 | POST | `/api/payments/create` | Create PipraPay payment |
 | POST | `/api/video/stream/session/:id` | Get DRM streaming session |
+| GET | `/student/discussions` | List Q&A discussion threads (filterable by courseId) |
+| GET | `/student/discussions/:id` | Get single thread with replies |
+| POST | `/student/discussions` | Create a new discussion thread |
+| POST | `/student/discussions/:id/reply` | Reply to a discussion thread |
+| PUT | `/student/discussions/:id/like` | Toggle like on a thread |
+| GET | `/api/courses/:id/announcements` | List course announcements |
 
 ---
 

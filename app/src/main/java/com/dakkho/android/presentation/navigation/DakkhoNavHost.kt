@@ -16,6 +16,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import com.dakkho.android.presentation.screens.about.AboutScreen
+import com.dakkho.android.presentation.screens.announcements.AnnouncementsScreen
 import com.dakkho.android.presentation.screens.assignment.AssignmentScreen
 import com.dakkho.android.presentation.screens.auth.ForgotPasswordScreen
 import com.dakkho.android.presentation.screens.auth.LoginScreen
@@ -28,6 +29,8 @@ import com.dakkho.android.presentation.screens.home.HomeScreen
 import com.dakkho.android.presentation.screens.notifications.NotificationDetailScreen
 import com.dakkho.android.presentation.screens.notifications.NotificationsScreen
 import com.dakkho.android.presentation.screens.profile.ProfileScreen
+import com.dakkho.android.presentation.screens.qna.QnAScreen
+import com.dakkho.android.presentation.screens.resources.ResourcesScreen
 import com.dakkho.android.presentation.screens.reviews.CourseReviewsScreen
 import com.dakkho.android.presentation.screens.search.SearchScreen
 import com.dakkho.android.presentation.screens.videoplayer.VideoPlayerScreen
@@ -281,6 +284,15 @@ fun DakkhoNavHost(
                 },
                 onNavigateToReviews = { courseId, courseTitle, averageRating, reviewCount, isEnrolled ->
                     navController.navigate(Route.CourseReviews(courseId, courseTitle, averageRating, reviewCount.toInt(), isEnrolled))
+                },
+                onNavigateToQnA = { courseId, courseTitle, isEnrolled ->
+                    navController.navigate(Route.CourseQnA(courseId, courseTitle, isEnrolled))
+                },
+                onNavigateToAnnouncements = { courseId, courseTitle ->
+                    navController.navigate(Route.CourseAnnouncements(courseId, courseTitle))
+                },
+                onNavigateToResources = { courseId, courseTitle, isEnrolled ->
+                    navController.navigate(Route.CourseResources(courseId, courseTitle, isEnrolled))
                 }
             )
         }
@@ -450,6 +462,44 @@ fun DakkhoNavHost(
                 averageRating = reviewsRoute.averageRating,
                 reviewCount = reviewsRoute.reviewCount,
                 isEnrolled = reviewsRoute.isEnrolled,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.CourseQnA>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) { backStackEntry ->
+            val qnaRoute = backStackEntry.toRoute<Route.CourseQnA>()
+            QnAScreen(
+                courseId = qnaRoute.courseId,
+                courseTitle = qnaRoute.courseTitle,
+                isEnrolled = qnaRoute.isEnrolled,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.CourseAnnouncements>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) { backStackEntry ->
+            val annRoute = backStackEntry.toRoute<Route.CourseAnnouncements>()
+            AnnouncementsScreen(
+                courseId = annRoute.courseId,
+                courseTitle = annRoute.courseTitle,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.CourseResources>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) { backStackEntry ->
+            val resRoute = backStackEntry.toRoute<Route.CourseResources>()
+            ResourcesScreen(
+                courseId = resRoute.courseId,
+                courseTitle = resRoute.courseTitle,
+                isEnrolled = resRoute.isEnrolled,
                 onBackClick = { navController.popBackStack() }
             )
         }

@@ -73,6 +73,9 @@ fun CourseDetailScreen(
     onNavigateToInstructor: (instructorId: String) -> Unit,
     onNavigateToCurriculum: (courseId: String, courseTitle: String, isEnrolled: Boolean) -> Unit = { _, _, _ -> },
     onNavigateToReviews: (courseId: String, courseTitle: String, averageRating: Float, reviewCount: Int, isEnrolled: Boolean) -> Unit = { _, _, _, _, _ -> },
+    onNavigateToQnA: (courseId: String, courseTitle: String, isEnrolled: Boolean) -> Unit = { _, _, _ -> },
+    onNavigateToAnnouncements: (courseId: String, courseTitle: String) -> Unit = { _, _ -> },
+    onNavigateToResources: (courseId: String, courseTitle: String, isEnrolled: Boolean) -> Unit = { _, _, _ -> },
     viewModel: CourseDetailViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -221,7 +224,20 @@ fun CourseDetailScreen(
                         course.reviewCount.toFloat(),
                         uiState.isEnrolled
                     )
-                }
+                },
+                onViewAllQnA = {
+                    val course = uiState.course ?: return@CourseDetailContent
+                    onNavigateToQnA(course.id, course.title, uiState.isEnrolled)
+                },
+                onViewAllAnnouncements = {
+                    val course = uiState.course ?: return@CourseDetailContent
+                    onNavigateToAnnouncements(course.id, course.title)
+                },
+                onViewAllResources = {
+                    val course = uiState.course ?: return@CourseDetailContent
+                    onNavigateToResources(course.id, course.title, uiState.isEnrolled)
+                },
+                isEnrolled = uiState.isEnrolled
             )
         }
     }
@@ -243,7 +259,11 @@ private fun CourseDetailContent(
     innerPadding: androidx.compose.foundation.layout.PaddingValues,
     onLessonClick: (Lesson) -> Unit,
     onViewAllCurriculum: () -> Unit = {},
-    onViewAllReviews: () -> Unit = {}
+    onViewAllReviews: () -> Unit = {},
+    onViewAllQnA: () -> Unit = {},
+    onViewAllAnnouncements: () -> Unit = {},
+    onViewAllResources: () -> Unit = {},
+    isEnrolled: Boolean = false
 ) {
     val course = uiState.course ?: return
     val pagerState = rememberPagerState(pageCount = { COURSE_TABS.size })
@@ -331,9 +351,14 @@ private fun CourseDetailContent(
                     onViewAllClick = onViewAllReviews
                 )
 
-                3 -> CourseQnATab()
+                3 -> CourseQnATab(
+                    isEnrolled = isEnrolled,
+                    onViewAllClick = onViewAllQnA
+                )
 
-                4 -> CourseAnnouncementsTab()
+                4 -> CourseAnnouncementsTab(
+                    onViewAllClick = onViewAllAnnouncements
+                )
             }
         }
     }
