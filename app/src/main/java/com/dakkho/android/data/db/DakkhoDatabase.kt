@@ -61,7 +61,7 @@ import com.dakkho.android.data.db.entity.RoutineEntryEntity
         SubjectEntity::class,
         RoutineEntryEntity::class
     ],
-    version = 3,
+    version = 4,
     exportSchema = true
 )
 @TypeConverters(Converters::class)

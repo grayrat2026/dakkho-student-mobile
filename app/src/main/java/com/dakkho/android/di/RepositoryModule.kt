@@ -18,6 +18,7 @@ import com.dakkho.android.data.repository.AchievementRepositoryImpl
 import com.dakkho.android.data.repository.ForumRepositoryImpl
 import com.dakkho.android.data.repository.DepartmentRepositoryImpl
 import com.dakkho.android.data.repository.SemesterRepositoryImpl
+import com.dakkho.android.data.repository.ProfileRepositoryImpl
 import com.dakkho.android.domain.repository.AnnouncementRepository
 import com.dakkho.android.domain.repository.AssignmentRepository
 import com.dakkho.android.domain.repository.AuthRepository
@@ -36,6 +37,7 @@ import com.dakkho.android.domain.repository.AchievementRepository
 import com.dakkho.android.domain.repository.ForumRepository
 import com.dakkho.android.domain.repository.DepartmentRepository
 import com.dakkho.android.domain.repository.SemesterRepository
+import com.dakkho.android.domain.repository.ProfileRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -117,4 +119,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindSemesterRepository(semesterRepositoryImpl: SemesterRepositoryImpl): SemesterRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindProfileRepository(profileRepositoryImpl: ProfileRepositoryImpl): ProfileRepository
 }

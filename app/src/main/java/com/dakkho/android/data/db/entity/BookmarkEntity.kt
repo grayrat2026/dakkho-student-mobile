@@ -27,5 +27,11 @@ data class BookmarkEntity(
     @ColumnInfo(name = "id") val id: Long = 0,
     @ColumnInfo(name = "course_id") val courseId: String,
     @ColumnInfo(name = "user_id") val userId: String,
+    @ColumnInfo(name = "course_title") val courseTitle: String? = null,
+    @ColumnInfo(name = "instructor_name") val instructorName: String? = null,
+    @ColumnInfo(name = "thumbnail_url") val thumbnailUrl: String? = null,
+    @ColumnInfo(name = "price") val price: Double? = null,
+    @ColumnInfo(name = "rating") val rating: Float? = null,
+    @ColumnInfo(name = "technology") val technology: String? = null,
     @ColumnInfo(name = "created_at") val createdAt: Long = System.currentTimeMillis()
 )

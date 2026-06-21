@@ -52,6 +52,13 @@ import com.dakkho.android.presentation.screens.certificates.CertificatesScreen
 import com.dakkho.android.presentation.screens.livesessions.LiveSessionsScreen
 import com.dakkho.android.presentation.screens.achievements.AchievementsScreen
 import com.dakkho.android.presentation.screens.discussionforum.DiscussionForumScreen
+import com.dakkho.android.presentation.screens.editprofile.EditProfileScreen
+import com.dakkho.android.presentation.screens.changepassword.ChangePasswordScreen
+import com.dakkho.android.presentation.screens.learningstats.LearningStatsScreen
+import com.dakkho.android.presentation.screens.subscription.SubscriptionScreen
+import com.dakkho.android.presentation.screens.referral.ReferralScreen
+import com.dakkho.android.presentation.screens.bookmarks.BookmarksScreen
+import com.dakkho.android.presentation.screens.settings.SettingsScreen
 import com.dakkho.android.presentation.theme.AnimationConstants
 
 @Composable
@@ -229,19 +236,19 @@ fun DakkhoNavHost(
         ) {
             ProfileScreen(
                 onNavigateToEditProfile = {
-                    // Navigate to edit profile (future phase)
+                    navController.navigate(Route.EditProfile)
                 },
                 onNavigateToChangePassword = {
-                    // Navigate to change password (future phase)
+                    navController.navigate(Route.ChangePassword)
                 },
                 onNavigateToLearningStats = {
-                    // Navigate to learning stats (future phase)
+                    navController.navigate(Route.LearningStats)
                 },
                 onNavigateToSubscription = {
-                    // Navigate to subscription (future phase)
+                    navController.navigate(Route.Subscription)
                 },
                 onNavigateToReferral = {
-                    // Navigate to referral (future phase)
+                    navController.navigate(Route.Referral)
                 },
                 onNavigateToDownloads = {
                     navController.navigate(Route.Downloads)
@@ -428,7 +435,15 @@ fun DakkhoNavHost(
             enterTransition = { enterTransition },
             exitTransition = { exitTransition }
         ) {
-            PlaceholderScreen(title = "Settings")
+            SettingsScreen(
+                onBackClick = { navController.popBackStack() },
+                onDeleteAccount = {
+                    // Delete account → navigate to Login
+                    navController.navigate(Route.Login) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+            )
         }
 
         composable<Route.Downloads>(
@@ -450,7 +465,15 @@ fun DakkhoNavHost(
             enterTransition = { enterTransition },
             exitTransition = { exitTransition }
         ) {
-            PlaceholderScreen(title = "Bookmarks")
+            BookmarksScreen(
+                onBackClick = { navController.popBackStack() },
+                onNavigateToCourse = { courseId ->
+                    navController.navigate(Route.CourseDetail(courseId))
+                },
+                onNavigateToExplore = {
+                    navController.navigate(Route.Explore)
+                }
+            )
         }
 
         composable<Route.WatchHistory>(
@@ -756,6 +779,54 @@ fun DakkhoNavHost(
                 onSubjectClick = { subjectId ->
                     // TODO: Navigate to subject detail page
                 }
+            )
+        }
+
+        // ── Phase 25: Profile Sub-pages #65-71 ──
+
+        composable<Route.EditProfile>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            EditProfileScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.ChangePassword>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            ChangePasswordScreen(
+                onBackClick = { navController.popBackStack() },
+                onPasswordChanged = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.LearningStats>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            LearningStatsScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.Subscription>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            SubscriptionScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.Referral>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            ReferralScreen(
+                onBackClick = { navController.popBackStack() }
             )
         }
     }

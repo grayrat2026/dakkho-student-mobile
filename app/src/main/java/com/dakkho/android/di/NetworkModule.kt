@@ -20,6 +20,7 @@ import com.dakkho.android.data.api.StudentLiveClassApiService
 import com.dakkho.android.data.api.ForumApiService
 import com.dakkho.android.data.api.TechnologyApiService
 import com.dakkho.android.data.api.SemesterApiService
+import com.dakkho.android.data.api.ProfileApiService
 import com.dakkho.android.data.db.EncryptedPrefsHelper
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -205,5 +206,11 @@ object NetworkModule {
     @Singleton
     fun provideSemesterApiService(retrofit: Retrofit): SemesterApiService {
         return retrofit.create(SemesterApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideProfileApiService(retrofit: Retrofit): ProfileApiService {
+        return retrofit.create(ProfileApiService::class.java)
     }
 }

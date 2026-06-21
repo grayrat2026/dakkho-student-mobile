@@ -199,4 +199,23 @@ sealed class Route {
         val departmentSlug: String,
         val semesterNumber: Int   // 1–8, where 8 = ইন্টার্নি
     ) : Route()
+
+    // ── Phase 25: Profile Sub-pages #65-71 ──
+    // EditProfile, ChangePassword, LearningStats, Subscription, Referral
+    // Bookmarks and Settings routes already exist above
+
+    @Serializable
+    data object EditProfile : Route()
+
+    @Serializable
+    data object ChangePassword : Route()
+
+    @Serializable
+    data object LearningStats : Route()
+
+    @Serializable
+    data object Subscription : Route()
+
+    @Serializable
+    data object Referral : Route()
 }

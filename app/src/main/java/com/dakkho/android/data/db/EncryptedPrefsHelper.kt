@@ -77,6 +77,24 @@ class EncryptedPrefsHelper(context: Context) {
         prefs.edit().clear().apply()
     }
 
+    // ── Generic helpers for Phase 25 Settings ──
+
+    fun saveBoolean(key: String, value: Boolean) {
+        prefs.edit().putBoolean(key, value).apply()
+    }
+
+    fun getBoolean(key: String, defaultValue: Boolean = false): Boolean {
+        return prefs.getBoolean(key, defaultValue)
+    }
+
+    fun saveString(key: String, value: String) {
+        prefs.edit().putString(key, value).apply()
+    }
+
+    fun getString(key: String, defaultValue: String? = null): String? {
+        return prefs.getString(key, defaultValue)
+    }
+
     companion object {
         private const val ENCRYPTED_PREFS_FILE_NAME = "dakkho_secure_prefs"
         private const val FALLBACK_PREFS_FILE_NAME = "dakkho_fallback_prefs"

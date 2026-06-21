@@ -146,6 +146,18 @@ object DatabaseModule {
             }
         }
 
+        val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                // Phase 25: Add extra columns to bookmarks table for richer display
+                db.execSQL("ALTER TABLE `bookmarks` ADD COLUMN `course_title` TEXT")
+                db.execSQL("ALTER TABLE `bookmarks` ADD COLUMN `instructor_name` TEXT")
+                db.execSQL("ALTER TABLE `bookmarks` ADD COLUMN `thumbnail_url` TEXT")
+                db.execSQL("ALTER TABLE `bookmarks` ADD COLUMN `price` REAL")
+                db.execSQL("ALTER TABLE `bookmarks` ADD COLUMN `rating` REAL")
+                db.execSQL("ALTER TABLE `bookmarks` ADD COLUMN `technology` TEXT")
+            }
+        }
+
         return Room.databaseBuilder(
             context,
             DakkhoDatabase::class.java,
@@ -154,6 +166,7 @@ object DatabaseModule {
             .addTypeConverter(Converters())
             .addMigration(MIGRATION_1_2)
             .addMigration(MIGRATION_2_3)
+            .addMigration(MIGRATION_3_4)
             .fallbackToDestructiveMigration()
             .build()
     }
