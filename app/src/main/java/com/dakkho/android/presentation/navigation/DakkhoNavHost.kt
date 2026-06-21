@@ -59,6 +59,12 @@ import com.dakkho.android.presentation.screens.subscription.SubscriptionScreen
 import com.dakkho.android.presentation.screens.referral.ReferralScreen
 import com.dakkho.android.presentation.screens.bookmarks.BookmarksScreen
 import com.dakkho.android.presentation.screens.settings.SettingsScreen
+import com.dakkho.android.presentation.screens.themesettings.ThemeSettingsScreen
+import com.dakkho.android.presentation.screens.downloadsettings.DownloadSettingsScreen
+import com.dakkho.android.presentation.screens.videoquality.VideoQualityScreen
+import com.dakkho.android.presentation.screens.networkdata.NetworkDataScreen
+import com.dakkho.android.presentation.screens.contentprotection.ContentProtectionScreen
+import com.dakkho.android.presentation.screens.activesessions.ActiveSessionsScreen
 import com.dakkho.android.presentation.theme.AnimationConstants
 
 @Composable
@@ -457,6 +463,24 @@ fun DakkhoNavHost(
                 },
                 onNavigateToAboutLegal = {
                     navController.navigate(Route.AboutLegal)
+                },
+                onNavigateToThemeSettings = {
+                    navController.navigate(Route.ThemeSettings)
+                },
+                onNavigateToDownloadSettings = {
+                    navController.navigate(Route.DownloadSettings)
+                },
+                onNavigateToVideoQualitySettings = {
+                    navController.navigate(Route.VideoQualitySettings)
+                },
+                onNavigateToNetworkData = {
+                    navController.navigate(Route.NetworkData)
+                },
+                onNavigateToContentProtection = {
+                    navController.navigate(Route.ContentProtection)
+                },
+                onNavigateToActiveSessions = {
+                    navController.navigate(Route.ActiveSessions)
                 }
             )
         }
@@ -888,6 +912,62 @@ fun DakkhoNavHost(
             exitTransition = { exitTransition }
         ) {
             com.dakkho.android.presentation.screens.aboutlegal.AboutLegalScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        // ── Phase 27: Settings Part 2 #77-82 ──
+
+        composable<Route.ThemeSettings>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            ThemeSettingsScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.DownloadSettings>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            DownloadSettingsScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.VideoQualitySettings>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            VideoQualityScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.NetworkData>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            NetworkDataScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.ContentProtection>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            ContentProtectionScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.ActiveSessions>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            ActiveSessionsScreen(
                 onBackClick = { navController.popBackStack() }
             )
         }

@@ -72,6 +72,12 @@ fun SettingsScreen(
     onNavigateToDataSaver: () -> Unit = {},
     onNavigateToAccessibilitySettings: () -> Unit = {},
     onNavigateToAboutLegal: () -> Unit = {},
+    onNavigateToThemeSettings: () -> Unit = {},
+    onNavigateToDownloadSettings: () -> Unit = {},
+    onNavigateToVideoQualitySettings: () -> Unit = {},
+    onNavigateToNetworkData: () -> Unit = {},
+    onNavigateToContentProtection: () -> Unit = {},
+    onNavigateToActiveSessions: () -> Unit = {},
     viewModel: SettingsViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -169,6 +175,13 @@ fun SettingsScreen(
             SettingsSectionHeader(title = "চেহারা")
 
             GlassCard(modifier = Modifier.fillMaxWidth()) {
+                SettingsNavigationItem(
+                    icon = Icons.Default.DarkMode,
+                    title = "থিম সেটিংস",
+                    subtitle = "লাইট/ডার্ক/সিস্টেম, রং, ম্যাটেরিয়াল ইউ",
+                    onClick = onNavigateToThemeSettings
+                )
+                SettingsDivider()
                 SettingsToggleItem(
                     icon = Icons.Default.DarkMode,
                     title = "ডার্ক মোড",
@@ -198,6 +211,13 @@ fun SettingsScreen(
             SettingsSectionHeader(title = "ভিডিও ও প্লেব্যাক")
 
             GlassCard(modifier = Modifier.fillMaxWidth()) {
+                SettingsNavigationItem(
+                    icon = Icons.Default.VideoSettings,
+                    title = "ভিডিও মান সেটিংস",
+                    subtitle = "স্ট্রিমিং মান, ব্যান্ডউইথ সেভার",
+                    onClick = onNavigateToVideoQualitySettings
+                )
+                SettingsDivider()
                 SettingsClickItem(
                     icon = Icons.Default.VideoSettings,
                     title = "ভিডিও মান",
@@ -242,6 +262,13 @@ fun SettingsScreen(
             SettingsSectionHeader(title = "ডাউনলোড")
 
             GlassCard(modifier = Modifier.fillMaxWidth()) {
+                SettingsNavigationItem(
+                    icon = Icons.Default.Download,
+                    title = "ডাউনলোড সেটিংস",
+                    subtitle = "মান, স্বয়ংক্রিয় ডাউনলোড, স্টোরেজ লোকেশন",
+                    onClick = onNavigateToDownloadSettings
+                )
+                SettingsDivider()
                 SettingsToggleItem(
                     icon = Icons.Default.Download,
                     title = "শুধু Wi-Fi এ ডাউনলোড",
@@ -270,6 +297,13 @@ fun SettingsScreen(
                     subtitle = "মোবাইল ডেটা ব্যবহার নিয়ন্ত্রণ",
                     onClick = onNavigateToDataSaver
                 )
+                SettingsDivider()
+                SettingsNavigationItem(
+                    icon = Icons.Default.DataSaverOn,
+                    title = "নেটওয়ার্ক ও ডেটা",
+                    subtitle = "Wi-Fi, ডেটা সেভার মোড, ব্যান্ডউইথ সীমা",
+                    onClick = onNavigateToNetworkData
+                )
             }
 
             Spacer(modifier = Modifier.height(DesignToken.Space.dp16))
@@ -292,12 +326,33 @@ fun SettingsScreen(
             SettingsSectionHeader(title = "গোপনীয়তা ও ডেটা")
 
             GlassCard(modifier = Modifier.fillMaxWidth()) {
+                SettingsNavigationItem(
+                    icon = Icons.Default.Security,
+                    title = "কন্টেন্ট সুরক্ষা",
+                    subtitle = "স্ক্রিনশট ব্লক, ডাউনলোড সীমাবদ্ধতা, FLAG_SECURE",
+                    onClick = onNavigateToContentProtection
+                )
+                SettingsDivider()
                 SettingsToggleItem(
                     icon = Icons.Default.Security,
                     title = "ব্যবহার বিশ্লেষণ",
                     subtitle = "অ্যাপ উন্নতির জন্য ডেটা শেয়ার করুন",
                     checked = settings.isAnalyticsEnabled,
                     onCheckedChange = viewModel::setAnalyticsEnabled
+                )
+            }
+
+            Spacer(modifier = Modifier.height(DesignToken.Space.dp16))
+
+            // ── Security ──
+            SettingsSectionHeader(title = "নিরাপত্তা")
+
+            GlassCard(modifier = Modifier.fillMaxWidth()) {
+                SettingsNavigationItem(
+                    icon = Icons.Default.Security,
+                    title = "সক্রিয় সেশন",
+                    subtitle = "ডিভাইস তালিকা, রিমোট লগআউট",
+                    onClick = onNavigateToActiveSessions
                 )
             }
 

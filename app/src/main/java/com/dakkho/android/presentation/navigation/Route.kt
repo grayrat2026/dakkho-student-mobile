@@ -236,4 +236,26 @@ sealed class Route {
 
     @Serializable
     data object AboutLegal : Route()
+
+    // ── Phase 27: Settings Part 2 #77-82 ──
+    // Theme Settings, Download Settings, Video Quality, Network & Data,
+    // Content Protection, Active Sessions
+
+    @Serializable
+    data object ThemeSettings : Route()
+
+    @Serializable
+    data object DownloadSettings : Route()
+
+    @Serializable
+    data object VideoQualitySettings : Route()
+
+    @Serializable
+    data object NetworkData : Route()
+
+    @Serializable
+    data object ContentProtection : Route()
+
+    @Serializable
+    data object ActiveSessions : Route()
 }
