@@ -15,6 +15,9 @@ import com.dakkho.android.data.api.AssignmentApiService
 import com.dakkho.android.data.api.DiscussionApiService
 import com.dakkho.android.data.api.QuizApiService
 import com.dakkho.android.data.api.WatchHistoryApiService
+import com.dakkho.android.data.api.AchievementApiService
+import com.dakkho.android.data.api.StudentLiveClassApiService
+import com.dakkho.android.data.api.ForumApiService
 import com.dakkho.android.data.db.EncryptedPrefsHelper
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -170,5 +173,23 @@ object NetworkModule {
     @Singleton
     fun provideCertificateApiService(retrofit: Retrofit): CertificateApiService {
         return retrofit.create(CertificateApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAchievementApiService(retrofit: Retrofit): AchievementApiService {
+        return retrofit.create(AchievementApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideStudentLiveClassApiService(retrofit: Retrofit): StudentLiveClassApiService {
+        return retrofit.create(StudentLiveClassApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideForumApiService(retrofit: Retrofit): ForumApiService {
+        return retrofit.create(ForumApiService::class.java)
     }
 }

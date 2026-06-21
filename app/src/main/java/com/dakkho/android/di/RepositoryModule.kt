@@ -13,6 +13,9 @@ import com.dakkho.android.data.repository.CourseRepositoryImpl
 import com.dakkho.android.data.repository.EnrollmentRepositoryImpl
 import com.dakkho.android.data.repository.InstructorRepositoryImpl
 import com.dakkho.android.data.repository.NotificationRepositoryImpl
+import com.dakkho.android.data.repository.LiveClassRepositoryImpl
+import com.dakkho.android.data.repository.AchievementRepositoryImpl
+import com.dakkho.android.data.repository.ForumRepositoryImpl
 import com.dakkho.android.domain.repository.AnnouncementRepository
 import com.dakkho.android.domain.repository.AssignmentRepository
 import com.dakkho.android.domain.repository.AuthRepository
@@ -26,6 +29,9 @@ import com.dakkho.android.domain.repository.InstructorRepository
 import com.dakkho.android.domain.repository.NotificationRepository
 import com.dakkho.android.domain.repository.QuizRepository
 import com.dakkho.android.domain.repository.WatchHistoryRepository
+import com.dakkho.android.domain.repository.LiveClassRepository
+import com.dakkho.android.domain.repository.AchievementRepository
+import com.dakkho.android.domain.repository.ForumRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -87,4 +93,16 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindCertificateRepository(certificateRepositoryImpl: CertificateRepositoryImpl): CertificateRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindLiveClassRepository(liveClassRepositoryImpl: LiveClassRepositoryImpl): LiveClassRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindAchievementRepository(achievementRepositoryImpl: AchievementRepositoryImpl): AchievementRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindForumRepository(forumRepositoryImpl: ForumRepositoryImpl): ForumRepository
 }

@@ -256,12 +256,12 @@ app/src/main/java/com/dakkho/android/
 | 19 | Instructor Sub-pages #26–29 (Courses, Reviews, Schedule, Contact) | ✅ Complete | 10 files |
 | 20 | My Courses #30 & Bookmarks #31 | ✅ Complete | 12 files |
 | 21 | Downloads #32 & Certificates #33 | ✅ Complete | 13 files |
+| 22 | Live Sessions #34, Achievements #35, Discussion #36 | ✅ Complete | 21 files |
 
-### 🚧 Upcoming (Phase 22–29)
+### 🚧 Upcoming (Phase 23–29)
 
 | Phase | Title | Est. Duration |
 |-------|-------|---------------|
-| 22 | Live Sessions #34, Achievements #35, Discussion #36 | 3–4 days |
 | 23 | Department Pages Template #37–56 | 3–4 days |
 | 24 | Semester Pages Template #57–64 | 2–3 days |
 | 25 | Profile Sub-pages #65–71 | 4–5 days |

@@ -165,4 +165,18 @@ sealed class Route {
         val instructorId: String,
         val instructorName: String
     ) : Route()
+
+    // ── Live Sessions, Achievements, Discussion ──
+
+    @Serializable
+    data object LiveSessions : Route()
+
+    @Serializable
+    data class LiveClassDetail(val liveClassId: String) : Route()
+
+    @Serializable
+    data object DiscussionForum : Route()
+
+    @Serializable
+    data class DiscussionThread(val threadId: String) : Route()
 }

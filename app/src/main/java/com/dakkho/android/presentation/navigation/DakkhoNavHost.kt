@@ -46,6 +46,9 @@ import com.dakkho.android.presentation.screens.videoplayer.VideoPlayerScreen
 import com.dakkho.android.presentation.screens.watchhistory.WatchHistoryScreen
 import com.dakkho.android.presentation.screens.downloads.DownloadsScreen
 import com.dakkho.android.presentation.screens.certificates.CertificatesScreen
+import com.dakkho.android.presentation.screens.livesessions.LiveSessionsScreen
+import com.dakkho.android.presentation.screens.achievements.AchievementsScreen
+import com.dakkho.android.presentation.screens.discussionforum.DiscussionForumScreen
 import com.dakkho.android.presentation.theme.AnimationConstants
 
 @Composable
@@ -466,7 +469,50 @@ fun DakkhoNavHost(
             enterTransition = { enterTransition },
             exitTransition = { exitTransition }
         ) {
-            PlaceholderScreen(title = "Achievements")
+            AchievementsScreen(
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.LiveSessions>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            LiveSessionsScreen(
+                onBack = { navController.popBackStack() },
+                onNavigateToLiveClass = { liveClassId ->
+                    navController.navigate(Route.LiveClassDetail(liveClassId))
+                }
+            )
+        }
+
+        composable<Route.LiveClassDetail>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) { backStackEntry ->
+            val route = backStackEntry.toRoute<Route.LiveClassDetail>()
+            LiveSessionsScreen(
+                onBack = { navController.popBackStack() },
+                onNavigateToLiveClass = { }
+            )
+        }
+
+        composable<Route.DiscussionForum>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            DiscussionForumScreen(
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.DiscussionThread>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            DiscussionForumScreen(
+                onBack = { navController.popBackStack() }
+            )
         }
 
         composable<Route.PaymentStatus>(
