@@ -231,7 +231,7 @@ app/src/main/java/com/dakkho/android/
 
 ## Implementation Progress
 
-### ✅ Completed (Phase 1–24)
+### ✅ Completed (Phase 1–25)
 
 | Phase | Title | Status | Files |
 |-------|-------|--------|-------|
@@ -259,12 +259,12 @@ app/src/main/java/com/dakkho/android/
 | 22 | Live Sessions #34, Achievements #35, Discussion #36 | ✅ Complete | 21 files |
 | 23 | Department Pages (Dynamic, API-driven) #37–56 | ✅ Complete | 10 files |
 | 24 | Semester Pages #57–64 (7 Semesters + 8th=ইন্টার্নি) | ✅ Complete | 11 files |
+| 25 | Profile Sub-pages #65–71 (Edit, Password, Stats, Sub, Referral, Bookmarks, Settings) | ✅ Complete | 18 files |
 
-### 🚧 Upcoming (Phase 25–29)
+### 🚧 Upcoming (Phase 26–29)
 
 | Phase | Title | Est. Duration |
 |-------|-------|---------------|
-| 25 | Profile Sub-pages #65–71 | 4–5 days |
 | 26 | Settings Part 1 #72–76 | 3 days |
 | 27 | Settings Part 2 #77–82 | 3–4 days |
 | 28 | Help & Support #83–90 + Exam #91–95 | 5–6 days |
