@@ -33,6 +33,7 @@ fun HomeScreen(
     onNavigateToNotifications: () -> Unit,
     onNavigateToVideo: (String, String) -> Unit,
     onNavigateToInstructor: (String) -> Unit,
+    onNavigateToInstructorList: () -> Unit = {},
     viewModel: HomeViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -124,7 +125,7 @@ fun HomeScreen(
                         FeaturedInstructors(
                             instructors = uiState.featuredInstructors,
                             onInstructorClick = onNavigateToInstructor,
-                            onSeeAllClick = { /* Navigate to instructors list */ },
+                            onSeeAllClick = onNavigateToInstructorList,
                             isLoading = uiState.isLoading
                         )
                     }

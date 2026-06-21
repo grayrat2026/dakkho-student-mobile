@@ -36,6 +36,8 @@ import com.dakkho.android.presentation.screens.search.SearchScreen
 import com.dakkho.android.presentation.screens.notes.CourseNotesScreen
 import com.dakkho.android.presentation.screens.quizzes.CourseQuizzesScreen
 import com.dakkho.android.presentation.screens.progress.CourseProgressScreen
+import com.dakkho.android.presentation.screens.instructorlist.InstructorListScreen
+import com.dakkho.android.presentation.screens.instructorprofile.InstructorProfileScreen
 import com.dakkho.android.presentation.screens.videoplayer.VideoPlayerScreen
 import com.dakkho.android.presentation.screens.watchhistory.WatchHistoryScreen
 import com.dakkho.android.presentation.theme.AnimationConstants
@@ -169,6 +171,9 @@ fun DakkhoNavHost(
                 },
                 onNavigateToInstructor = { instructorId ->
                     navController.navigate(Route.InstructorProfile(instructorId))
+                },
+                onNavigateToInstructorList = {
+                    navController.navigate(Route.InstructorList)
                 }
             )
         }
@@ -321,11 +326,28 @@ fun DakkhoNavHost(
             )
         }
 
+        composable<Route.InstructorList>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            InstructorListScreen(
+                onBackClick = { navController.popBackStack() },
+                onInstructorClick = { instructorId ->
+                    navController.navigate(Route.InstructorProfile(instructorId))
+                }
+            )
+        }
+
         composable<Route.InstructorProfile>(
             enterTransition = { enterTransition },
             exitTransition = { exitTransition }
         ) {
-            PlaceholderScreen(title = "Instructor Profile")
+            InstructorProfileScreen(
+                onBackClick = { navController.popBackStack() },
+                onNavigateToCourse = { courseId ->
+                    navController.navigate(Route.CourseDetail(courseId))
+                }
+            )
         }
 
         composable<Route.Search>(

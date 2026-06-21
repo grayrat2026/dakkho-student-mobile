@@ -36,6 +36,9 @@ sealed class Route {
     data class VideoPlayer(val videoId: String, val courseId: String) : Route()
 
     @Serializable
+    data object InstructorList : Route()
+
+    @Serializable
     data class InstructorProfile(val instructorId: String) : Route()
 
     @Serializable

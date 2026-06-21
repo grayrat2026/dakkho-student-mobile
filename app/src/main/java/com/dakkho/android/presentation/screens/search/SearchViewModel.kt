@@ -201,20 +201,19 @@ class SearchViewModel @Inject constructor(
 
     private suspend fun searchInstructors(query: String): List<Instructor> {
         return try {
-            val response = instructorApiService.getInstructors()
+            val response = instructorApiService.getInstructorsPaginated(search = query)
             if (response.isSuccessful) {
                 val body = response.body()
-                if (body != null && body.success && body.data != null) {
-                    body.data
-                        .filter { it.name.contains(query, ignoreCase = true) }
+                if (body != null && body.error == null) {
+                    body.instructors
                         .map { dto ->
                             Instructor(
                                 id = dto.id,
                                 name = dto.name,
                                 avatarUrl = dto.avatarUrl,
-                                title = dto.title,
-                                courseCount = dto.courseCount ?: 0,
-                                studentCount = dto.studentCount ?: 0,
+                                title = dto.specialization ?: dto.title,
+                                courseCount = dto.totalCourses ?: dto.courseCount ?: 0,
+                                studentCount = dto.totalStudents ?: dto.studentCount ?: 0,
                                 rating = dto.rating ?: 0f
                             )
                         }

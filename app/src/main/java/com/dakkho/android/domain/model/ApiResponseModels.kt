@@ -262,9 +262,13 @@ data class InstructorDto(
     @Json(name = "id") val id: String,
     @Json(name = "name") val name: String,
     @Json(name = "avatar_url") val avatarUrl: String?,
+    @Json(name = "cover_url") val coverUrl: String?,
     @Json(name = "title") val title: String?,
+    @Json(name = "specialization") val specialization: String?,
     @Json(name = "course_count") val courseCount: Int?,
+    @Json(name = "total_courses") val totalCourses: Int?,
     @Json(name = "student_count") val studentCount: Int?,
+    @Json(name = "total_students") val totalStudents: Int?,
     @Json(name = "rating") val rating: Float?
 )
 
@@ -273,11 +277,19 @@ data class InstructorDetailDto(
     @Json(name = "id") val id: String,
     @Json(name = "name") val name: String,
     @Json(name = "avatar_url") val avatarUrl: String?,
+    @Json(name = "cover_url") val coverUrl: String?,
     @Json(name = "title") val title: String?,
     @Json(name = "bio") val bio: String?,
+    @Json(name = "specialization") val specialization: String?,
+    @Json(name = "email") val email: String?,
     @Json(name = "course_count") val courseCount: Int?,
+    @Json(name = "total_courses") val totalCourses: Int?,
     @Json(name = "student_count") val studentCount: Int?,
+    @Json(name = "total_students") val totalStudents: Int?,
     @Json(name = "rating") val rating: Float?,
+    @Json(name = "social_links") val socialLinks: String?, // JSON string
+    @Json(name = "is_active") val isActive: Boolean?,
+    @Json(name = "created_at") val createdAt: String?,
     @Json(name = "courses") val courses: List<CourseDto>?
 )
 

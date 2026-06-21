@@ -12,6 +12,7 @@ import com.dakkho.android.domain.model.User
 import com.dakkho.android.domain.model.WatchHistoryItem
 import com.dakkho.android.domain.repository.CourseRepository
 import com.dakkho.android.domain.repository.EnrollmentRepository
+import com.dakkho.android.domain.repository.InstructorRepository
 import com.dakkho.android.data.api.InstructorApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,6 +42,7 @@ class HomeViewModel @Inject constructor(
     private val courseRepository: CourseRepository,
     private val enrollmentRepository: EnrollmentRepository,
     private val userDao: UserDao,
+    private val instructorRepository: InstructorRepository,
     private val instructorApiService: InstructorApiService,
     private val encryptedPrefsHelper: EncryptedPrefsHelper
 ) : ViewModel() {
@@ -176,24 +178,16 @@ class HomeViewModel @Inject constructor(
 
     private suspend fun loadFeaturedInstructors() {
         try {
-            val response = instructorApiService.getInstructors()
-            if (response.isSuccessful) {
-                val body = response.body()
-                if (body != null && body.success && body.data != null) {
-                    val instructors = body.data.map { dto ->
-                        Instructor(
-                            id = dto.id,
-                            name = dto.name,
-                            avatarUrl = dto.avatarUrl,
-                            title = dto.title,
-                            courseCount = dto.courseCount ?: 0,
-                            studentCount = dto.studentCount ?: 0,
-                            rating = dto.rating ?: 0f
-                        )
-                    }.sortedByDescending { it.rating }
-                    _uiState.update { it.copy(featuredInstructors = instructors) }
+            val result = instructorRepository.getInstructors(limit = 10)
+            result.fold(
+                onSuccess = { (instructors, _) ->
+                    val sorted = instructors.sortedByDescending { it.rating }
+                    _uiState.update { it.copy(featuredInstructors = sorted) }
+                },
+                onFailure = { error ->
+                    Timber.e(error, "Failed to load featured instructors")
                 }
-            }
+            )
         } catch (e: Exception) {
             Timber.e(e, "Failed to load featured instructors")
         }
@@ -204,8 +198,8 @@ class HomeViewModel @Inject constructor(
             val response = instructorApiService.getTechnologies()
             if (response.isSuccessful) {
                 val body = response.body()
-                if (body != null && body.success && body.data != null) {
-                    val technologies = body.data.map { dto ->
+                if (body != null && body.error == null) {
+                    val technologies = body.technologies.map { dto ->
                         Technology(
                             id = dto.id,
                             name = dto.name,

@@ -205,8 +205,8 @@ class ExploreViewModel @Inject constructor(
                 val response = instructorApiService.getTechnologies()
                 if (response.isSuccessful) {
                     val body = response.body()
-                    if (body != null && body.success && body.data != null) {
-                        _technologies.value = body.data.map { dto ->
+                    if (body != null && body.error == null) {
+                        _technologies.value = body.technologies.map { dto ->
                             Technology(
                                 id = dto.id,
                                 name = dto.name,

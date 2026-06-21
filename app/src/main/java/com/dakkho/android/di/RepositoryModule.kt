@@ -9,6 +9,7 @@ import com.dakkho.android.data.repository.QuizRepositoryImpl
 import com.dakkho.android.data.repository.WatchHistoryRepositoryImpl
 import com.dakkho.android.data.repository.CourseRepositoryImpl
 import com.dakkho.android.data.repository.EnrollmentRepositoryImpl
+import com.dakkho.android.data.repository.InstructorRepositoryImpl
 import com.dakkho.android.data.repository.NotificationRepositoryImpl
 import com.dakkho.android.domain.repository.AnnouncementRepository
 import com.dakkho.android.domain.repository.AssignmentRepository
@@ -17,6 +18,7 @@ import com.dakkho.android.domain.repository.CourseNoteRepository
 import com.dakkho.android.domain.repository.CourseRepository
 import com.dakkho.android.domain.repository.DiscussionRepository
 import com.dakkho.android.domain.repository.EnrollmentRepository
+import com.dakkho.android.domain.repository.InstructorRepository
 import com.dakkho.android.domain.repository.NotificationRepository
 import com.dakkho.android.domain.repository.QuizRepository
 import com.dakkho.android.domain.repository.WatchHistoryRepository
@@ -69,4 +71,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun bindQuizRepository(quizRepositoryImpl: QuizRepositoryImpl): QuizRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindInstructorRepository(instructorRepositoryImpl: InstructorRepositoryImpl): InstructorRepository
 }

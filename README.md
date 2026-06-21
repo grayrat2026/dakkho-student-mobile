@@ -252,12 +252,12 @@ app/src/main/java/com/dakkho/android/
 | 15 | Course Curriculum #16 & Reviews #17 | ✅ Complete | 6 files |
 | 16 | Course Q&A #18, Announcements #19, Resources #20 | ✅ Complete | 12 files |
 | 17 | Course Notes #21, Quizzes #22, Progress #23 | ✅ Complete | 14 files |
+| 18 | Instructor List #24 & Profile #25 | ✅ Complete | 8 files |
 
-### 🚧 Upcoming (Phase 18–29)
+### 🚧 Upcoming (Phase 19–29)
 
 | Phase | Title | Est. Duration |
 |-------|-------|---------------|
-| 18 | Instructor List #24 & Profile #25 | 3 days |
 | 19 | Instructor Sub-pages #26–29 | 2–3 days |
 | 20 | My Courses #30 & Bookmarks #31 | 2–3 days |
 | 21 | Downloads #32 & Certificates #33 | 3–4 days |
@@ -341,7 +341,9 @@ The app connects to a **Cloudflare Workers** backend (Hono framework) with the f
 | GET | `/api/courses/:id/assignments` | List assignments for course |
 | POST | `/api/courses/:id/assignments/:id/submit` | Submit assignment file |
 | GET | `/api/enrollments/check` | Check enrollment status |
-| GET | `/api/instructors` | List instructors |
+| GET | `/api/instructors` | List instructors (paginated, searchable) |
+| GET | `/api/instructors/:id` | Get instructor profile detail |
+| GET | `/api/instructors/:id/courses` | List courses by instructor (paginated) |
 | GET | `/api/institutes` | List polytechnic institutes |
 | GET | `/api/technologies` | List technologies/departments |
 | POST | `/api/payments/create` | Create PipraPay payment |
