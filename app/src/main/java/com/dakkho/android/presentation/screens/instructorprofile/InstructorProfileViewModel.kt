@@ -27,6 +27,17 @@ data class InstructorProfileUiState(
     val error: String? = null
 )
 
+/** Tab indices for InstructorProfileScreen */
+object InstructorProfileTabs {
+    const val ABOUT = 0
+    const val COURSES = 1
+    const val REVIEWS = 2
+    const val SCHEDULE = 3
+    const val CONTACT = 4
+
+    val NAMES = listOf("About", "Courses", "Reviews", "Schedule", "Contact")
+}
+
 @HiltViewModel
 class InstructorProfileViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,

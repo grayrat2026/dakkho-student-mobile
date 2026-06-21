@@ -27,7 +27,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -71,6 +74,10 @@ import com.dakkho.android.presentation.theme.Warning
 fun InstructorProfileScreen(
     onBackClick: () -> Unit,
     onNavigateToCourse: (String) -> Unit,
+    onNavigateToInstructorCourses: (String, String) -> Unit = { _, _ -> },
+    onNavigateToInstructorReviews: (String, String, Float, Int) -> Unit = { _, _, _, _ -> },
+    onNavigateToInstructorSchedule: (String, String) -> Unit = { _, _ -> },
+    onNavigateToInstructorContact: (String, String) -> Unit = { _, _ -> },
     viewModel: InstructorProfileViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -124,6 +131,10 @@ fun InstructorProfileScreen(
                         selectedTab = uiState.selectedTab,
                         onSelectTab = viewModel::selectTab,
                         onCourseClick = onNavigateToCourse,
+                        onNavigateToInstructorCourses = onNavigateToInstructorCourses,
+                        onNavigateToInstructorReviews = onNavigateToInstructorReviews,
+                        onNavigateToInstructorSchedule = onNavigateToInstructorSchedule,
+                        onNavigateToInstructorContact = onNavigateToInstructorContact,
                         isLoadingCourses = uiState.isLoadingCourses,
                         hasMoreCourses = uiState.hasMoreCourses,
                         onLoadMoreCourses = viewModel::loadMoreCourses,
@@ -142,12 +153,16 @@ fun InstructorProfileContent(
     selectedTab: Int,
     onSelectTab: (Int) -> Unit,
     onCourseClick: (String) -> Unit,
+    onNavigateToInstructorCourses: (String, String) -> Unit,
+    onNavigateToInstructorReviews: (String, String, Float, Int) -> Unit,
+    onNavigateToInstructorSchedule: (String, String) -> Unit,
+    onNavigateToInstructorContact: (String, String) -> Unit,
     isLoadingCourses: Boolean,
     hasMoreCourses: Boolean,
     onLoadMoreCourses: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val tabs = listOf("About", "Courses")
+    val tabs = InstructorProfileTabs.NAMES
     val listState = rememberLazyListState()
 
     val shouldLoadMore by remember {
@@ -159,7 +174,7 @@ fun InstructorProfileContent(
     }
 
     LaunchedEffect(shouldLoadMore) {
-        if (shouldLoadMore && selectedTab == 1) {
+        if (shouldLoadMore && selectedTab == InstructorProfileTabs.COURSES) {
             onLoadMoreCourses()
         }
     }
@@ -180,7 +195,7 @@ fun InstructorProfileContent(
         }
 
         // ── Bio Section (always visible, truncated in About tab) ──
-        if (!instructor.bio.isNullOrBlank() && selectedTab == 0) {
+        if (!instructor.bio.isNullOrBlank() && selectedTab == InstructorProfileTabs.ABOUT) {
             item {
                 Spacer(modifier = Modifier.height(DesignToken.Space.dp8))
                 InstructorBioSection(instructor = instructor)
@@ -188,20 +203,21 @@ fun InstructorProfileContent(
         }
 
         // ── Social Links ──
-        if (instructor.socialLinks.hasAny && selectedTab == 0) {
+        if (instructor.socialLinks.hasAny && selectedTab == InstructorProfileTabs.ABOUT) {
             item {
                 Spacer(modifier = Modifier.height(DesignToken.Space.dp12))
                 InstructorSocialLinks(socialLinks = instructor.socialLinks)
             }
         }
 
-        // ── Tab Row ──
+        // ── Scrollable Tab Row ──
         item {
             Spacer(modifier = Modifier.height(DesignToken.Space.dp16))
-            TabRow(
+            ScrollableTabRow(
                 selectedTabIndex = selectedTab,
                 containerColor = Color.Transparent,
-                contentColor = MaterialTheme.colorScheme.onSurface
+                contentColor = MaterialTheme.colorScheme.onSurface,
+                edgePadding = 0.dp
             ) {
                 tabs.forEachIndexed { index, title ->
                     Tab(
@@ -209,8 +225,13 @@ fun InstructorProfileContent(
                         onClick = { onSelectTab(index) },
                         text = {
                             Text(
-                                text = if (index == 1) "$title (${instructor.courseCount})" else title,
-                                fontWeight = if (selectedTab == index) FontWeight.Bold else FontWeight.Normal
+                                text = when (index) {
+                                    InstructorProfileTabs.COURSES -> "$title (${instructor.courseCount})"
+                                    InstructorProfileTabs.REVIEWS -> "$title"
+                                    else -> title
+                                },
+                                fontWeight = if (selectedTab == index) FontWeight.Bold else FontWeight.Normal,
+                                style = MaterialTheme.typography.bodySmall
                             )
                         }
                     )
@@ -219,96 +240,248 @@ fun InstructorProfileContent(
         }
 
         // ── Tab Content ──
-        if (selectedTab == 0) {
-            // About Tab
-            if (!instructor.bio.isNullOrBlank()) {
-                item {
-                    Spacer(modifier = Modifier.height(DesignToken.Space.dp12))
-                    Text(
-                        text = instructor.bio,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f),
-                        lineHeight = 22.sp
-                    )
-                }
-            }
-
-            if (!instructor.specialization.isNullOrBlank()) {
-                item {
-                    Spacer(modifier = Modifier.height(DesignToken.Space.dp12))
-                    Column {
-                        Text(
-                            text = "Specialization",
-                            style = MaterialTheme.typography.titleSmall.copy(
-                                fontWeight = FontWeight.Bold
-                            ),
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                        Spacer(modifier = Modifier.height(DesignToken.Space.dp4))
-                        Text(
-                            text = instructor.specialization,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = SkyBlue
-                        )
-                    }
-                }
-            }
-
-            // Joined date
-            if (!instructor.createdAt.isNullOrBlank()) {
-                item {
-                    Spacer(modifier = Modifier.height(DesignToken.Space.dp12))
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            painter = painterResource(id = android.R.drawable.ic_menu_today),
-                            contentDescription = "Joined",
-                            tint = Neutral500,
-                            modifier = Modifier.size(16.dp)
-                        )
-                        Spacer(modifier = Modifier.width(DesignToken.Space.dp4))
-                        Text(
-                            text = "Joined ${formatDate(instructor.createdAt)}",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = Neutral500
-                        )
-                    }
-                }
-            }
-        } else {
-            // Courses Tab
-            if (courses.isEmpty() && !isLoadingCourses) {
-                item {
-                    Spacer(modifier = Modifier.height(DesignToken.Space.dp32))
-                    EmptyState(
-                        icon = painterResource(id = android.R.drawable.ic_menu_gallery),
-                        title = "No courses yet",
-                        subtitle = "This instructor hasn't published any courses"
-                    )
-                }
-            } else {
-                items(courses, key = { it.id }) { course ->
-                    Spacer(modifier = Modifier.height(DesignToken.Space.dp8))
-                    InstructorCourseCard(
-                        course = course,
-                        onClick = { onCourseClick(course.id) }
-                    )
-                }
-
-                if (isLoadingCourses) {
+        when (selectedTab) {
+            InstructorProfileTabs.ABOUT -> {
+                // About Tab
+                if (!instructor.bio.isNullOrBlank()) {
                     item {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(DesignToken.Space.dp16),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(24.dp),
-                                strokeWidth = 2.dp,
+                        Spacer(modifier = Modifier.height(DesignToken.Space.dp12))
+                        Text(
+                            text = instructor.bio,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f),
+                            lineHeight = 22.sp
+                        )
+                    }
+                }
+
+                if (!instructor.specialization.isNullOrBlank()) {
+                    item {
+                        Spacer(modifier = Modifier.height(DesignToken.Space.dp12))
+                        Column {
+                            Text(
+                                text = "Specialization",
+                                style = MaterialTheme.typography.titleSmall.copy(
+                                    fontWeight = FontWeight.Bold
+                                ),
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            Spacer(modifier = Modifier.height(DesignToken.Space.dp4))
+                            Text(
+                                text = instructor.specialization,
+                                style = MaterialTheme.typography.bodyMedium,
                                 color = SkyBlue
                             )
+                        }
+                    }
+                }
+
+                // Joined date
+                if (!instructor.createdAt.isNullOrBlank()) {
+                    item {
+                        Spacer(modifier = Modifier.height(DesignToken.Space.dp12))
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                painter = painterResource(id = android.R.drawable.ic_menu_today),
+                                contentDescription = "Joined",
+                                tint = Neutral500,
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Spacer(modifier = Modifier.width(DesignToken.Space.dp4))
+                            Text(
+                                text = "Joined ${formatDate(instructor.createdAt)}",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Neutral500
+                            )
+                        }
+                    }
+                }
+            }
+
+            InstructorProfileTabs.COURSES -> {
+                // Courses Tab
+                if (courses.isEmpty() && !isLoadingCourses) {
+                    item {
+                        Spacer(modifier = Modifier.height(DesignToken.Space.dp32))
+                        EmptyState(
+                            icon = painterResource(id = android.R.drawable.ic_menu_gallery),
+                            title = "No courses yet",
+                            subtitle = "This instructor hasn't published any courses"
+                        )
+                    }
+                } else {
+                    // "View All" link
+                    if (instructor.courseCount > courses.size) {
+                        item {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable {
+                                        onNavigateToInstructorCourses(instructor.id, instructor.name)
+                                    }
+                                    .padding(vertical = DesignToken.Space.dp4),
+                                horizontalArrangement = Arrangement.End
+                            ) {
+                                Text(
+                                    text = "View All ${instructor.courseCount} Courses",
+                                    style = MaterialTheme.typography.labelMedium.copy(
+                                        fontWeight = FontWeight.Medium
+                                    ),
+                                    color = SkyBlue
+                                )
+                            }
+                        }
+                    }
+
+                    items(courses, key = { it.id }) { course ->
+                        Spacer(modifier = Modifier.height(DesignToken.Space.dp8))
+                        InstructorCourseCard(
+                            course = course,
+                            onClick = { onCourseClick(course.id) }
+                        )
+                    }
+
+                    if (isLoadingCourses) {
+                        item {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(DesignToken.Space.dp16),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(24.dp),
+                                    strokeWidth = 2.dp,
+                                    color = SkyBlue
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+
+            InstructorProfileTabs.REVIEWS -> {
+                // Reviews Tab - preview with "View All" link
+                item {
+                    Spacer(modifier = Modifier.height(DesignToken.Space.dp8))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                painter = painterResource(id = android.R.drawable.btn_star_big_on),
+                                contentDescription = "Rating",
+                                tint = Warning,
+                                modifier = Modifier.size(20.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = String.format("%.1f", instructor.rating),
+                                style = MaterialTheme.typography.titleLarge.copy(
+                                    fontWeight = FontWeight.Bold
+                                ),
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                        Text(
+                            text = "View All Reviews",
+                            style = MaterialTheme.typography.labelMedium.copy(
+                                fontWeight = FontWeight.Medium
+                            ),
+                            color = SkyBlue,
+                            modifier = Modifier.clickable {
+                                onNavigateToInstructorReviews(
+                                    instructor.id,
+                                    instructor.name,
+                                    instructor.rating,
+                                    instructor.studentCount // approximate review count
+                                )
+                            }
+                        )
+                    }
+                }
+            }
+
+            InstructorProfileTabs.SCHEDULE -> {
+                // Schedule Tab - preview with link to full schedule
+                item {
+                    Spacer(modifier = Modifier.height(DesignToken.Space.dp8))
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "View upcoming live classes",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                        )
+                        Spacer(modifier = Modifier.height(DesignToken.Space.dp8))
+                        OutlinedButton(
+                            onClick = {
+                                onNavigateToInstructorSchedule(instructor.id, instructor.name)
+                            },
+                            colors = ButtonDefaults.outlinedButtonColors(
+                                contentColor = SkyBlue
+                            )
+                        ) {
+                            Text("View Schedule")
+                        }
+                    }
+                }
+            }
+
+            InstructorProfileTabs.CONTACT -> {
+                // Contact Tab - preview with link to full contact info
+                item {
+                    Spacer(modifier = Modifier.height(DesignToken.Space.dp8))
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        if (!instructor.email.isNullOrBlank()) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.padding(vertical = DesignToken.Space.dp4)
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = android.R.drawable.ic_dialog_email),
+                                    contentDescription = "Email",
+                                    tint = SkyBlue,
+                                    modifier = Modifier.size(16.dp)
+                                )
+                                Spacer(modifier = Modifier.width(DesignToken.Space.dp4))
+                                Text(
+                                    text = instructor.email,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                            }
+                        }
+
+                        if (instructor.socialLinks.hasAny) {
+                            Text(
+                                text = "${instructor.socialLinks.youtube?.let { "YouTube, " } ?: ""}${instructor.socialLinks.github?.let { "GitHub, " } ?: ""}${instructor.socialLinks.linkedin?.let { "LinkedIn" } ?: ""}",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Neutral500,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(DesignToken.Space.dp8))
+                        OutlinedButton(
+                            onClick = {
+                                onNavigateToInstructorContact(instructor.id, instructor.name)
+                            },
+                            colors = ButtonDefaults.outlinedButtonColors(
+                                contentColor = SkyBlue
+                            )
+                        ) {
+                            Text("View All Contact Info")
                         }
                     }
                 }

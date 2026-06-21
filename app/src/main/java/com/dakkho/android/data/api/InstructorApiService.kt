@@ -41,6 +41,14 @@ interface InstructorApiService {
         @Query("offset") offset: Int = 0
     ): Response<InstructorCoursesResponse>
 
+    @GET("api/instructors/{id}/reviews")
+    suspend fun getInstructorReviews(
+        @Path("id") instructorId: String,
+        @Query("limit") limit: Int = 20,
+        @Query("offset") offset: Int = 0,
+        @Query("rating") rating: Int? = null
+    ): Response<InstructorReviewsResponse>
+
     // ── Institutes & Technologies ──
 
     @GET("api/institutes")
@@ -85,6 +93,14 @@ data class InstructorDetailResponse(
 data class InstructorCoursesResponse(
     val courses: List<CourseDto> = emptyList(),
     val total: Int = 0,
+    val error: String? = null
+)
+
+data class InstructorReviewsResponse(
+    val reviews: List<ReviewDto> = emptyList(),
+    val total: Int = 0,
+    val average_rating: Float = 0f,
+    val rating_breakdown: Map<String, Int>? = null,
     val error: String? = null
 )
 

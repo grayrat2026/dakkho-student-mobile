@@ -137,4 +137,32 @@ sealed class Route {
         val courseId: String,
         val courseTitle: String
     ) : Route()
+
+    // ── Instructor Sub-pages ──
+
+    @Serializable
+    data class InstructorCourses(
+        val instructorId: String,
+        val instructorName: String
+    ) : Route()
+
+    @Serializable
+    data class InstructorReviews(
+        val instructorId: String,
+        val instructorName: String,
+        val averageRating: Float = 0f,
+        val reviewCount: Int = 0
+    ) : Route()
+
+    @Serializable
+    data class InstructorSchedule(
+        val instructorId: String,
+        val instructorName: String
+    ) : Route()
+
+    @Serializable
+    data class InstructorContact(
+        val instructorId: String,
+        val instructorName: String
+    ) : Route()
 }

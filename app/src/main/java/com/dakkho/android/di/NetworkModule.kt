@@ -6,6 +6,7 @@ import com.dakkho.android.data.api.AuthInterceptor
 import com.dakkho.android.data.api.CourseApiService
 import com.dakkho.android.data.api.EnrollmentApiService
 import com.dakkho.android.data.api.InstructorApiService
+import com.dakkho.android.data.api.LiveClassApiService
 import com.dakkho.android.data.api.NotificationApiService
 import com.dakkho.android.data.api.AboutApiService
 import com.dakkho.android.data.api.AnnouncementApiService
@@ -156,5 +157,11 @@ object NetworkModule {
     @Singleton
     fun provideQuizApiService(retrofit: Retrofit): QuizApiService {
         return retrofit.create(QuizApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideLiveClassApiService(retrofit: Retrofit): LiveClassApiService {
+        return retrofit.create(LiveClassApiService::class.java)
     }
 }

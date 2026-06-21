@@ -38,6 +38,10 @@ import com.dakkho.android.presentation.screens.quizzes.CourseQuizzesScreen
 import com.dakkho.android.presentation.screens.progress.CourseProgressScreen
 import com.dakkho.android.presentation.screens.instructorlist.InstructorListScreen
 import com.dakkho.android.presentation.screens.instructorprofile.InstructorProfileScreen
+import com.dakkho.android.presentation.screens.instructorcourses.InstructorCoursesScreen
+import com.dakkho.android.presentation.screens.instructorreviews.InstructorReviewsScreen
+import com.dakkho.android.presentation.screens.instructorschedule.InstructorScheduleScreen
+import com.dakkho.android.presentation.screens.instructorcontact.InstructorContactScreen
 import com.dakkho.android.presentation.screens.videoplayer.VideoPlayerScreen
 import com.dakkho.android.presentation.screens.watchhistory.WatchHistoryScreen
 import com.dakkho.android.presentation.theme.AnimationConstants
@@ -346,6 +350,18 @@ fun DakkhoNavHost(
                 onBackClick = { navController.popBackStack() },
                 onNavigateToCourse = { courseId ->
                     navController.navigate(Route.CourseDetail(courseId))
+                },
+                onNavigateToInstructorCourses = { instructorId, instructorName ->
+                    navController.navigate(Route.InstructorCourses(instructorId, instructorName))
+                },
+                onNavigateToInstructorReviews = { instructorId, instructorName, avgRating, reviewCount ->
+                    navController.navigate(Route.InstructorReviews(instructorId, instructorName, avgRating, reviewCount))
+                },
+                onNavigateToInstructorSchedule = { instructorId, instructorName ->
+                    navController.navigate(Route.InstructorSchedule(instructorId, instructorName))
+                },
+                onNavigateToInstructorContact = { instructorId, instructorName ->
+                    navController.navigate(Route.InstructorContact(instructorId, instructorName))
                 }
             )
         }
@@ -571,6 +587,48 @@ fun DakkhoNavHost(
             CourseProgressScreen(
                 courseId = progressRoute.courseId,
                 courseTitle = progressRoute.courseTitle,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        // ── Instructor Sub-pages ──
+
+        composable<Route.InstructorCourses>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) { backStackEntry ->
+            val coursesRoute = backStackEntry.toRoute<Route.InstructorCourses>()
+            InstructorCoursesScreen(
+                onBackClick = { navController.popBackStack() },
+                onCourseClick = { courseId ->
+                    navController.navigate(Route.CourseDetail(courseId))
+                }
+            )
+        }
+
+        composable<Route.InstructorReviews>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            InstructorReviewsScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.InstructorSchedule>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            InstructorScheduleScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.InstructorContact>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) {
+            InstructorContactScreen(
                 onBackClick = { navController.popBackStack() }
             )
         }
