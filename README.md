@@ -141,7 +141,7 @@ app/src/main/java/com/dakkho/android/
 │   │       ├── StatsCard.kt
 │   │       ├── ProfileMenuItem.kt
 │   │       └── ProfileHeader.kt
-│   │   └── coursedetail/        # Course detail screen components
+│   │   └── coursedetail/
 │   │       ├── RatingStars.kt
 │   │       ├── InstructorCard.kt
 │   │       ├── CourseHeroSection.kt
@@ -195,6 +195,12 @@ app/src/main/java/com/dakkho/android/
 │   │   └── coursedetail/
 │   │       ├── CourseDetailScreen.kt  # CollapsingToolbar + TabPager + 5 tabs
 │   │       └── CourseDetailViewModel.kt
+│   │   └── curriculum/
+│   │       ├── CourseCurriculumScreen.kt  # Animated expandable tree + progress + download toggles
+│   │       └── CourseCurriculumViewModel.kt
+│   │   └── reviews/
+│   │       ├── CourseReviewsScreen.kt  # Rating breakdown + filter chips + write review bottom sheet
+│   │       └── CourseReviewsViewModel.kt
 │   └── theme/                    # Design system
 │       ├── Color.kt              # DAKKHO palette (SkyBlue/DeepBlue/Green)
 │       ├── Theme.kt              # Light/Dark + Material You
@@ -216,7 +222,7 @@ app/src/main/java/com/dakkho/android/
 
 ## Implementation Progress
 
-### ✅ Completed (Phase 1–14)
+### ✅ Completed (Phase 1–15)
 
 | Phase | Title | Status | Files |
 |-------|-------|--------|-------|
@@ -234,12 +240,12 @@ app/src/main/java/com/dakkho/android/
 | 12 | Watch History #12 & Assignment #13 | ✅ Complete | 12 files |
 | 13 | Course Detail #14 (Tabs + Enroll + Offline) | ✅ Complete | 18 files |
 | 14 | Secure Video Player #15 (ExoPlayer + Audio Tracks + Bookmarks + Curriculum) | ✅ Complete | 15 files |
+| 15 | Course Curriculum #16 & Reviews #17 | ✅ Complete | 6 files |
 
-### 🚧 Upcoming (Phase 15–29)
+### 🚧 Upcoming (Phase 16–29)
 
 | Phase | Title | Est. Duration |
 |-------|-------|---------------|
-| 15 | Course Curriculum #16 & Reviews #17 | 3–4 days |
 | 16 | Course Q&A #18, Announcements #19, Resources #20 | 3 days |
 | 17 | Course Notes #21, Quizzes #22, Progress #23 | 3–4 days |
 | 18 | Instructor List #24 & Profile #25 | 3 days |
@@ -313,7 +319,8 @@ The app connects to a **Cloudflare Workers** backend (Hono framework) with the f
 | GET | `/api/courses` | List courses (paginated, filterable) |
 | GET | `/api/courses/:id` | Get course detail |
 | GET | `/api/courses/:id/curriculum` | Get course curriculum tree |
-| GET | `/api/courses/:id/reviews` | Get course reviews (paginated) |
+| GET | `/api/courses/:id/reviews` | Get course reviews (paginated, filterable by rating) |
+| POST | `/api/courses/:id/reviews` | Submit a course review (rating + title + comment) |
 | GET | `/api/course-packages` | Get course packages/pricing |
 | GET | `/api/notifications` | List notifications (paginated) |
 | PATCH | `/api/notifications/:id/read` | Mark notification as read |

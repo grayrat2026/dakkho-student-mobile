@@ -16,6 +16,7 @@ import com.dakkho.android.domain.model.QuizItem
 import com.dakkho.android.domain.model.ResourceFile
 import com.dakkho.android.domain.model.Review
 import com.dakkho.android.domain.model.Section
+import com.dakkho.android.domain.model.SubmitReviewRequest
 import com.dakkho.android.domain.model.Subject
 import com.dakkho.android.domain.model.SubjectClass
 import com.dakkho.android.domain.model.Unit
@@ -151,9 +152,14 @@ class CourseRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getCourseReviews(courseId: String, page: Int, limit: Int): Result<List<Review>> {
+    override suspend fun getCourseReviews(
+        courseId: String,
+        page: Int,
+        limit: Int,
+        rating: Int?
+    ): Result<List<Review>> {
         return try {
-            val response = courseApiService.getCourseReviews(courseId, page, limit)
+            val response = courseApiService.getCourseReviews(courseId, page, limit, rating)
             if (response.isSuccessful) {
                 val body = response.body()
                 if (body != null && body.success && body.data != null) {
@@ -166,6 +172,7 @@ class CourseRepositoryImpl @Inject constructor(
                                 userName = dto.userName,
                                 userAvatar = dto.userAvatar,
                                 rating = dto.rating,
+                                title = dto.title,
                                 comment = dto.comment,
                                 createdAt = dto.createdAt
                             )
@@ -179,6 +186,44 @@ class CourseRepositoryImpl @Inject constructor(
             }
         } catch (e: Exception) {
             Timber.e(e, "Get course reviews error")
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun submitCourseReview(
+        courseId: String,
+        rating: Float,
+        title: String?,
+        comment: String?
+    ): Result<Review> {
+        return try {
+            val request = SubmitReviewRequest(rating = rating, title = title, comment = comment)
+            val response = courseApiService.submitCourseReview(courseId, request)
+            if (response.isSuccessful) {
+                val body = response.body()
+                if (body != null && body.success && body.data != null) {
+                    val dto = body.data
+                    Result.success(
+                        Review(
+                            id = dto.id,
+                            userId = dto.userId,
+                            courseId = dto.courseId,
+                            userName = dto.userName,
+                            userAvatar = dto.userAvatar,
+                            rating = dto.rating,
+                            title = dto.title,
+                            comment = dto.comment,
+                            createdAt = dto.createdAt
+                        )
+                    )
+                } else {
+                    Result.failure(Exception(body?.message ?: "Failed to submit review"))
+                }
+            } else {
+                Result.failure(Exception("Submit review failed: ${response.code()}"))
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Submit course review error")
             Result.failure(e)
         }
     }

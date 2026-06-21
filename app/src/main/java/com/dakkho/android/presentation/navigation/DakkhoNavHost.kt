@@ -22,11 +22,13 @@ import com.dakkho.android.presentation.screens.auth.LoginScreen
 import com.dakkho.android.presentation.screens.auth.SignupScreen
 import com.dakkho.android.presentation.screens.category.CategoryScreen
 import com.dakkho.android.presentation.screens.coursedetail.CourseDetailScreen
+import com.dakkho.android.presentation.screens.curriculum.CourseCurriculumScreen
 import com.dakkho.android.presentation.screens.explore.ExploreScreen
 import com.dakkho.android.presentation.screens.home.HomeScreen
 import com.dakkho.android.presentation.screens.notifications.NotificationDetailScreen
 import com.dakkho.android.presentation.screens.notifications.NotificationsScreen
 import com.dakkho.android.presentation.screens.profile.ProfileScreen
+import com.dakkho.android.presentation.screens.reviews.CourseReviewsScreen
 import com.dakkho.android.presentation.screens.search.SearchScreen
 import com.dakkho.android.presentation.screens.videoplayer.VideoPlayerScreen
 import com.dakkho.android.presentation.screens.watchhistory.WatchHistoryScreen
@@ -273,6 +275,12 @@ fun DakkhoNavHost(
                 },
                 onNavigateToInstructor = { instructorId ->
                     navController.navigate(Route.InstructorProfile(instructorId))
+                },
+                onNavigateToCurriculum = { courseId, courseTitle, isEnrolled ->
+                    navController.navigate(Route.CourseCurriculum(courseId, courseTitle, isEnrolled))
+                },
+                onNavigateToReviews = { courseId, courseTitle, averageRating, reviewCount, isEnrolled ->
+                    navController.navigate(Route.CourseReviews(courseId, courseTitle, averageRating, reviewCount.toInt(), isEnrolled))
                 }
             )
         }
@@ -409,6 +417,39 @@ fun DakkhoNavHost(
             val assignmentsRoute = backStackEntry.toRoute<Route.Assignments>()
             AssignmentScreen(
                 courseId = assignmentsRoute.courseId,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable<Route.CourseCurriculum>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) { backStackEntry ->
+            val curriculumRoute = backStackEntry.toRoute<Route.CourseCurriculum>()
+            CourseCurriculumScreen(
+                courseId = curriculumRoute.courseId,
+                courseTitle = curriculumRoute.courseTitle,
+                isEnrolled = curriculumRoute.isEnrolled,
+                onBackClick = { navController.popBackStack() },
+                onLessonClick = { lesson ->
+                    if (lesson.videoUrl != null) {
+                        navController.navigate(Route.VideoPlayer(lesson.id, curriculumRoute.courseId))
+                    }
+                }
+            )
+        }
+
+        composable<Route.CourseReviews>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) { backStackEntry ->
+            val reviewsRoute = backStackEntry.toRoute<Route.CourseReviews>()
+            CourseReviewsScreen(
+                courseId = reviewsRoute.courseId,
+                courseTitle = reviewsRoute.courseTitle,
+                averageRating = reviewsRoute.averageRating,
+                reviewCount = reviewsRoute.reviewCount,
+                isEnrolled = reviewsRoute.isEnrolled,
                 onBackClick = { navController.popBackStack() }
             )
         }

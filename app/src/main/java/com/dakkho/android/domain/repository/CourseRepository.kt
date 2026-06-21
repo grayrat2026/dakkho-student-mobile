@@ -14,7 +14,19 @@ interface CourseRepository {
 
     suspend fun getCourseCurriculum(courseId: String): Result<Curriculum>
 
-    suspend fun getCourseReviews(courseId: String, page: Int = 1, limit: Int = 20): Result<List<Review>>
+    suspend fun getCourseReviews(
+        courseId: String,
+        page: Int = 1,
+        limit: Int = 20,
+        rating: Int? = null
+    ): Result<List<Review>>
+
+    suspend fun submitCourseReview(
+        courseId: String,
+        rating: Float,
+        title: String?,
+        comment: String?
+    ): Result<Review>
 
     suspend fun getCoursePackages(courseId: String): Result<List<CoursePackage>>
 

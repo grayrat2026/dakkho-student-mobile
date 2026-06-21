@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,10 +25,12 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.dakkho.android.domain.model.Review
 import com.dakkho.android.presentation.theme.Neutral400
+import com.dakkho.android.presentation.theme.SkyBlue
 
 @Composable
 fun CourseReviewsTab(
     reviews: List<Review>,
+    onViewAllClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     if (reviews.isEmpty()) {
@@ -65,6 +68,16 @@ fun CourseReviewsTab(
             ),
             color = MaterialTheme.colorScheme.onSurface
         )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        TextButton(onClick = onViewAllClick) {
+            Text(
+                text = "View All Reviews",
+                style = MaterialTheme.typography.labelMedium,
+                color = SkyBlue
+            )
+        }
 
         Spacer(modifier = Modifier.height(12.dp))
 

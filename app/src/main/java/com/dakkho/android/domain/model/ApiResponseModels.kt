@@ -333,7 +333,15 @@ data class ReviewDto(
     @Json(name = "user_avatar") val userAvatar: String?,
     @Json(name = "rating") val rating: Float,
     @Json(name = "comment") val comment: String?,
+    @Json(name = "title") val title: String?,
     @Json(name = "created_at") val createdAt: String?
+)
+
+@JsonClass(generateAdapter = true)
+data class SubmitReviewRequest(
+    @Json(name = "rating") val rating: Float,
+    @Json(name = "title") val title: String?,
+    @Json(name = "comment") val comment: String?
 )
 
 // ── Course Package Models ──

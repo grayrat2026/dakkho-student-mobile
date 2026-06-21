@@ -21,6 +21,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,6 +44,7 @@ fun CourseCurriculumTab(
     curriculum: Curriculum?,
     isEnrolled: Boolean,
     onLessonClick: (Lesson) -> Unit,
+    onViewAllClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     if (curriculum == null || curriculum.sections.isEmpty()) {
@@ -74,11 +76,24 @@ fun CourseCurriculumTab(
             .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
         // Summary
-        Text(
-            text = "${curriculum.sections.size} sections \u2022 $totalLessons lessons \u2022 ${formatDuration(totalDuration)}",
-            style = MaterialTheme.typography.bodySmall,
-            color = Neutral400
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "${curriculum.sections.size} sections \u2022 $totalLessons lessons \u2022 ${formatDuration(totalDuration)}",
+                style = MaterialTheme.typography.bodySmall,
+                color = Neutral400
+            )
+            TextButton(onClick = onViewAllClick) {
+                Text(
+                    text = "View All",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = SkyBlue
+                )
+            }
+        }
 
         Spacer(modifier = Modifier.height(12.dp))
 

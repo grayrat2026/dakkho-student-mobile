@@ -71,6 +71,8 @@ fun CourseDetailScreen(
     onBackClick: () -> Unit,
     onNavigateToVideo: (videoId: String, courseId: String) -> Unit,
     onNavigateToInstructor: (instructorId: String) -> Unit,
+    onNavigateToCurriculum: (courseId: String, courseTitle: String, isEnrolled: Boolean) -> Unit = { _, _, _ -> },
+    onNavigateToReviews: (courseId: String, courseTitle: String, averageRating: Float, reviewCount: Int, isEnrolled: Boolean) -> Unit = { _, _, _, _, _ -> },
     viewModel: CourseDetailViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -205,6 +207,20 @@ fun CourseDetailScreen(
                     if (lesson.videoUrl != null) {
                         onNavigateToVideo(lesson.id, uiState.course!!.id)
                     }
+                },
+                onViewAllCurriculum = {
+                    val course = uiState.course ?: return@CourseDetailContent
+                    onNavigateToCurriculum(course.id, course.title, uiState.isEnrolled)
+                },
+                onViewAllReviews = {
+                    val course = uiState.course ?: return@CourseDetailContent
+                    onNavigateToReviews(
+                        course.id,
+                        course.title,
+                        course.rating,
+                        course.reviewCount.toFloat(),
+                        uiState.isEnrolled
+                    )
                 }
             )
         }
@@ -225,7 +241,9 @@ fun CourseDetailScreen(
 private fun CourseDetailContent(
     uiState: CourseDetailUiState,
     innerPadding: androidx.compose.foundation.layout.PaddingValues,
-    onLessonClick: (Lesson) -> Unit
+    onLessonClick: (Lesson) -> Unit,
+    onViewAllCurriculum: () -> Unit = {},
+    onViewAllReviews: () -> Unit = {}
 ) {
     val course = uiState.course ?: return
     val pagerState = rememberPagerState(pageCount = { COURSE_TABS.size })
@@ -304,10 +322,14 @@ private fun CourseDetailContent(
                 1 -> CourseCurriculumTab(
                     curriculum = uiState.curriculum,
                     isEnrolled = uiState.isEnrolled,
-                    onLessonClick = onLessonClick
+                    onLessonClick = onLessonClick,
+                    onViewAllClick = onViewAllCurriculum
                 )
 
-                2 -> CourseReviewsTab(reviews = uiState.reviews)
+                2 -> CourseReviewsTab(
+                    reviews = uiState.reviews,
+                    onViewAllClick = onViewAllReviews
+                )
 
                 3 -> CourseQnATab()
 
