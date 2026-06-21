@@ -11,8 +11,14 @@ import com.dakkho.android.domain.model.CourseDetail
 import com.dakkho.android.domain.model.CoursePackage
 import com.dakkho.android.domain.model.Curriculum
 import com.dakkho.android.domain.model.Lesson
+import com.dakkho.android.domain.model.LessonResources
+import com.dakkho.android.domain.model.QuizItem
+import com.dakkho.android.domain.model.ResourceFile
 import com.dakkho.android.domain.model.Review
 import com.dakkho.android.domain.model.Section
+import com.dakkho.android.domain.model.Subject
+import com.dakkho.android.domain.model.SubjectClass
+import com.dakkho.android.domain.model.Unit
 import com.dakkho.android.domain.repository.CourseRepository
 import timber.log.Timber
 import javax.inject.Inject
@@ -78,29 +84,61 @@ class CourseRepositoryImpl @Inject constructor(
             if (response.isSuccessful) {
                 val body = response.body()
                 if (body != null && body.success && body.data != null) {
-                    val curriculum = body.data
-                    Result.success(
+                    val dto = body.data
+                    val curriculum = if (dto.subjects != null && dto.subjects.isNotEmpty()) {
+                        // New hierarchy: Subject → Class → Unit → Lesson
                         Curriculum(
-                            sections = curriculum.sections?.map { section ->
-                                Section(
-                                    id = section.id,
-                                    title = section.title,
-                                    order = section.order ?: 0,
-                                    lessons = section.lessons?.map { lesson ->
-                                        Lesson(
-                                            id = lesson.id,
-                                            title = lesson.title,
-                                            type = lesson.type,
-                                            durationSeconds = lesson.durationSeconds,
-                                            isFree = lesson.isFree ?: false,
-                                            order = lesson.order ?: 0,
-                                            videoUrl = lesson.videoUrl
+                            sections = dto.subjects.map { subjectDto ->
+                                Subject(
+                                    id = subjectDto.id,
+                                    title = subjectDto.title,
+                                    order = subjectDto.order ?: 0,
+                                    classes = subjectDto.classes?.map { classDto ->
+                                        SubjectClass(
+                                            id = classDto.id,
+                                            title = classDto.title,
+                                            order = classDto.order ?: 0,
+                                            units = classDto.units?.map { unitDto ->
+                                                Unit(
+                                                    id = unitDto.id,
+                                                    title = unitDto.title,
+                                                    order = unitDto.order ?: 0,
+                                                    lessons = unitDto.lessons?.map { mapLessonDtoToDomain(it) } ?: emptyList()
+                                                )
+                                            } ?: emptyList()
                                         )
                                     } ?: emptyList()
                                 )
+                            }
+                        )
+                    } else {
+                        // Backward compat: Section → Lesson (mapped as Subject with single Class/Unit)
+                        Curriculum(
+                            sections = dto.sections?.map { sectionDto ->
+                                Subject(
+                                    id = sectionDto.id,
+                                    title = sectionDto.title,
+                                    order = sectionDto.order ?: 0,
+                                    classes = listOf(
+                                        SubjectClass(
+                                            id = "${sectionDto.id}_class",
+                                            title = sectionDto.title,
+                                            order = 0,
+                                            units = listOf(
+                                                Unit(
+                                                    id = "${sectionDto.id}_unit",
+                                                    title = sectionDto.title,
+                                                    order = 0,
+                                                    lessons = sectionDto.lessons?.map { mapLessonDtoToDomain(it) } ?: emptyList()
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
                             } ?: emptyList()
                         )
-                    )
+                    }
+                    Result.success(curriculum)
                 } else {
                     Result.failure(Exception(body?.message ?: "Curriculum not found"))
                 }
@@ -392,6 +430,53 @@ class CourseRepositoryImpl @Inject constructor(
             requirements = converters.toStringList(entity.requirements) ?: emptyList(),
             targetAudience = converters.toStringList(entity.targetAudience) ?: emptyList(),
             createdAt = entity.createdAt
+        )
+    }
+
+    private fun mapLessonDtoToDomain(dto: com.dakkho.android.domain.model.LessonDto): Lesson {
+        return Lesson(
+            id = dto.id,
+            title = dto.title,
+            type = dto.type,
+            durationSeconds = dto.durationSeconds,
+            isFree = dto.isFree ?: false,
+            order = dto.order ?: 0,
+            videoUrl = dto.videoUrl,
+            label = dto.label,
+            resources = dto.resources?.let { res ->
+                LessonResources(
+                    lectureSheets = res.lectureSheets?.map { mapResourceFileDtoToDomain(it) } ?: emptyList(),
+                    pdfs = res.pdfs?.map { mapResourceFileDtoToDomain(it) } ?: emptyList(),
+                    notes = res.notes?.map { mapResourceFileDtoToDomain(it) } ?: emptyList(),
+                    quizzes = res.quizzes?.map { mapQuizItemDtoToDomain(it) } ?: emptyList(),
+                    hasTimestamps = res.hasTimestamps ?: false,
+                    hasQA = res.hasQA ?: false
+                )
+            },
+            progress = dto.progress ?: 0f,
+            isCompleted = dto.isCompleted ?: false
+        )
+    }
+
+    private fun mapResourceFileDtoToDomain(dto: com.dakkho.android.domain.model.ResourceFileDto): ResourceFile {
+        return ResourceFile(
+            id = dto.id,
+            title = dto.title,
+            fileUrl = dto.fileUrl,
+            fileSize = dto.fileSize,
+            fileType = dto.fileType
+        )
+    }
+
+    private fun mapQuizItemDtoToDomain(dto: com.dakkho.android.domain.model.QuizItemDto): QuizItem {
+        return QuizItem(
+            id = dto.id,
+            title = dto.title,
+            type = dto.type ?: "mcq",
+            questionCount = dto.questionCount ?: 0,
+            durationMinutes = dto.durationMinutes,
+            isCompleted = dto.isCompleted ?: false,
+            score = dto.score
         )
     }
 }

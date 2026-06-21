@@ -115,7 +115,32 @@ data class CourseDetailDto(
 
 @JsonClass(generateAdapter = true)
 data class CurriculumDto(
-    @Json(name = "sections") val sections: List<SectionDto>?
+    @Json(name = "subjects") val subjects: List<SubjectDto>?,
+    @Json(name = "sections") val sections: List<SectionDto>? // backward compat
+)
+
+@JsonClass(generateAdapter = true)
+data class SubjectDto(
+    @Json(name = "id") val id: String,
+    @Json(name = "title") val title: String,
+    @Json(name = "order") val order: Int?,
+    @Json(name = "classes") val classes: List<SubjectClassDto>?
+)
+
+@JsonClass(generateAdapter = true)
+data class SubjectClassDto(
+    @Json(name = "id") val id: String,
+    @Json(name = "title") val title: String,
+    @Json(name = "order") val order: Int?,
+    @Json(name = "units") val units: List<UnitDto>?
+)
+
+@JsonClass(generateAdapter = true)
+data class UnitDto(
+    @Json(name = "id") val id: String,
+    @Json(name = "title") val title: String,
+    @Json(name = "order") val order: Int?,
+    @Json(name = "lessons") val lessons: List<LessonDto>?
 )
 
 @JsonClass(generateAdapter = true)
@@ -134,7 +159,41 @@ data class LessonDto(
     @Json(name = "duration_seconds") val durationSeconds: Int?,
     @Json(name = "is_free") val isFree: Boolean?,
     @Json(name = "order") val order: Int?,
-    @Json(name = "video_url") val videoUrl: String?
+    @Json(name = "video_url") val videoUrl: String?,
+    @Json(name = "label") val label: String?,
+    @Json(name = "resources") val resources: LessonResourcesDto?,
+    @Json(name = "progress") val progress: Float?,
+    @Json(name = "is_completed") val isCompleted: Boolean?
+)
+
+@JsonClass(generateAdapter = true)
+data class LessonResourcesDto(
+    @Json(name = "lecture_sheets") val lectureSheets: List<ResourceFileDto>?,
+    @Json(name = "pdfs") val pdfs: List<ResourceFileDto>?,
+    @Json(name = "notes") val notes: List<ResourceFileDto>?,
+    @Json(name = "quizzes") val quizzes: List<QuizItemDto>?,
+    @Json(name = "has_timestamps") val hasTimestamps: Boolean?,
+    @Json(name = "has_qa") val hasQA: Boolean?
+)
+
+@JsonClass(generateAdapter = true)
+data class ResourceFileDto(
+    @Json(name = "id") val id: String,
+    @Json(name = "title") val title: String,
+    @Json(name = "file_url") val fileUrl: String?,
+    @Json(name = "file_size") val fileSize: Long?,
+    @Json(name = "file_type") val fileType: String?
+)
+
+@JsonClass(generateAdapter = true)
+data class QuizItemDto(
+    @Json(name = "id") val id: String,
+    @Json(name = "title") val title: String,
+    @Json(name = "type") val type: String?,
+    @Json(name = "question_count") val questionCount: Int?,
+    @Json(name = "duration_minutes") val durationMinutes: Int?,
+    @Json(name = "is_completed") val isCompleted: Boolean?,
+    @Json(name = "score") val score: Float?
 )
 
 // ── Enrollment Models ──

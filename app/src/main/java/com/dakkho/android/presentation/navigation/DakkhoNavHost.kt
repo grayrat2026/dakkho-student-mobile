@@ -28,6 +28,7 @@ import com.dakkho.android.presentation.screens.notifications.NotificationDetailS
 import com.dakkho.android.presentation.screens.notifications.NotificationsScreen
 import com.dakkho.android.presentation.screens.profile.ProfileScreen
 import com.dakkho.android.presentation.screens.search.SearchScreen
+import com.dakkho.android.presentation.screens.videoplayer.VideoPlayerScreen
 import com.dakkho.android.presentation.screens.watchhistory.WatchHistoryScreen
 import com.dakkho.android.presentation.theme.AnimationConstants
 
@@ -279,8 +280,13 @@ fun DakkhoNavHost(
         composable<Route.VideoPlayer>(
             enterTransition = { enterTransition },
             exitTransition = { exitTransition }
-        ) {
-            PlaceholderScreen(title = "Video Player")
+        ) { backStackEntry ->
+            val playerRoute = backStackEntry.toRoute<Route.VideoPlayer>()
+            VideoPlayerScreen(
+                videoId = playerRoute.videoId,
+                courseId = playerRoute.courseId,
+                onBackClick = { navController.popBackStack() }
+            )
         }
 
         composable<Route.InstructorProfile>(

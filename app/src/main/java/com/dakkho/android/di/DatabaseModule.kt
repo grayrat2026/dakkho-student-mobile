@@ -15,6 +15,7 @@ import com.dakkho.android.data.db.dao.RemoteKeysDao
 import com.dakkho.android.data.db.dao.SearchHistoryDao
 import com.dakkho.android.data.db.dao.SearchSuggestionDao
 import com.dakkho.android.data.db.dao.UserDao
+import com.dakkho.android.data.db.dao.VideoBookmarkDao
 import com.dakkho.android.data.db.dao.WatchHistoryDao
 import com.dakkho.android.data.db.EncryptedPrefsHelper
 import dagger.Module
@@ -105,5 +106,10 @@ object DatabaseModule {
     @Provides
     fun provideSearchSuggestionDao(database: DakkhoDatabase): SearchSuggestionDao {
         return database.searchSuggestionDao()
+    }
+
+    @Provides
+    fun provideVideoBookmarkDao(database: DakkhoDatabase): VideoBookmarkDao {
+        return database.videoBookmarkDao()
     }
 }

@@ -14,6 +14,7 @@ import com.dakkho.android.data.db.dao.RemoteKeysDao
 import com.dakkho.android.data.db.dao.SearchHistoryDao
 import com.dakkho.android.data.db.dao.SearchSuggestionDao
 import com.dakkho.android.data.db.dao.UserDao
+import com.dakkho.android.data.db.dao.VideoBookmarkDao
 import com.dakkho.android.data.db.dao.WatchHistoryDao
 import com.dakkho.android.data.db.entity.AppSettingsEntity
 import com.dakkho.android.data.db.entity.BookmarkEntity
@@ -26,6 +27,7 @@ import com.dakkho.android.data.db.entity.RemoteKeysEntity
 import com.dakkho.android.data.db.entity.SearchHistoryEntity
 import com.dakkho.android.data.db.entity.SearchSuggestionEntity
 import com.dakkho.android.data.db.entity.UserEntity
+import com.dakkho.android.data.db.entity.VideoBookmarkEntity
 import com.dakkho.android.data.db.entity.WatchHistoryEntity
 
 @Database(
@@ -41,7 +43,8 @@ import com.dakkho.android.data.db.entity.WatchHistoryEntity
         BookmarkEntity::class,
         AppSettingsEntity::class,
         RemoteKeysEntity::class,
-        SearchSuggestionEntity::class
+        SearchSuggestionEntity::class,
+        VideoBookmarkEntity::class
     ],
     version = 1,
     exportSchema = true
@@ -61,4 +64,5 @@ abstract class DakkhoDatabase : RoomDatabase() {
     abstract fun appSettingsDao(): AppSettingsDao
     abstract fun remoteKeysDao(): RemoteKeysDao
     abstract fun searchSuggestionDao(): SearchSuggestionDao
+    abstract fun videoBookmarkDao(): VideoBookmarkDao
 }

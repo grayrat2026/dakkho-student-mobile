@@ -2,8 +2,11 @@ package com.dakkho.android.data.repository
 
 import com.dakkho.android.data.api.WatchHistoryApiService
 import com.dakkho.android.data.db.EncryptedPrefsHelper
+import com.dakkho.android.data.db.dao.VideoBookmarkDao
 import com.dakkho.android.data.db.dao.WatchHistoryDao
+import com.dakkho.android.data.db.entity.VideoBookmarkEntity
 import com.dakkho.android.data.db.entity.WatchHistoryEntity
+import com.dakkho.android.domain.model.VideoBookmark
 import com.dakkho.android.domain.model.WatchHistoryDto
 import com.dakkho.android.domain.model.WatchHistoryItem
 import com.dakkho.android.domain.repository.WatchHistoryRepository
@@ -17,6 +20,7 @@ import javax.inject.Singleton
 class WatchHistoryRepositoryImpl @Inject constructor(
     private val watchHistoryApiService: WatchHistoryApiService,
     private val watchHistoryDao: WatchHistoryDao,
+    private val videoBookmarkDao: VideoBookmarkDao,
     private val encryptedPrefsHelper: EncryptedPrefsHelper
 ) : WatchHistoryRepository {
 
@@ -165,6 +169,71 @@ class WatchHistoryRepositoryImpl @Inject constructor(
             totalSeconds = dto.totalSeconds ?: 0,
             completed = dto.completed ?: false,
             lastWatchedAt = dto.lastWatchedAt
+        )
+    }
+
+    // ── Watch Progress ──
+
+    override suspend fun updateWatchProgress(videoId: String, courseId: String, progressSeconds: Int, totalSeconds: Int) {
+        try {
+            val userId = getCurrentUserId()
+            val existing = watchHistoryDao.getWatchHistory(userId).find { it.videoId == videoId }
+            if (existing != null) {
+                watchHistoryDao.insert(existing.copy(
+                    progressSeconds = progressSeconds,
+                    totalSeconds = totalSeconds,
+                    completed = progressSeconds >= totalSeconds && totalSeconds > 0
+                ))
+            } else {
+                watchHistoryDao.insert(WatchHistoryEntity(
+                    id = "${userId}_$videoId",
+                    userId = userId,
+                    videoId = videoId,
+                    courseId = courseId,
+                    videoTitle = "",
+                    courseTitle = "",
+                    progressSeconds = progressSeconds,
+                    totalSeconds = totalSeconds,
+                    completed = false
+                ))
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Update watch progress error")
+        }
+    }
+
+    // ── Video Bookmarks ──
+
+    override suspend fun getVideoBookmarks(videoId: String, userId: String): List<VideoBookmark> {
+        return videoBookmarkDao.getBookmarksForVideo(videoId, userId).map { mapBookmarkEntityToDomain(it) }
+    }
+
+    override fun getVideoBookmarksFlow(videoId: String, userId: String): Flow<List<VideoBookmark>> {
+        return videoBookmarkDao.getBookmarksForVideoFlow(videoId, userId).map { entities ->
+            entities.map { mapBookmarkEntityToDomain(it) }
+        }
+    }
+
+    override suspend fun addVideoBookmark(bookmark: VideoBookmarkEntity): Long {
+        return videoBookmarkDao.insert(bookmark)
+    }
+
+    override suspend fun deleteVideoBookmark(id: Long) {
+        videoBookmarkDao.deleteById(id)
+    }
+
+    private fun mapBookmarkEntityToDomain(entity: VideoBookmarkEntity): VideoBookmark {
+        return VideoBookmark(
+            id = entity.id,
+            videoId = entity.videoId,
+            courseId = entity.courseId,
+            userId = entity.userId,
+            positionMs = entity.positionMs,
+            note = entity.note,
+            videoTitle = entity.videoTitle,
+            courseTitle = entity.courseTitle,
+            thumbnailUrl = entity.thumbnailUrl,
+            createdAt = entity.createdAt
         )
     }
 }
