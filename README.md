@@ -110,7 +110,12 @@ app/src/main/java/com/dakkho/android/
 │   │       ├── ExploreCourseCard.kt
 │   │       ├── FilterChipsRow.kt
 │   │       ├── SortDropdown.kt
-│   │       └── ExploreSearchBar.kt
+│   │       ├── ExploreSearchBar.kt
+│   │       └── search/           # Search screen components
+│   │           ├── DakkhoSearchBar.kt
+│   │           ├── RecentSearchesRow.kt
+│   │           ├── SuggestionItem.kt
+│   │           └── SearchResultItem.kt
 │   ├── navigation/
 │   │   ├── Route.kt              # @Serializable routes
 │   │   ├── DakkhoNavHost.kt      # NavHost + transitions
@@ -129,6 +134,9 @@ app/src/main/java/com/dakkho/android/
 │   │   └── explore/
 │   │       ├── ExploreScreen.kt   # LazyVerticalGrid + Paging 3
 │   │       └── ExploreViewModel.kt
+│   │   └── search/
+│   │       ├── SearchScreen.kt    # FTS + debounced search + history
+│   │       └── SearchViewModel.kt
 │   └── theme/                    # Design system
 │       ├── Color.kt              # DAKKHO palette (SkyBlue/DeepBlue/Green)
 │       ├── Theme.kt              # Light/Dark + Material You
@@ -150,7 +158,7 @@ app/src/main/java/com/dakkho/android/
 
 ## Implementation Progress
 
-### ✅ Completed (Phase 1–8)
+### ✅ Completed (Phase 1–9)
 
 | Phase | Title | Status | Files |
 |-------|-------|--------|-------|
@@ -162,13 +170,13 @@ app/src/main/java/com/dakkho/android/
 | 6 | Forgot Password Page #3 | ✅ Complete | 2 files |
 | 7 | Home Screen #4 (6 Components) | ✅ Complete | 8 files |
 | 8 | Explore Screen #5 (Paging 3) | ✅ Complete | 11 files |
+| 9 | Search Screen #6 (FTS + History) | ✅ Complete | 8 files |
 
-### 🚧 Upcoming (Phase 9–29)
+### 🚧 Upcoming (Phase 10–29)
 
 | Phase | Title | Est. Duration |
 |-------|-------|---------------|
-| 9 | Search Screen #6 | 2–3 days |
-| 10 | Profile Screen #7 | 3–4 days |
+| 10 | Notifications #7-8 | 2–3 days |
 | 11 | My Learning #8 & Stats #9 | 3–4 days |
 | 12 | Watch History #12 & Assignment #13 | 2–3 days |
 | 13 | Course Detail #14 | 4–5 days |
