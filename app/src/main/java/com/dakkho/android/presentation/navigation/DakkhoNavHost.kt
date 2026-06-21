@@ -44,6 +44,7 @@ import com.dakkho.android.presentation.screens.instructorschedule.InstructorSche
 import com.dakkho.android.presentation.screens.instructorcontact.InstructorContactScreen
 import com.dakkho.android.presentation.screens.department.DepartmentListScreen
 import com.dakkho.android.presentation.screens.department.DepartmentScreen
+import com.dakkho.android.presentation.screens.semester.SemesterScreen
 import com.dakkho.android.presentation.screens.videoplayer.VideoPlayerScreen
 import com.dakkho.android.presentation.screens.watchhistory.WatchHistoryScreen
 import com.dakkho.android.presentation.screens.downloads.DownloadsScreen
@@ -730,6 +731,30 @@ fun DakkhoNavHost(
                 },
                 onSearchClick = {
                     navController.navigate(Route.Search)
+                },
+                onSemesterClick = { deptSlug, semNumber ->
+                    navController.navigate(Route.Semester(deptSlug, semNumber))
+                }
+            )
+        }
+
+        // ── Phase 24: Semester Routes ──
+        // 7 regular semesters + 8th = ইন্টার্নি (Internship)
+
+        composable<Route.Semester>(
+            enterTransition = { enterTransition },
+            exitTransition = { exitTransition }
+        ) { backStackEntry ->
+            val semesterRoute = backStackEntry.toRoute<Route.Semester>()
+            SemesterScreen(
+                departmentSlug = semesterRoute.departmentSlug,
+                semesterNumber = semesterRoute.semesterNumber,
+                onBackClick = { navController.popBackStack() },
+                onCourseClick = { courseId ->
+                    navController.navigate(Route.CourseDetail(courseId))
+                },
+                onSubjectClick = { subjectId ->
+                    // TODO: Navigate to subject detail page
                 }
             )
         }

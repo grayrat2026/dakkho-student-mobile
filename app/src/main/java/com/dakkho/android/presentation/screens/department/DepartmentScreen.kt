@@ -60,6 +60,9 @@ import com.dakkho.android.presentation.theme.createDiagonalGradient
  * Department Screen — template composable for any department.
  * Fully dynamic: receives a slug and loads everything from the API.
  * No hardcoded department data.
+ *
+ * Phase 24 update: Semester tabs now navigate to dedicated SemesterScreen.
+ * 7 regular semesters + 8th = ইন্টার্নি (Internship).
  */
 @Composable
 fun DepartmentScreen(
@@ -68,6 +71,7 @@ fun DepartmentScreen(
     onCourseClick: (String) -> Unit,
     onInstructorClick: (String) -> Unit,
     onSearchClick: () -> Unit,
+    onSemesterClick: (String, Int) -> Unit = { _, _ -> },
     viewModel: DepartmentViewModel = hiltViewModel()
 ) {
     val department by viewModel.department.collectAsState()
@@ -119,7 +123,10 @@ fun DepartmentScreen(
                 SemesterTabs(
                     totalSemesters = dept.semesterCount,
                     selectedSemester = selectedSemester,
-                    onSemesterSelected = { viewModel.selectSemester(it) }
+                    onSemesterSelected = { viewModel.selectSemester(it) },
+                    onSemesterClick = { semNumber ->
+                        onSemesterClick(slug, semNumber)
+                    }
                 )
 
                 Spacer(modifier = Modifier.height(DesignToken.Space.dp16))
@@ -368,7 +375,8 @@ private fun StatBadge(
 private fun SemesterTabs(
     totalSemesters: Int,
     selectedSemester: Int,
-    onSemesterSelected: (Int) -> Unit
+    onSemesterSelected: (Int) -> Unit,
+    onSemesterClick: (Int) -> Unit = {}
 ) {
     if (totalSemesters <= 0) return
 
@@ -389,15 +397,23 @@ private fun SemesterTabs(
             )
         }
 
-        // Semester 1..N chips
+        // Semester 1..N chips — 8th semester shows "ইন্টার্নি"
         items(totalSemesters) { index ->
             val semNum = index + 1
+            val label = com.dakkho.android.domain.model.Semester.semesterLabel(semNum)
             FilterChip(
                 selected = selectedSemester == semNum,
-                onClick = { onSemesterSelected(semNum) },
-                label = { Text("Sem $semNum") },
+                onClick = {
+                    onSemesterSelected(semNum)
+                    onSemesterClick(semNum)
+                },
+                label = { Text(label) },
                 colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = SkyBlue,
+                    selectedContainerColor = if (semNum == com.dakkho.android.domain.model.Semester.INTERNSHIP_SEMESTER) {
+                        Green
+                    } else {
+                        SkyBlue
+                    },
                     selectedLabelColor = androidx.compose.ui.graphics.Color.White
                 )
             )

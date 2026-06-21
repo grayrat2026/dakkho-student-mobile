@@ -377,3 +377,56 @@ data class CoursePackageDto(
     @Json(name = "course_ids") val courseIds: List<String>?,
     @Json(name = "is_active") val isActive: Boolean?
 )
+
+// ── Semester & Subject Models ──
+// Phase 24: 7 regular semesters + 8th = ইন্টার্নি (Internship)
+
+@JsonClass(generateAdapter = true)
+data class SemesterDto(
+    @Json(name = "id") val id: String,
+    @Json(name = "department_slug") val departmentSlug: String?,
+    @Json(name = "number") val number: Int,
+    @Json(name = "name") val name: String?,
+    @Json(name = "subject_count") val subjectCount: Int?,
+    @Json(name = "total_credits") val totalCredits: Int?,
+    @Json(name = "is_active") val isActive: Boolean?
+)
+
+/**
+ * Subject DTO for semester subjects.
+ * Different from SubjectDto (curriculum) — this is for the semester/department view.
+ */
+@JsonClass(generateAdapter = true)
+data class SubjectDto2(
+    @Json(name = "id") val id: String,
+    @Json(name = "name") val name: String,
+    @Json(name = "slug") val slug: String?,
+    @Json(name = "code") val code: String?,
+    @Json(name = "description") val description: String?,
+    @Json(name = "icon") val icon: String?,
+    @Json(name = "color") val color: String?,
+    @Json(name = "technology_id") val technologyId: String?,
+    @Json(name = "semester") val semester: Int?,
+    @Json(name = "credit_hours") val creditHours: Int?,
+    @Json(name = "instructor_name") val instructorName: String?,
+    @Json(name = "instructor_id") val instructorId: String?,
+    @Json(name = "course_id") val courseId: String?,
+    @Json(name = "syllabus_topics") val syllabusTopics: List<String>?,
+    @Json(name = "sort_order") val sortOrder: Int?,
+    @Json(name = "course_count") val courseCount: Int?,
+    @Json(name = "is_active") val isActive: Boolean?
+)
+
+@JsonClass(generateAdapter = true)
+data class RoutineEntryDto(
+    @Json(name = "id") val id: String,
+    @Json(name = "subject_id") val subjectId: String,
+    @Json(name = "subject_name") val subjectName: String?,
+    @Json(name = "subject_code") val subjectCode: String?,
+    @Json(name = "day_of_week") val dayOfWeek: Int?,
+    @Json(name = "start_time") val startTime: String?,
+    @Json(name = "end_time") val endTime: String?,
+    @Json(name = "room_number") val roomNumber: String?,
+    @Json(name = "instructor_name") val instructorName: String?,
+    @Json(name = "color") val color: String?
+)

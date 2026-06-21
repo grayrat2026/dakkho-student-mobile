@@ -189,4 +189,14 @@ sealed class Route {
 
     @Serializable
     data class Department(val slug: String) : Route()
+
+    // ── Phase 24: Semester Routes ──
+    // 7 regular semesters + 8th = ইন্টার্নি (Internship)
+    // Each semester belongs to a department, parameterized by deptSlug + semesterNumber
+
+    @Serializable
+    data class Semester(
+        val departmentSlug: String,
+        val semesterNumber: Int   // 1–8, where 8 = ইন্টার্নি
+    ) : Route()
 }

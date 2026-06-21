@@ -21,6 +21,9 @@ import com.dakkho.android.data.db.dao.CourseNoteDao
 import com.dakkho.android.data.db.dao.DepartmentDao
 import com.dakkho.android.data.db.dao.VideoBookmarkDao
 import com.dakkho.android.data.db.dao.WatchHistoryDao
+import com.dakkho.android.data.db.dao.SemesterDao
+import com.dakkho.android.data.db.dao.SubjectDao
+import com.dakkho.android.data.db.dao.RoutineEntryDao
 import com.dakkho.android.data.db.EncryptedPrefsHelper
 import dagger.Module
 import dagger.Provides
@@ -64,6 +67,85 @@ object DatabaseModule {
             }
         }
 
+        val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                // Phase 24: Semesters table (7 regular + 8th = ইন্টার্নি)
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS `semesters` (
+                        `id` TEXT NOT NULL,
+                        `departmentSlug` TEXT NOT NULL,
+                        `number` INTEGER NOT NULL,
+                        `name` TEXT NOT NULL,
+                        `subjectCount` INTEGER NOT NULL,
+                        `totalCredits` INTEGER NOT NULL,
+                        `isActive` INTEGER NOT NULL,
+                        `updatedAt` INTEGER NOT NULL,
+                        PRIMARY KEY(`id`),
+                        FOREIGN KEY(`departmentSlug`) REFERENCES `departments`(`slug`) ON DELETE CASCADE
+                    )
+                    """.trimIndent()
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_semesters_departmentSlug` ON `semesters` (`departmentSlug`)")
+                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_semesters_departmentSlug_number` ON `semesters` (`departmentSlug`, `number`)")
+
+                // Phase 24: Subjects table (subjects within each semester)
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS `subjects` (
+                        `id` TEXT NOT NULL,
+                        `semesterId` TEXT NOT NULL,
+                        `departmentSlug` TEXT NOT NULL,
+                        `semesterNumber` INTEGER NOT NULL,
+                        `name` TEXT NOT NULL,
+                        `code` TEXT NOT NULL,
+                        `creditHours` INTEGER NOT NULL,
+                        `instructorName` TEXT,
+                        `instructorId` TEXT,
+                        `courseId` TEXT,
+                        `description` TEXT,
+                        `syllabusTopics` TEXT NOT NULL,
+                        `sortOrder` INTEGER NOT NULL,
+                        `color` TEXT,
+                        `isActive` INTEGER NOT NULL,
+                        `updatedAt` INTEGER NOT NULL,
+                        PRIMARY KEY(`id`),
+                        FOREIGN KEY(`semesterId`) REFERENCES `semesters`(`id`) ON DELETE CASCADE
+                    )
+                    """.trimIndent()
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_subjects_semesterId` ON `subjects` (`semesterId`)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_subjects_departmentSlug_semesterNumber` ON `subjects` (`departmentSlug`, `semesterNumber`)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_subjects_courseId` ON `subjects` (`courseId`)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_subjects_sortOrder` ON `subjects` (`sortOrder`)")
+
+                // Phase 24: Routine entries table (weekly timetable)
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS `routine_entries` (
+                        `id` TEXT NOT NULL,
+                        `subjectId` TEXT NOT NULL,
+                        `subjectName` TEXT NOT NULL,
+                        `subjectCode` TEXT NOT NULL,
+                        `departmentSlug` TEXT NOT NULL,
+                        `semesterNumber` INTEGER NOT NULL,
+                        `dayOfWeek` INTEGER NOT NULL,
+                        `startTime` TEXT NOT NULL,
+                        `endTime` TEXT NOT NULL,
+                        `roomNumber` TEXT,
+                        `instructorName` TEXT,
+                        `color` TEXT,
+                        PRIMARY KEY(`id`),
+                        FOREIGN KEY(`subjectId`) REFERENCES `subjects`(`id`) ON DELETE CASCADE
+                    )
+                    """.trimIndent()
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_routine_entries_subjectId` ON `routine_entries` (`subjectId`)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_routine_entries_dept_sem_day` ON `routine_entries` (`departmentSlug`, `semesterNumber`, `dayOfWeek`)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_routine_entries_dayOfWeek_startTime` ON `routine_entries` (`dayOfWeek`, `startTime`)")
+            }
+        }
+
         return Room.databaseBuilder(
             context,
             DakkhoDatabase::class.java,
@@ -71,6 +153,7 @@ object DatabaseModule {
         )
             .addTypeConverter(Converters())
             .addMigration(MIGRATION_1_2)
+            .addMigration(MIGRATION_2_3)
             .fallbackToDestructiveMigration()
             .build()
     }
@@ -154,5 +237,20 @@ object DatabaseModule {
     @Provides
     fun provideDepartmentDao(database: DakkhoDatabase): DepartmentDao {
         return database.departmentDao()
+    }
+
+    @Provides
+    fun provideSemesterDao(database: DakkhoDatabase): SemesterDao {
+        return database.semesterDao()
+    }
+
+    @Provides
+    fun provideSubjectDao(database: DakkhoDatabase): SubjectDao {
+        return database.subjectDao()
+    }
+
+    @Provides
+    fun provideRoutineEntryDao(database: DakkhoDatabase): RoutineEntryDao {
+        return database.routineEntryDao()
     }
 }
