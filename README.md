@@ -262,12 +262,12 @@ app/src/main/java/com/dakkho/android/
 | 25 | Profile Sub-pages #65–71 (Edit, Password, Stats, Sub, Referral, Bookmarks, Settings) | ✅ Complete | 18 files |
 | 26 | Settings Part 1 #72–76 (Storage, Notif Prefs, Data Saver, Accessibility, About & Legal) | ✅ Complete | 14 files |
 | 27 | Settings Part 2 #77–82 (Theme, Download, Video Quality, Network, Content Protection, Active Sessions) | ✅ Complete | 18 files |
+| 28 | Help & Support #83–90 + Exam #91–95 (Help Hub, FAQ, Contact, Tickets, Report, Legal, Exam Prep/Schedule/Results/Practice/Tips) | ✅ Complete | 29 files |
 
-### 🚧 Upcoming (Phase 28–29)
+### 🚧 Upcoming (Phase 29)
 
 | Phase | Title | Est. Duration |
 |-------|-------|---------------|
-| 28 | Help & Support #83–90 + Exam #91–95 | 5–6 days |
 | 29 | Social #96–101 + Payment #102–104 + Misc + Security | 6–8 days |
 
 ---
