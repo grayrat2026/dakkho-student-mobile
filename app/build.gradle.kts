@@ -157,10 +157,10 @@ dependencies {
     // Serialization
     implementation(libs.serialization.json)
 
-    // Firebase
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.messaging)
-    implementation(libs.firebase.analytics)
+    // Firebase (disabled until real google-services.json config is provided)
+    // implementation(platform(libs.firebase.bom))
+    // implementation(libs.firebase.messaging)
+    // implementation(libs.firebase.analytics)
 
     // Lottie
     implementation(libs.lottie.compose)

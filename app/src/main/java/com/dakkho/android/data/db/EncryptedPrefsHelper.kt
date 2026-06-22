@@ -8,22 +8,17 @@ import timber.log.Timber
 
 class EncryptedPrefsHelper(context: Context) {
 
-    private val masterKey: MasterKey = MasterKey.Builder(context)
-        .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-        .build()
+    private val masterKey: MasterKey? = try {
+        MasterKey.Builder(context)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+    } catch (e: Exception) {
+        Timber.e(e, "Failed to create MasterKey for EncryptedSharedPreferences")
+        null
+    }
 
     private val prefs: SharedPreferences = try {
-        EncryptedSharedPreferences.create(
-            context,
-            ENCRYPTED_PREFS_FILE_NAME,
-            masterKey,
-            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-        )
-    } catch (e: Exception) {
-        Timber.e(e, "Failed to create EncryptedSharedPreferences, creating fresh instance")
-        try {
-            context.deleteSharedPreferences(ENCRYPTED_PREFS_FILE_NAME)
+        if (masterKey != null) {
             EncryptedSharedPreferences.create(
                 context,
                 ENCRYPTED_PREFS_FILE_NAME,
@@ -31,6 +26,24 @@ class EncryptedPrefsHelper(context: Context) {
                 EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             )
+        } else {
+            context.getSharedPreferences(FALLBACK_PREFS_FILE_NAME, Context.MODE_PRIVATE)
+        }
+    } catch (e: Exception) {
+        Timber.e(e, "Failed to create EncryptedSharedPreferences, creating fresh instance")
+        try {
+            context.deleteSharedPreferences(ENCRYPTED_PREFS_FILE_NAME)
+            if (masterKey != null) {
+                EncryptedSharedPreferences.create(
+                    context,
+                    ENCRYPTED_PREFS_FILE_NAME,
+                    masterKey,
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+                )
+            } else {
+                context.getSharedPreferences(FALLBACK_PREFS_FILE_NAME, Context.MODE_PRIVATE)
+            }
         } catch (e2: Exception) {
             Timber.e(e2, "Fallback EncryptedSharedPreferences also failed, using regular prefs")
             context.getSharedPreferences(FALLBACK_PREFS_FILE_NAME, Context.MODE_PRIVATE)

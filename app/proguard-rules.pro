@@ -81,6 +81,21 @@
 -keep class com.dakkho.android.data.db.entity.** { *; }
 -keepclassmembers class com.dakkho.android.data.db.entity.** { *; }
 
+# ── Room Type Converters ──
+-keep class com.dakkho.android.data.db.Converters { *; }
+
+# ── Repository Implementations (Hilt @Binds) ──
+-keep class com.dakkho.android.data.repository.** { *; }
+
+# ── WorkManager Workers ──
+-keep class com.dakkho.android.data.work.** { *; }
+-keepclassmembers class * extends androidx.work.Worker { *; }
+-keepclassmembers class * extends androidx.work.CoroutineWorker { *; }
+
+# ── Navigation Routes (kotlinx.serialization) ──
+-keep class com.dakkho.android.presentation.navigation.Route** { *; }
+-keepclassmembers class com.dakkho.android.presentation.navigation.Route** { *; }
+
 # ── Timber ──
 -dontwarn timber.log.**
 -keep class timber.log.** { *; }

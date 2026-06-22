@@ -17,6 +17,20 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.CardMembership
+import androidx.compose.material.icons.filled.Chat
+import androidx.compose.material.icons.filled.CloudDownload
+import androidx.compose.material.icons.filled.Explore
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.LiveTv
+import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material.icons.filled.MenuBook
+import androidx.compose.material.icons.filled.MilitaryTech
+import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,8 +40,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,7 +57,7 @@ import com.dakkho.android.presentation.theme.SkyBlue
 data class SidebarMenuItem(
     val route: String,
     val label: String,
-    val iconRes: Int,
+    val icon: ImageVector,
     val isDestructive: Boolean = false
 )
 
@@ -64,32 +78,32 @@ fun DakkhoSidebar(
         SidebarMenuGroup(
             title = "Main",
             items = listOf(
-                SidebarMenuItem("home", "Home", android.R.drawable.btn_star_big_on),
-                SidebarMenuItem("explore", "Explore", android.R.drawable.ic_menu_search),
-                SidebarMenuItem("my_courses", "My Courses", android.R.drawable.ic_menu_info_details)
+                SidebarMenuItem("home", "Home", Icons.Default.Home),
+                SidebarMenuItem("explore", "Explore", Icons.Default.Explore),
+                SidebarMenuItem("my_courses", "My Courses", Icons.Default.MenuBook)
             )
         ),
         SidebarMenuGroup(
             title = "Learning",
             items = listOf(
-                SidebarMenuItem("downloads", "Downloads", android.R.drawable.ic_menu_save),
-                SidebarMenuItem("bookmarks", "Bookmarks", android.R.drawable.ic_menu_agenda),
-                SidebarMenuItem("watch_history", "Watch History", android.R.drawable.ic_menu_recent_history),
-                SidebarMenuItem("certificates", "Certificates", android.R.drawable.ic_menu_gallery),
-                SidebarMenuItem("achievements", "Achievements", android.R.drawable.ic_menu_day)
+                SidebarMenuItem("downloads", "Downloads", Icons.Default.CloudDownload),
+                SidebarMenuItem("bookmarks", "Bookmarks", Icons.Default.Bookmark),
+                SidebarMenuItem("watch_history", "Watch History", Icons.Default.Schedule),
+                SidebarMenuItem("certificates", "Certificates", Icons.Default.CardMembership),
+                SidebarMenuItem("achievements", "Achievements", Icons.Default.MilitaryTech)
             )
         ),
         SidebarMenuGroup(
             title = "Social",
             items = listOf(
-                SidebarMenuItem("discussion", "Discussion", android.R.drawable.ic_menu_send),
-                SidebarMenuItem("live_sessions", "Live Sessions", android.R.drawable.ic_menu_camera)
+                SidebarMenuItem("discussion", "Discussion", Icons.Default.Chat),
+                SidebarMenuItem("live_sessions", "Live Sessions", Icons.Default.LiveTv)
             )
         ),
         SidebarMenuGroup(
             title = "Settings",
             items = listOf(
-                SidebarMenuItem("settings", "Settings", android.R.drawable.ic_menu_preferences)
+                SidebarMenuItem("settings", "Settings", Icons.Default.Settings)
             )
         )
     )
@@ -186,7 +200,7 @@ fun DakkhoSidebar(
                             )
                     ) {
                         Icon(
-                            painter = painterResource(id = item.iconRes),
+                            imageVector = item.icon,
                             contentDescription = item.label,
                             tint = if (item.isDestructive) Error
                             else if (isSelected) SkyBlue else Neutral700,
@@ -227,7 +241,7 @@ fun DakkhoSidebar(
                 .padding(horizontal = DesignToken.Space.dp16, vertical = DesignToken.Space.dp16)
         ) {
             Icon(
-                painter = painterResource(id = android.R.drawable.ic_lock_power_off),
+                imageVector = Icons.Default.Logout,
                 contentDescription = "Logout",
                 tint = Error,
                 modifier = Modifier.size(DesignToken.IconSize.medium)
