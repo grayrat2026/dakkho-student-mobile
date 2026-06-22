@@ -59,3 +59,4 @@ secrets.properties
 .DS_Store
 Thumbs.db
 google-services.json
+.kotlin/

@@ -29,6 +29,7 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -59,7 +60,7 @@ fun NotificationsScreen(
     onNotificationClick: (NotificationItem) -> Unit,
     viewModel: NotificationsViewModel = hiltViewModel()
 ) {
-    val isRefreshing by viewModel.isRefreshing
+    val isRefreshing by viewModel.isRefreshing.collectAsState()
     val pagingItems = viewModel.pagingDataFlow.collectAsLazyPagingItems()
 
     Column(

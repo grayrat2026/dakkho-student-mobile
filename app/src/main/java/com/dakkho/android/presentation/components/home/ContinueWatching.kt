@@ -198,6 +198,7 @@ fun ContinueWatchingCard(
                         .height(4.dp)
                         .clip(RoundedCornerShape(2.dp))
                 ) {
+                    val trackColor = MaterialTheme.colorScheme.surfaceVariant
                     // Background track
                     Box(
                         modifier = Modifier
@@ -205,7 +206,7 @@ fun ContinueWatchingCard(
                             .height(4.dp)
                             .clip(RoundedCornerShape(2.dp))
                             .drawBehind {
-                                drawRect(color = MaterialTheme.colorScheme.surfaceVariant)
+                                drawRect(color = trackColor)
                             }
                     )
                     // Progress fill

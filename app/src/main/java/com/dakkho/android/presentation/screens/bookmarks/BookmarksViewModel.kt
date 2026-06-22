@@ -61,7 +61,7 @@ class BookmarksViewModel @Inject constructor(
                                 price = entity.price,
                                 rating = entity.rating,
                                 technology = entity.technology,
-                                bookmarkedAt = entity.createdAt
+                                bookmarkedAt = entity.createdAt.toString()
                             )
                         },
                         isLoading = false

@@ -255,33 +255,14 @@ fun EditProfileScreen(
 
             // Save button
             GradientButton(
+                text = if (uiState.isSaving) "সেভ হচ্ছে..." else "সেভ করুন",
                 onClick = viewModel::saveProfile,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                enabled = !uiState.isSaving
-            ) {
-                if (uiState.isSaving) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(24.dp),
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        strokeWidth = 2.dp
-                    )
-                } else {
-                    Icon(
-                        imageVector = Icons.Default.Check,
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "সেভ করুন",
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            fontWeight = FontWeight.Bold
-                        )
-                    )
-                }
-            }
+                enabled = !uiState.isSaving,
+                isLoading = uiState.isSaving
+            )
 
             Spacer(modifier = Modifier.height(DesignToken.Space.dp32))
         }

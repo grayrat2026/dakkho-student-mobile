@@ -211,33 +211,14 @@ fun ChangePasswordScreen(
 
             // Change Password button
             GradientButton(
+                text = "পাসওয়ার্ড পরিবর্তন করুন",
                 onClick = viewModel::changePassword,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                enabled = !uiState.isChanging
-            ) {
-                if (uiState.isChanging) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(24.dp),
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        strokeWidth = 2.dp
-                    )
-                } else {
-                    Icon(
-                        imageVector = Icons.Default.Check,
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "পাসওয়ার্ড পরিবর্তন করুন",
-                        style = MaterialTheme.typography.titleMedium.copy(
-                            fontWeight = FontWeight.Bold
-                        )
-                    )
-                }
-            }
+                enabled = !uiState.isChanging,
+                isLoading = uiState.isChanging
+            )
 
             Spacer(modifier = Modifier.height(DesignToken.Space.dp32))
         }

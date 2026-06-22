@@ -15,15 +15,19 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dakkho.android.presentation.components.GradientButton
+import com.dakkho.android.presentation.theme.DeepBlue
 import com.dakkho.android.presentation.theme.DesignToken
+import com.dakkho.android.presentation.theme.SkyBlue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,7 +37,7 @@ fun PaymentFailedScreen(
     onContactSupport: () -> Unit = {},
     viewModel: PaymentFailedViewModel = hiltViewModel()
 ) {
-    val reason by viewModel.reason
+    val reason by viewModel.reason.collectAsState()
 
     Scaffold(containerColor = MaterialTheme.colorScheme.background) { innerPadding ->
         Column(
@@ -67,16 +71,24 @@ fun PaymentFailedScreen(
                 text = "সাপোর্টে যোগাযোগ",
                 onClick = onContactSupport,
                 modifier = Modifier.height(50.dp),
-                containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                contentColor = MaterialTheme.colorScheme.onSurface
+                gradient = Brush.linearGradient(
+                    colors = listOf(
+                        MaterialTheme.colorScheme.surfaceVariant,
+                        MaterialTheme.colorScheme.surfaceVariant
+                    )
+                )
             )
             Spacer(modifier = Modifier.height(DesignToken.Space.dp12))
             GradientButton(
                 text = "হোমে যান",
                 onClick = onGoHome,
                 modifier = Modifier.height(50.dp),
-                containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                contentColor = MaterialTheme.colorScheme.onSurface
+                gradient = Brush.linearGradient(
+                    colors = listOf(
+                        MaterialTheme.colorScheme.surfaceVariant,
+                        MaterialTheme.colorScheme.surfaceVariant
+                    )
+                )
             )
         }
     }

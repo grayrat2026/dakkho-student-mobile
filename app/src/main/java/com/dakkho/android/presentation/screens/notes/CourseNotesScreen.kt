@@ -190,8 +190,9 @@ fun CourseNotesScreen(
         } else {
             // Note editing mode
             if (uiState.isEditing && uiState.selectedNote != null) {
+                val selectedNote = uiState.selectedNote!!
                 NoteEditorView(
-                    note = uiState.selectedNote,
+                    note = selectedNote,
                     editContent = uiState.editContent,
                     onContentChange = { viewModel.onEditContentChange(it) },
                     onExit = { viewModel.exitEditMode() },

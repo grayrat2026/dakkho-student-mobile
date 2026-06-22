@@ -293,6 +293,7 @@ class ExamPracticeViewModel @Inject constructor(
     fun formatTime(seconds: Int): String {
         val mins = seconds / 60
         val secs = seconds % 60
-        return "${toBengaliNumber(mins)}:${toBengaliNumber(secs.toString().padStart(2, '0'))}"
+        val bengaliSecs = toBengaliNumber(secs).padStart(2, '০')
+        return "${toBengaliNumber(mins)}:$bengaliSecs"
     }
 }

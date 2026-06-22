@@ -126,7 +126,7 @@ private fun LearningStatsContent(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(DesignToken.Radius.dp16))
+                .clip(RoundedCornerShape(DesignToken.Space.dp16))
                 .background(
                     brush = Brush.verticalGradient(
                         colors = listOf(SkyBlue, DeepBlue)

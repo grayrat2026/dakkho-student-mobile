@@ -183,7 +183,7 @@ private fun HelpCategoryCard(
     GlassCard(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(DesignToken.Radius.dp16))
+            .clip(RoundedCornerShape(DesignToken.Space.dp16))
             .clickable(onClick = onClick)
     ) {
         Column(

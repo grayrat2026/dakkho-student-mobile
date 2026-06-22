@@ -129,16 +129,23 @@ class ReportIssueViewModel @Inject constructor(
                     category = currentState.category,
                     severity = currentState.severity,
                     description = currentState.description,
-                    screenshotUri = currentState.screenshotUri?.toString(),
-                    logs = currentState.collectedLogs,
-                    deviceModel = currentState.deviceModel,
-                    osVersion = currentState.osVersion,
-                    appVersion = currentState.appVersion,
-                    userId = userId,
-                    timestamp = System.currentTimeMillis()
+                    screenshotPath = currentState.screenshotUri?.toString(),
+                    logData = currentState.collectedLogs,
+                    deviceInfo = "${currentState.deviceModel} (Android ${currentState.osVersion})",
+                    appVersion = currentState.appVersion
                 )
 
-                val response = supportApiService.submitBugReport(bugReport)
+                val reportMap = mapOf(
+                    "category" to currentState.category.value,
+                    "severity" to currentState.severity.value,
+                    "description" to currentState.description,
+                    "screenshot_path" to (currentState.screenshotUri?.toString() ?: ""),
+                    "log_data" to (currentState.collectedLogs ?: ""),
+                    "device_info" to "${currentState.deviceModel} (Android ${currentState.osVersion})",
+                    "app_version" to currentState.appVersion
+                )
+
+                val response = supportApiService.submitBugReport(reportMap)
                 if (response.isSuccessful) {
                     _uiState.update {
                         it.copy(isSubmitting = false, isSubmitted = true)

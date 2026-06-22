@@ -202,9 +202,9 @@ private fun ReferralContent(
                 // Referral code box
                 Row(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(DesignToken.Radius.dp12))
+                        .clip(RoundedCornerShape(DesignToken.Space.dp12))
                         .background(Color.White.copy(alpha = 0.2f))
-                        .border(1.dp, Color.White.copy(alpha = 0.3f), RoundedCornerShape(DesignToken.Radius.dp12))
+                        .border(1.dp, Color.White.copy(alpha = 0.3f), RoundedCornerShape(DesignToken.Space.dp12))
                         .padding(horizontal = 20.dp, vertical = 12.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {

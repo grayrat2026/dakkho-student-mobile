@@ -6,8 +6,10 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.map
 import com.dakkho.android.data.api.NotificationApiService
 import com.dakkho.android.data.paging.NotificationPagingSource
+import com.dakkho.android.domain.model.NotificationDto
 import com.dakkho.android.domain.model.NotificationItem
 import com.dakkho.android.domain.repository.NotificationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -47,7 +50,19 @@ class NotificationsViewModel @Inject constructor(
         pagingSourceFactory = {
             NotificationPagingSource(notificationApiService)
         }
-    ).flow.cachedIn(viewModelScope)
+    ).flow.map { pagingData: PagingData<NotificationDto> ->
+        pagingData.map { dto: NotificationDto ->
+            NotificationItem(
+                id = dto.id,
+                title = dto.title,
+                body = dto.body,
+                type = dto.type,
+                isRead = dto.isRead,
+                actionUrl = dto.actionUrl,
+                createdAt = dto.createdAt
+            )
+        }
+    }.cachedIn(viewModelScope)
 
     // Room-backed flow for instant local updates
     val localNotifications = notificationRepository.getNotificationsFlow()

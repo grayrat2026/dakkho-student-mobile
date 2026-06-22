@@ -2,7 +2,6 @@ package com.dakkho.android.presentation.components.home
 
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -57,12 +56,11 @@ fun CategoryPills(
                 selectedBorderColor = SkyBlue,
                 enabled = true,
                 selected = selectedTechnology == null
-            ),
-            contentPadding = PaddingValues(horizontal = DesignToken.Space.dp12)
+            )
         )
 
         // Technology chips (dynamic — only what API returns)
-        technologies.forEach { technology ->
+        for (technology in technologies) {
             FilterChip(
                 selected = selectedTechnology == technology.name,
                 onClick = { onTechnologySelected(technology.name) },
@@ -85,8 +83,7 @@ fun CategoryPills(
                     selectedBorderColor = SkyBlue,
                     enabled = true,
                     selected = selectedTechnology == technology.name
-                ),
-                contentPadding = PaddingValues(horizontal = DesignToken.Space.dp12)
+                )
             )
         }
 
@@ -111,8 +108,7 @@ fun CategoryPills(
                     borderColor = MaterialTheme.colorScheme.outlineVariant,
                     enabled = true,
                     selected = false
-                ),
-                contentPadding = PaddingValues(horizontal = DesignToken.Space.dp12)
+                )
             )
         }
     }

@@ -25,8 +25,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Bell
-import androidx.compose.material.icons.filled.BellOutline
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.NotificationsNone
 import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
@@ -322,7 +322,7 @@ private fun LiveSessionCard(
                             )
                         } else {
                             Icon(
-                                Icons.Default.BellOutline,
+                                Icons.Default.NotificationsNone,
                                 contentDescription = "Set Reminder",
                                 modifier = Modifier.size(18.dp),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant
@@ -373,7 +373,7 @@ private fun LiveSessionCard(
                         ),
                         shape = RoundedCornerShape(12.dp)
                     ) {
-                        Icon(Icons.Default.Bell, contentDescription = null, modifier = Modifier.size(16.dp))
+                        Icon(Icons.Default.Notifications, contentDescription = null, modifier = Modifier.size(16.dp))
                         Spacer(modifier = Modifier.width(4.dp))
                         Text("Remind Me")
                     }

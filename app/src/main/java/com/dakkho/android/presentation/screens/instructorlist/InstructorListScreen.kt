@@ -49,7 +49,7 @@ import com.dakkho.android.presentation.components.AnimatedPage
 import com.dakkho.android.presentation.components.EmptyState
 import com.dakkho.android.presentation.components.GlassCard
 import com.dakkho.android.presentation.components.ShimmerEffect
-import com.dakkho.android.presentation.components.DakkhoSearchBar
+import com.dakkho.android.presentation.components.search.DakkhoSearchBar
 import com.dakkho.android.presentation.theme.DesignToken
 import com.dakkho.android.presentation.theme.Neutral400
 import com.dakkho.android.presentation.theme.Neutral500
@@ -141,19 +141,20 @@ fun InstructorListScreen(
                         ShimmerInstructorList()
                     }
                     uiState.error != null && uiState.instructors.isEmpty() -> {
+                        val errorMsg = uiState.error
                         EmptyState(
-                            icon = painterResource(id = android.R.drawable.ic_dialog_alert),
                             title = "Could not load instructors",
-                            subtitle = uiState.error,
-                            onActionClick = { viewModel.loadInstructors(reset = true) },
-                            actionLabel = "Retry"
+                            subtitle = errorMsg ?: "Unknown error",
+                            actionText = "Retry",
+                            onAction = { viewModel.loadInstructors(reset = true) },
+                            iconRes = android.R.drawable.ic_dialog_alert
                         )
                     }
                     uiState.instructors.isEmpty() && !uiState.isLoading -> {
                         EmptyState(
-                            icon = painterResource(id = android.R.drawable.ic_menu_search),
                             title = if (uiState.searchQuery.isNotBlank()) "No instructors found" else "No instructors yet",
-                            subtitle = if (uiState.searchQuery.isNotBlank()) "Try a different search term" else "Check back later for new instructors"
+                            subtitle = if (uiState.searchQuery.isNotBlank()) "Try a different search term" else "Check back later for new instructors",
+                            iconRes = android.R.drawable.ic_menu_search
                         )
                     }
                     else -> {

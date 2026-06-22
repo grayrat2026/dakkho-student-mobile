@@ -94,6 +94,7 @@ dependencies {
     implementation(libs.splashscreen)
     implementation(libs.security.crypto)
     implementation(libs.biometric)
+    implementation(libs.browser)
 
     // Lifecycle
     implementation(libs.lifecycle.runtime.compose)

@@ -29,6 +29,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,8 +53,8 @@ fun CommunityScreen(
     viewModel: CommunityViewModel = hiltViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
-    val posts by viewModel.posts
-    val selectedCategory by viewModel.selectedCategory
+    val posts by viewModel.posts.collectAsState()
+    val selectedCategory by viewModel.selectedCategory.collectAsState()
 
     val categories = remember { listOf(null, "সাধারণ", "প্রযুক্তি", "পরামর্শ", "অভিজ্ঞতা") }
 

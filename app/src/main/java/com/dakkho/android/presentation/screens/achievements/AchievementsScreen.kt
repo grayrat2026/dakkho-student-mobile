@@ -68,7 +68,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dakkho.android.domain.model.Achievement
 import com.dakkho.android.domain.model.AchievementMilestone
-import com.dakkho.android.presentation.theme.DakkhoGradients
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

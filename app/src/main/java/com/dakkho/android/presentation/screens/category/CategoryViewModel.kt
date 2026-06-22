@@ -3,6 +3,7 @@ package com.dakkho.android.presentation.screens.category
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -11,13 +12,16 @@ import androidx.paging.map
 import com.dakkho.android.data.api.CourseApiService
 import com.dakkho.android.data.db.dao.CourseDao
 import com.dakkho.android.data.db.dao.RemoteKeysDao
+import com.dakkho.android.data.db.entity.CourseEntity
 import com.dakkho.android.data.paging.CourseRemoteMediator
 import com.dakkho.android.domain.model.Course
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import timber.log.Timber
 import javax.inject.Inject
 
+@OptIn(ExperimentalPagingApi::class)
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
     private val courseApiService: CourseApiService,
@@ -44,8 +48,8 @@ class CategoryViewModel @Inject constructor(
         pagingSourceFactory = {
             courseDao.getCoursesPagingSource()
         }
-    ).flow.map { pagingData ->
-        pagingData.map { entity ->
+    ).flow.map { pagingData: PagingData<CourseEntity> ->
+        pagingData.map { entity: CourseEntity ->
             Course(
                 id = entity.id,
                 title = entity.title,

@@ -1,9 +1,11 @@
 package com.dakkho.android.presentation.navigation
 
-import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideIn
+import androidx.compose.animation.slideOut
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -101,30 +103,30 @@ fun DakkhoNavHost(
 ) {
     val enterTransition = fadeIn(
         animationSpec = tween(AnimationConstants.FADE_IN_MS)
-    ) + slideIntoContainer(
-        towards = AnimatedContentTransitionScope.SlideDirection.Start,
-        animationSpec = tween(AnimationConstants.SLIDE_DURATION_MS)
+    ) + slideIn(
+        animationSpec = tween(AnimationConstants.SLIDE_DURATION_MS),
+        initialOffset = { IntOffset(it.width, 0) }
     )
 
     val exitTransition = fadeOut(
         animationSpec = tween(AnimationConstants.FADE_OUT_MS)
-    ) + slideOutOfContainer(
-        towards = AnimatedContentTransitionScope.SlideDirection.Start,
-        animationSpec = tween(AnimationConstants.SLIDE_DURATION_MS)
+    ) + slideOut(
+        animationSpec = tween(AnimationConstants.SLIDE_DURATION_MS),
+        targetOffset = { IntOffset(-it.width, 0) }
     )
 
     val popEnterTransition = fadeIn(
         animationSpec = tween(AnimationConstants.FADE_IN_MS)
-    ) + slideIntoContainer(
-        towards = AnimatedContentTransitionScope.SlideDirection.End,
-        animationSpec = tween(AnimationConstants.SLIDE_DURATION_MS)
+    ) + slideIn(
+        animationSpec = tween(AnimationConstants.SLIDE_DURATION_MS),
+        initialOffset = { IntOffset(-it.width, 0) }
     )
 
     val popExitTransition = fadeOut(
         animationSpec = tween(AnimationConstants.FADE_OUT_MS)
-    ) + slideOutOfContainer(
-        towards = AnimatedContentTransitionScope.SlideDirection.End,
-        animationSpec = tween(AnimationConstants.SLIDE_DURATION_MS)
+    ) + slideOut(
+        animationSpec = tween(AnimationConstants.SLIDE_DURATION_MS),
+        targetOffset = { IntOffset(it.width, 0) }
     )
 
     NavHost(
@@ -1047,7 +1049,7 @@ fun DakkhoNavHost(
             exitTransition = { exitTransition }
         ) {
             ReportIssueScreen(
-                onBackClick = { navController.popBackStack() }
+                onNavigateBack = { navController.popBackStack() }
             )
         }
 
@@ -1056,7 +1058,7 @@ fun DakkhoNavHost(
             exitTransition = { exitTransition }
         ) {
             TermsOfServiceScreen(
-                onBackClick = { navController.popBackStack() }
+                onNavigateBack = { navController.popBackStack() }
             )
         }
 
@@ -1065,7 +1067,7 @@ fun DakkhoNavHost(
             exitTransition = { exitTransition }
         ) {
             PrivacyPolicyScreen(
-                onBackClick = { navController.popBackStack() }
+                onNavigateBack = { navController.popBackStack() }
             )
         }
 
@@ -1074,7 +1076,7 @@ fun DakkhoNavHost(
             exitTransition = { exitTransition }
         ) {
             RefundPolicyScreen(
-                onBackClick = { navController.popBackStack() }
+                onNavigateBack = { navController.popBackStack() }
             )
         }
 
@@ -1083,7 +1085,7 @@ fun DakkhoNavHost(
             exitTransition = { exitTransition }
         ) {
             ExamPrepScreen(
-                onBackClick = { navController.popBackStack() }
+                onNavigateBack = { navController.popBackStack() }
             )
         }
 

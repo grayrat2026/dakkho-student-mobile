@@ -9,6 +9,7 @@ import com.dakkho.android.domain.model.Certificate
 import com.dakkho.android.domain.model.CertificateDto
 import com.dakkho.android.domain.model.CourseCompletionStatus
 import com.dakkho.android.domain.repository.CertificateRepository
+import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
@@ -19,7 +20,7 @@ import javax.inject.Singleton
 class CertificateRepositoryImpl @Inject constructor(
     private val certificateApiService: CertificateApiService,
     private val encryptedPrefsHelper: EncryptedPrefsHelper,
-    private val context: Context
+    @ApplicationContext private val context: Context
 ) : CertificateRepository {
 
     override suspend fun getCertificates(): Result<List<Certificate>> {

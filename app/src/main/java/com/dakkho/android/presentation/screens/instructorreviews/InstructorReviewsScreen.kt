@@ -1,6 +1,6 @@
 package com.dakkho.android.presentation.screens.instructorreviews
 
-import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,6 +23,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -36,12 +37,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -98,17 +95,18 @@ fun InstructorReviewsScreen(
                 )
             }
         ) { paddingValues ->
+            val errorMsg = uiState.error
             when {
                 uiState.isLoading -> {
                     ShimmerReviews(modifier = Modifier.padding(paddingValues))
                 }
-                uiState.error != null && uiState.reviews.isEmpty() -> {
+                errorMsg != null && uiState.reviews.isEmpty() -> {
                     EmptyState(
-                        icon = painterResource(id = android.R.drawable.ic_dialog_alert),
+                        iconRes = android.R.drawable.ic_dialog_alert,
                         title = "Could not load reviews",
-                        subtitle = uiState.error,
-                        onActionClick = { viewModel.loadReviews() },
-                        actionLabel = "Retry",
+                        subtitle = errorMsg,
+                        actionText = "Retry",
+                        onAction = { viewModel.loadReviews() },
                         modifier = Modifier.padding(paddingValues)
                     )
                 }
@@ -142,14 +140,16 @@ fun InstructorReviewsScreen(
                             )
                         }
 
-                        Spacer(modifier = Modifier.height(DesignToken.Space.dp8))
+                        item {
+                            Spacer(modifier = Modifier.height(DesignToken.Space.dp8))
+                        }
 
                         // ── Review List ──
                         if (uiState.reviews.isEmpty() && !uiState.isLoadingMore) {
                             item {
                                 Spacer(modifier = Modifier.height(DesignToken.Space.dp32))
                                 EmptyState(
-                                    icon = painterResource(id = android.R.drawable.ic_menu_agenda),
+                                    iconRes = android.R.drawable.ic_menu_agenda,
                                     title = "No reviews yet",
                                     subtitle = if (uiState.selectedRatingFilter != null)
                                         "No ${uiState.selectedRatingFilter}-star reviews found"
@@ -233,69 +233,59 @@ fun RatingSummaryHeader(
 
                 Spacer(modifier = Modifier.width(DesignToken.Space.dp16))
 
-                // Right: Canvas-drawn 5-bar chart
-                Canvas(
+                // Right: 5-bar chart using Compose layout
+                Column(
                     modifier = Modifier
                         .weight(1f)
-                        .height(120.dp)
+                        .height(120.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    val barHeight = 16f
-                    val barSpacing = 8f
                     val starLabels = listOf(5, 4, 3, 2, 1)
                     val starCounts = listOf(breakdown.star5, breakdown.star4, breakdown.star3, breakdown.star2, breakdown.star1)
                     val maxCount = starCounts.maxOrNull()?.coerceAtLeast(1) ?: 1
 
-                    val labelWidth = 24f
-                    val barStartX = labelWidth + 4f
-                    val barEndPadding = 44f // space for count label
-                    val barMaxWidth = size.width - barStartX - barEndPadding
-
                     starLabels.forEachIndexed { index, star ->
-                        val y = index * (barHeight + barSpacing)
                         val count = starCounts[index]
-                        val barWidth = if (maxCount > 0) (count.toFloat() / maxCount) * barMaxWidth else 0f
+                        val fraction = if (maxCount > 0) count.toFloat() / maxCount else 0f
 
-                        // Star label
-                        drawContext.canvas.nativeCanvas.drawText(
-                            "${star}★",
-                            0f,
-                            y + barHeight - 3f,
-                            android.graphics.Paint().apply {
-                                textSize = 12f * density
-                                color = android.graphics.Color.GRAY
-                                textAlign = android.graphics.Paint.Align.LEFT
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                text = "${star}★",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = Neutral500,
+                                modifier = Modifier.width(28.dp)
+                            )
+
+                            Box(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(8.dp)
+                                    .clip(RoundedCornerShape(4.dp))
+                                    .background(Neutral400.copy(alpha = 0.2f))
+                            ) {
+                                if (fraction > 0f) {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth(fraction)
+                                            .height(8.dp)
+                                            .clip(RoundedCornerShape(4.dp))
+                                            .background(Warning)
+                                    )
+                                }
                             }
-                        )
 
-                        // Background bar
-                        drawRoundRect(
-                            color = Neutral400.copy(alpha = 0.2f),
-                            topLeft = Offset(barStartX, y),
-                            size = Size(barMaxWidth, barHeight),
-                            cornerRadius = CornerRadius(4f, 4f)
-                        )
-
-                        // Filled bar
-                        if (barWidth > 0) {
-                            drawRoundRect(
-                                color = Warning,
-                                topLeft = Offset(barStartX, y),
-                                size = Size(barWidth, barHeight),
-                                cornerRadius = CornerRadius(4f, 4f)
+                            Text(
+                                text = "$count",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = Neutral500,
+                                modifier = Modifier
+                                    .width(36.dp)
+                                    .padding(start = 4.dp)
                             )
                         }
-
-                        // Count label
-                        drawContext.canvas.nativeCanvas.drawText(
-                            "$count",
-                            barStartX + barMaxWidth + 6f,
-                            y + barHeight - 3f,
-                            android.graphics.Paint().apply {
-                                textSize = 11f * density
-                                color = android.graphics.Color.GRAY
-                                textAlign = android.graphics.Paint.Align.LEFT
-                            }
-                        )
                     }
                 }
             }

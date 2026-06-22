@@ -194,7 +194,7 @@ class CourseNotesViewModel @Inject constructor(
         }
     }
 
-    private fun formatTimestamp(positionMs: Long): String {
+    fun formatTimestamp(positionMs: Long): String {
         val totalSeconds = positionMs / 1000
         val hours = totalSeconds / 3600
         val minutes = (totalSeconds % 3600) / 60

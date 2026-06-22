@@ -414,7 +414,7 @@ private fun ClassTreeItem(
 
 @Composable
 private fun UnitTreeItem(
-    unit: Unit,
+    unit: CourseUnit,
     isExpanded: Boolean,
     isEnrolled: Boolean,
     completedLessons: Set<String>,
@@ -465,7 +465,7 @@ private fun UnitTreeItem(
             exit = shrinkVertically()
         ) {
             Column(modifier = Modifier.padding(start = 8.dp)) {
-                unit.lessons.forEach { lesson ->
+                for (lesson in unit.lessons) {
                     CurriculumLessonItem(
                         lesson = lesson,
                         isEnrolled = isEnrolled,

@@ -24,6 +24,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,11 +45,11 @@ fun FeedbackScreen(
     viewModel: FeedbackViewModel = hiltViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
-    val rating by viewModel.rating
-    val comment by viewModel.comment
-    val category by viewModel.category
-    val isSubmitting by viewModel.isSubmitting
-    val isSubmitted by viewModel.isSubmitted
+    val rating by viewModel.rating.collectAsState()
+    val comment by viewModel.comment.collectAsState()
+    val category by viewModel.category.collectAsState()
+    val isSubmitting by viewModel.isSubmitting.collectAsState()
+    val isSubmitted by viewModel.isSubmitted.collectAsState()
 
     Scaffold(
         topBar = {
@@ -112,7 +113,7 @@ fun FeedbackScreen(
                 Text(text = "বিভাগ", style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold))
                 Spacer(modifier = Modifier.height(DesignToken.Space.dp8))
                 Row(horizontalArrangement = Arrangement.spacedBy(DesignToken.Space.dp8)) {
-                    FeedbackCategory.entries.forEach { cat ->
+                    for (cat in FeedbackCategory.entries) {
                         FilterChip(selected = category == cat, onClick = { viewModel.setCategory(cat) }, label = { Text(text = cat.label) })
                     }
                 }
@@ -122,7 +123,7 @@ fun FeedbackScreen(
                 // Comment
                 OutlinedTextField(
                     value = comment,
-                    onValueChange = { viewModel.setComment(it) },
+                    onValueChange = { text -> viewModel.setComment(text) },
                     label = { Text("আপনার মতামত লিখুন") },
                     modifier = Modifier.fillMaxWidth(),
                     minLines = 4,

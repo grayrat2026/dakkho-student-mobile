@@ -103,17 +103,17 @@ fun InstructorCoursesScreen(
                 }
                 uiState.error != null && uiState.courses.isEmpty() -> {
                     EmptyState(
-                        icon = painterResource(id = android.R.drawable.ic_dialog_alert),
+                        iconRes = android.R.drawable.ic_dialog_alert,
                         title = "Could not load courses",
-                        subtitle = uiState.error,
-                        onActionClick = { viewModel.loadCourses() },
-                        actionLabel = "Retry",
+                        subtitle = uiState.error ?: "Unknown error",
+                        onAction = { viewModel.loadCourses() },
+                        actionText = "Retry",
                         modifier = Modifier.padding(paddingValues)
                     )
                 }
                 uiState.courses.isEmpty() -> {
                     EmptyState(
-                        icon = painterResource(id = android.R.drawable.ic_menu_gallery),
+                        iconRes = android.R.drawable.ic_menu_gallery,
                         title = "No courses yet",
                         subtitle = "This instructor hasn't published any courses",
                         modifier = Modifier.padding(paddingValues)

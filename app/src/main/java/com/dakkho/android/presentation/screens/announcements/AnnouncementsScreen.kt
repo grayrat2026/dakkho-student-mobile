@@ -143,14 +143,13 @@ private fun AnnouncementListContent(
             )
         } else if (uiState.announcements.isEmpty() && uiState.error != null) {
             EmptyState(
-                icon = Icons.Default.Campaign,
                 title = "Could not load announcements",
                 subtitle = uiState.error ?: "An error occurred",
-                onRetry = onRefresh
+                actionText = "Retry",
+                onAction = onRefresh
             )
         } else if (uiState.announcements.isEmpty()) {
             EmptyState(
-                icon = Icons.Default.Campaign,
                 title = "No announcements yet",
                 subtitle = "Course announcements will appear here"
             )

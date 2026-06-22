@@ -8,7 +8,7 @@ import com.dakkho.android.domain.model.Instructor
 import com.dakkho.android.domain.model.InstructorDetail
 import com.dakkho.android.domain.model.InstructorDetailDto
 import com.dakkho.android.domain.model.InstructorDto
-import com.dakkho.android.domain.model.InstructorReviewsResult
+import com.dakkho.android.domain.repository.InstructorReviewsResult
 import com.dakkho.android.domain.model.LiveClass
 import com.dakkho.android.domain.model.LiveClassDto
 import com.dakkho.android.domain.model.LiveClassStatus
@@ -102,7 +102,7 @@ class InstructorRepositoryImpl @Inject constructor(
             if (response.isSuccessful) {
                 val body = response.body()
                 if (body != null && body.error == null) {
-                    val reviews = body.reviews.map { mapReviewDtoToDomain(it) }
+                    val reviews = body.reviews.map { dto: ReviewDto -> mapReviewDtoToDomain(dto) }
                     val breakdown = parseRatingBreakdown(body.rating_breakdown)
                     Result.success(
                         InstructorReviewsResult(

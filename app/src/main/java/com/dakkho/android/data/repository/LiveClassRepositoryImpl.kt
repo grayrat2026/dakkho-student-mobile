@@ -3,7 +3,7 @@ package com.dakkho.android.data.repository
 import com.dakkho.android.data.api.StudentLiveClassApiService
 import com.dakkho.android.domain.model.LiveClass
 import com.dakkho.android.domain.model.LiveClassDto
-import com.dakkho.android.domain.model.LiveClassJoinResult
+import com.dakkho.android.domain.repository.LiveClassJoinResult
 import com.dakkho.android.domain.model.LiveClassStatus
 import com.dakkho.android.domain.repository.LiveClassRepository
 import timber.log.Timber

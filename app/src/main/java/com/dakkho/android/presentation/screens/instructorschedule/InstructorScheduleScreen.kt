@@ -1,6 +1,7 @@
 package com.dakkho.android.presentation.screens.instructorschedule
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -107,12 +108,13 @@ fun InstructorScheduleScreen(
                     ShimmerSchedule(modifier = Modifier.padding(paddingValues))
                 }
                 uiState.error != null -> {
+                    val errorMsg = uiState.error
                     EmptyState(
-                        icon = painterResource(id = android.R.drawable.ic_dialog_alert),
                         title = "Could not load schedule",
-                        subtitle = uiState.error,
-                        onActionClick = { viewModel.loadLiveClasses() },
-                        actionLabel = "Retry",
+                        subtitle = errorMsg ?: "Unknown error",
+                        actionText = "Retry",
+                        onAction = { viewModel.loadLiveClasses() },
+                        iconRes = android.R.drawable.ic_dialog_alert,
                         modifier = Modifier.padding(paddingValues)
                     )
                 }
@@ -166,12 +168,12 @@ fun InstructorScheduleScreen(
                             item {
                                 Spacer(modifier = Modifier.height(DesignToken.Space.dp16))
                                 EmptyState(
-                                    icon = painterResource(id = android.R.drawable.ic_menu_today),
                                     title = "No classes scheduled",
                                     subtitle = if (uiState.selectedDate != null)
                                         "No classes on this date"
                                     else
-                                        "This instructor has no upcoming live classes"
+                                        "This instructor has no upcoming live classes",
+                                    iconRes = android.R.drawable.ic_menu_today
                                 )
                             }
                         } else {

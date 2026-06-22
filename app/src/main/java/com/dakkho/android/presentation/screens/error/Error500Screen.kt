@@ -12,12 +12,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CloudOff
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -80,21 +82,21 @@ fun Error500Screen(
             Spacer(modifier = Modifier.height(DesignToken.Space.dp32))
             GradientButton(text = "আবার চেষ্টা করুন", onClick = onRetry, modifier = Modifier.height(50.dp))
             Spacer(modifier = Modifier.height(DesignToken.Space.dp12))
-            GradientButton(
-                text = "সাপোর্টে যোগাযোগ",
+            OutlinedButton(
                 onClick = onContactSupport,
                 modifier = Modifier.height(50.dp),
-                containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                contentColor = MaterialTheme.colorScheme.onSurface
-            )
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Text("সাপোর্টে যোগাযোগ")
+            }
             Spacer(modifier = Modifier.height(DesignToken.Space.dp12))
-            GradientButton(
-                text = "হোমে যান",
+            OutlinedButton(
                 onClick = onGoHome,
                 modifier = Modifier.height(50.dp),
-                containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                contentColor = MaterialTheme.colorScheme.onSurface
-            )
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Text("হোমে যান")
+            }
         }
     }
 }

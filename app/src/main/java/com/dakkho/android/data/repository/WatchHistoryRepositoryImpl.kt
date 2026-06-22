@@ -194,7 +194,8 @@ class WatchHistoryRepositoryImpl @Inject constructor(
                     courseTitle = "",
                     progressSeconds = progressSeconds,
                     totalSeconds = totalSeconds,
-                    completed = false
+                    completed = false,
+                    lastWatchedAt = java.time.Instant.now().toString()
                 ))
             }
         } catch (e: Exception) {

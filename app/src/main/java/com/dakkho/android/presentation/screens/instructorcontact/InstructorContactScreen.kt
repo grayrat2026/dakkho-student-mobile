@@ -6,6 +6,7 @@ import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -92,17 +93,18 @@ fun InstructorContactScreen(
                 )
             }
         ) { paddingValues ->
+            val errorMsg = uiState.error
             when {
                 uiState.isLoading -> {
                     ShimmerContact(modifier = Modifier.padding(paddingValues))
                 }
-                uiState.error != null && uiState.instructor == null -> {
+                errorMsg != null && uiState.instructor == null -> {
                     EmptyState(
-                        icon = painterResource(id = android.R.drawable.ic_dialog_alert),
+                        iconRes = android.R.drawable.ic_dialog_alert,
                         title = "Could not load contact info",
-                        subtitle = uiState.error,
-                        onActionClick = { viewModel.loadInstructor() },
-                        actionLabel = "Retry",
+                        subtitle = errorMsg,
+                        actionText = "Retry",
+                        onAction = { viewModel.loadInstructor() },
                         modifier = Modifier.padding(paddingValues)
                     )
                 }
@@ -114,7 +116,7 @@ fun InstructorContactScreen(
 
                     if (!hasContactInfo) {
                         EmptyState(
-                            icon = painterResource(id = android.R.drawable.ic_menu_share),
+                            iconRes = android.R.drawable.ic_menu_share,
                             title = "No contact info available",
                             subtitle = "This instructor hasn't shared any contact details",
                             modifier = Modifier.padding(paddingValues)

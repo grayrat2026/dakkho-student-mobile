@@ -524,6 +524,7 @@ private fun OptionCard(
 
 // ─── Quiz Result Screen ───
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun QuizResultContent(
     uiState: CourseQuizzesUiState,

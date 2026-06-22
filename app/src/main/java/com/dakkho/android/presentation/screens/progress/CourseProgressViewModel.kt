@@ -67,8 +67,7 @@ class CourseProgressViewModel @Inject constructor(
                 val curriculum = curriculumResult.getOrNull()
 
                 // Load watch history for study time calculation
-                val historyResult = watchHistoryRepository.getWatchHistory()
-                val history = historyResult.getOrNull() ?: emptyList()
+                val history = watchHistoryRepository.getWatchHistory()
 
                 // Filter history for this course
                 val courseHistory = history.filter { it.courseId == courseId }

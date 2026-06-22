@@ -139,7 +139,9 @@ fun ExamPrepScreen(
                     totalTopics = uiState.importantTopics.size,
                     completedTopics = uiState.checkedTopics.size,
                     totalStudyDays = uiState.studyPlan.size,
-                    totalStudyHours = uiState.studyPlan.sumOf { it.durationMinutes } / 60.0
+                    totalStudyHours = uiState.studyPlan.mapNotNull { planItem ->
+                        planItem.duration.takeWhile { it.isDigit() }.toIntOrNull()
+                    }.sum() / 60.0
                 )
                 Spacer(modifier = Modifier.height(DesignToken.Spacing.md))
 
@@ -206,7 +208,7 @@ fun ExamPrepScreen(
                             uiState.importantTopics.forEach { topic ->
                                 val isChecked = uiState.checkedTopics.contains(topic.id)
                                 ImportantTopicItem(
-                                    topicName = topic.name,
+                                    topicName = topic.title,
                                     isChecked = isChecked,
                                     onCheckedChange = { viewModel.toggleTopicChecked(topic.id) }
                                 )
@@ -612,7 +614,7 @@ private fun StudyPlanTimelineCard(
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = "${planItem.durationMinutes} মিনিট",
+                        text = planItem.duration.ifBlank { "${planItem.dayNumber * 60} মিনিট" },
                         style = MaterialTheme.typography.bodyMedium,
                         color = SkyBlue,
                         fontWeight = FontWeight.Medium

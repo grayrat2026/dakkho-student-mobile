@@ -1,6 +1,7 @@
 package com.dakkho.android.presentation.screens.coursedetail
 
 import android.content.Intent
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,7 +18,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.Share
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -83,7 +84,7 @@ fun CourseDetailScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
-    val context = LocalContext()
+    val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(courseId) {
@@ -142,7 +143,7 @@ fun CourseDetailScreen(
                             )
                         }) {
                             Icon(
-                                imageVector = Icons.AutoMirrored.Filled.Share,
+                                imageVector = Icons.Filled.Share,
                                 contentDescription = "Share"
                             )
                         }
@@ -166,7 +167,10 @@ fun CourseDetailScreen(
                         // Navigate to first incomplete video or curriculum
                         uiState.course!!.let { course ->
                             val firstLesson = uiState.curriculum?.sections
-                                ?.firstOrNull()?.lessons?.firstOrNull()
+                                ?.flatMap { it.classes }
+                                ?.flatMap { it.units }
+                                ?.flatMap { it.lessons }
+                                ?.firstOrNull()
                             if (firstLesson != null && firstLesson.videoUrl != null) {
                                 onNavigateToVideo(firstLesson.id, course.id)
                             }
@@ -223,8 +227,8 @@ fun CourseDetailScreen(
                     onNavigateToReviews(
                         course.id,
                         course.title,
-                        course.rating,
-                        course.reviewCount.toFloat(),
+                        course.rating ?: 0f,
+                        course.reviewCount ?: 0,
                         uiState.isEnrolled
                     )
                 },

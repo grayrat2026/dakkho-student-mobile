@@ -31,6 +31,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -55,9 +56,9 @@ fun LeaderboardScreen(
     viewModel: LeaderboardViewModel = hiltViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
-    val entries by viewModel.entries
-    val currentPeriod by viewModel.currentPeriod
-    val myRank by viewModel.myRank
+    val entries by viewModel.entries.collectAsState()
+    val currentPeriod by viewModel.currentPeriod.collectAsState()
+    val myRank by viewModel.myRank.collectAsState()
 
     val periods = remember {
         listOf(LeaderboardPeriod.WEEKLY, LeaderboardPeriod.MONTHLY, LeaderboardPeriod.ALL_TIME)
@@ -209,7 +210,7 @@ private fun LeaderboardRankCard(entry: LeaderboardEntry, rank: Int) {
 
 @Composable
 private fun MyRankCard(entry: LeaderboardEntry) {
-    GlassCard(modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(DesignToken.Radius.dp16)).background(SkyBlue.copy(alpha = 0.1f))) {
+    GlassCard(modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(DesignToken.Space.dp16)).background(SkyBlue.copy(alpha = 0.1f))) {
         Row(modifier = Modifier.fillMaxWidth().padding(DesignToken.Space.dp16), verticalAlignment = Alignment.CenterVertically) {
             Text(text = "আপনার র‍্যাংক", style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium), modifier = Modifier.weight(1f))
             Text(text = "#${entry.rank}", style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold), color = SkyBlue)

@@ -31,6 +31,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,8 +54,8 @@ fun PeerConnectionsScreen(
     viewModel: PeerConnectionsViewModel = hiltViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
-    val peers by viewModel.peers
-    val suggestions by viewModel.suggestions
+    val peers by viewModel.peers.collectAsState()
+    val suggestions by viewModel.suggestions.collectAsState()
     val context = LocalContext.current
 
     Scaffold(

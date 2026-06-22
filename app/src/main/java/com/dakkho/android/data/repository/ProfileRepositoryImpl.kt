@@ -122,9 +122,9 @@ class ProfileRepositoryImpl @Inject constructor(
                 Exception("Not logged in")
             )
             val history = watchHistoryDao.getWatchHistory(userId)
-            val totalHours = history.sumOf {
+            val totalHours = history.map {
                 (it.progressSeconds ?: 0) / 3600f
-            }
+            }.sum()
             Result.success(
                 LearningStats(
                     totalHoursWatched = totalHours,

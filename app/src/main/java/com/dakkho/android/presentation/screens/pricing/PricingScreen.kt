@@ -2,7 +2,6 @@ package com.dakkho.android.presentation.screens.pricing
 
 import android.content.Intent
 import android.net.Uri
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,12 +10,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -28,13 +27,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dakkho.android.domain.model.PricingPlan
@@ -50,9 +48,9 @@ fun PricingScreen(
     viewModel: PricingViewModel = hiltViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
-    val plans by viewModel.plans
-    val showPlanSheet by viewModel.showPlanSheet
-    val selectedPlanId by viewModel.selectedPlanId
+    val plans by viewModel.plans.collectAsState()
+    val showPlanSheet by viewModel.showPlanSheet.collectAsState()
+    val selectedPlanId by viewModel.selectedPlanId.collectAsState()
     val context = LocalContext.current
 
     Scaffold(
@@ -115,7 +113,7 @@ fun PricingScreen(
                         Text(text = "${plan.discount}% ছাড়!", style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.error)
                     }
                     Spacer(modifier = Modifier.height(DesignToken.Space.dp16))
-                    plan.features.forEach { feature ->
+                    for (feature in plan.features) {
                         Row(modifier = Modifier.padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically) {
                             Icon(imageVector = Icons.Default.Check, contentDescription = null, tint = SkyBlue, modifier = Modifier.height(20.dp))
                             Spacer(modifier = Modifier.padding(DesignToken.Space.dp8))
@@ -126,9 +124,9 @@ fun PricingScreen(
                     GradientButton(
                         text = if (plan.isCurrent) "বর্তমান প্ল্যান" else "সাবস্ক্রাইব",
                         onClick = {
-                            // Launch PipraPay via Chrome Custom Tab
-                            val customTabsIntent = CustomTabsIntent.Builder().build()
-                            customTabsIntent.launchUrl(context, Uri.parse("https://piprapay.com"))
+                            // Launch PipraPay via browser
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://piprapay.com"))
+                            context.startActivity(intent)
                         },
                         enabled = !plan.isCurrent,
                         modifier = Modifier.fillMaxWidth().height(50.dp)
@@ -165,7 +163,7 @@ private fun PricingPlanCard(
                 Text(text = "${plan.discount}% ছাড়", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.error)
             }
             Spacer(modifier = Modifier.height(DesignToken.Space.dp12))
-            plan.features.take(4).forEach { feature ->
+            for (feature in plan.features.take(4)) {
                 Row(modifier = Modifier.padding(vertical = 2.dp), verticalAlignment = Alignment.CenterVertically) {
                     Icon(imageVector = Icons.Default.Check, contentDescription = null, tint = SkyBlue, modifier = Modifier.height(16.dp))
                     Spacer(modifier = Modifier.padding(4.dp))

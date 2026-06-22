@@ -33,8 +33,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.dakkho.android.domain.model.Curriculum
+import com.dakkho.android.domain.model.CurriculumSubject
 import com.dakkho.android.domain.model.Lesson
-import com.dakkho.android.domain.model.Section
 import com.dakkho.android.presentation.theme.Green
 import com.dakkho.android.presentation.theme.Neutral400
 import com.dakkho.android.presentation.theme.SkyBlue
@@ -64,10 +64,13 @@ fun CourseCurriculumTab(
         return
     }
 
-    val totalLessons = curriculum.sections.sumOf { it.lessons.size }
-    val totalDuration = curriculum.sections
-        .flatMap { it.lessons }
-        .mapNotNull { it.durationSeconds }
+    val allLessons = curriculum.sections
+        .flatMap { subject: CurriculumSubject -> subject.classes }
+        .flatMap { classItem -> classItem.units }
+        .flatMap { unit -> unit.lessons }
+    val totalLessons = allLessons.size
+    val totalDuration = allLessons
+        .mapNotNull { lesson: Lesson -> lesson.durationSeconds }
         .sum()
 
     Column(
@@ -98,7 +101,7 @@ fun CourseCurriculumTab(
         Spacer(modifier = Modifier.height(12.dp))
 
         curriculum.sections.forEachIndexed { index, section ->
-            SectionItem(
+            SubjectSectionItem(
                 section = section,
                 isEnrolled = isEnrolled,
                 onLessonClick = onLessonClick,
@@ -111,13 +114,16 @@ fun CourseCurriculumTab(
 }
 
 @Composable
-private fun SectionItem(
-    section: Section,
+private fun SubjectSectionItem(
+    section: CurriculumSubject,
     isEnrolled: Boolean,
     onLessonClick: (Lesson) -> Unit,
     isLast: Boolean
 ) {
     var isExpanded by remember { mutableStateOf(true) }
+    val allLessons = section.classes
+        .flatMap { it.units }
+        .flatMap { it.lessons }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         // Section header
@@ -149,7 +155,7 @@ private fun SectionItem(
         // Lessons
         AnimatedVisibility(visible = isExpanded) {
             Column {
-                section.lessons.forEach { lesson ->
+                allLessons.forEach { lesson ->
                     LessonItem(
                         lesson = lesson,
                         isEnrolled = isEnrolled,

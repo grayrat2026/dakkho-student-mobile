@@ -7,12 +7,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Achievement
+import androidx.compose.material.icons.filled.Assignment
+import androidx.compose.material.icons.filled.EmojiEvents
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Campaign
 import androidx.compose.material.icons.filled.Chat
@@ -181,7 +183,7 @@ fun NotificationPreferencesScreen(
                 )
                 SettingsDivider()
                 NotifToggle(
-                    icon = Icons.Default.Achievement,
+                    icon = Icons.Default.Assignment,
                     title = "অ্যাসাইনমেন্ট রিমাইন্ডার",
                     subtitle = "জমা দেওয়ার শেষ তারিখ",
                     checked = prefs.isAssignmentReminderEnabled,
@@ -197,7 +199,7 @@ fun NotificationPreferencesScreen(
                 )
                 SettingsDivider()
                 NotifToggle(
-                    icon = Icons.Default.Achievement,
+                    icon = Icons.Default.EmojiEvents,
                     title = "অর্জন",
                     subtitle = "ব্যাজ ও মাইলফোন আনলক",
                     checked = prefs.isAchievementNotificationEnabled,

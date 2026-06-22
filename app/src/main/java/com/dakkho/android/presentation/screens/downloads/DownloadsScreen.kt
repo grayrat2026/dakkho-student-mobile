@@ -69,7 +69,7 @@ import com.dakkho.android.presentation.theme.SkyBlue
 @Composable
 fun DownloadsScreen(
     onBackClick: () -> Unit,
-    onPlayVideo: (videoId: String, courseId: String) -> Unit = {},
+    onPlayVideo: (videoId: String, courseId: String) -> Unit = { _, _ -> },
     onBrowseCourses: () -> Unit = {},
     viewModel: DownloadsViewModel = hiltViewModel()
 ) {
@@ -326,8 +326,7 @@ private fun StorageUsageBar(
                 .drawBehind {
                     // Background
                     drawRect(
-                        color = Neutral400.copy(alpha = 0.3f),
-                        cornerRadius = CornerRadius(4.dp.toPx())
+                        color = Neutral400.copy(alpha = 0.3f)
                     )
                     // Fill
                     val fillWidth = size.width * (percent / 100f)
@@ -339,8 +338,7 @@ private fun StorageUsageBar(
                     drawRect(
                         color = fillColor,
                         topLeft = Offset.Zero,
-                        size = Size(fillWidth, size.height),
-                        cornerRadius = CornerRadius(4.dp.toPx())
+                        size = Size(fillWidth, size.height)
                     )
                 }
         )
@@ -551,7 +549,17 @@ private fun SwipeToDismissDownloadItem(
     onDelete: () -> Unit,
     onPlayClick: () -> Unit
 ) {
-    val dismissState = rememberSwipeToDismissBoxState()
+    val dismissState = rememberSwipeToDismissBoxState(
+        confirmValueChange = { dismissValue ->
+            when (dismissValue) {
+                SwipeToDismissBoxValue.EndToStart -> {
+                    onDelete()
+                    true
+                }
+                else -> false
+            }
+        }
+    )
 
     SwipeToDismissBox(
         state = dismissState,
@@ -578,8 +586,7 @@ private fun SwipeToDismissDownloadItem(
             }
         },
         enableDismissFromStartToEnd = false,
-        enableDismissFromEndToStart = true,
-        onDismiss = { onDelete() }
+        enableDismissFromEndToStart = true
     ) {
         DownloadedVideoCard(
             item = item,

@@ -13,10 +13,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Bold
+import androidx.compose.material.icons.filled.FormatBold
 import androidx.compose.material.icons.filled.Brush
 import androidx.compose.material.icons.filled.ColorLens
-import androidx.compose.material.icons.filled.Cursor
+import androidx.compose.material.icons.filled.NearMe
 import androidx.compose.material.icons.filled.FormatSize
 import androidx.compose.material.icons.filled.MotionPhotosOff
 import androidx.compose.material.icons.filled.RecordVoiceOver
@@ -163,7 +163,7 @@ fun AccessibilitySettingsScreen(
 
             GlassCard(modifier = Modifier.fillMaxWidth()) {
                 A11yToggle(
-                    icon = Icons.Default.Bold,
+                    icon = Icons.Default.FormatBold,
                     title = "গাঢ় টেক্সট",
                     subtitle = "সমস্ত টেক্সট গাঢ় করুন",
                     checked = settings.isBoldTextEnabled,
@@ -194,7 +194,7 @@ fun AccessibilitySettingsScreen(
                 )
                 SettingsDivider()
                 A11yToggle(
-                    icon = Icons.Default.Cursor,
+                    icon = Icons.Default.NearMe,
                     title = "বড় পয়েন্টার",
                     subtitle = "বড় ও স্পষ্ট টাচ পয়েন্টার",
                     checked = settings.isLargePointerEnabled,

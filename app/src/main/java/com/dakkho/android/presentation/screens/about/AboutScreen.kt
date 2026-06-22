@@ -45,6 +45,7 @@ import com.dakkho.android.presentation.components.profile.StatsCard
 import com.dakkho.android.presentation.theme.DesignToken
 import com.dakkho.android.presentation.theme.Neutral500
 
+@OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
 @Composable
 fun AboutScreen(
     onBackClick: () -> Unit,

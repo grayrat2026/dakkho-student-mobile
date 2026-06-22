@@ -3,6 +3,7 @@ package com.dakkho.android.presentation.screens.explore
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -14,9 +15,11 @@ import com.dakkho.android.data.api.CourseApiService
 import com.dakkho.android.data.api.InstructorApiService
 import com.dakkho.android.data.db.dao.CourseDao
 import com.dakkho.android.data.db.dao.RemoteKeysDao
+import com.dakkho.android.data.db.entity.CourseEntity
 import com.dakkho.android.data.paging.CoursePagingSource
 import com.dakkho.android.data.paging.CourseRemoteMediator
 import com.dakkho.android.domain.model.Course
+import com.dakkho.android.domain.model.CourseDto
 import com.dakkho.android.domain.model.ExploreFilters
 import com.dakkho.android.domain.model.PriceType
 import com.dakkho.android.domain.model.SortOption
@@ -28,12 +31,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
-@OptIn(ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalCoroutinesApi::class, ExperimentalPagingApi::class)
 @HiltViewModel
 class ExploreViewModel @Inject constructor(
     private val courseApiService: CourseApiService,
@@ -77,7 +81,7 @@ class ExploreViewModel @Inject constructor(
 
     // PagingData flow — re-creates Pager whenever filters change
     val pagingDataFlow: Flow<PagingData<Course>> = _filters
-        .flatMapLatest { filters ->
+        .flatMapLatest { filters: ExploreFilters ->
             val apiParams = buildApiParams(filters)
             Pager(
                 config = PagingConfig(
@@ -96,8 +100,8 @@ class ExploreViewModel @Inject constructor(
                     // Room PagingSource — observes DB changes triggered by RemoteMediator
                     courseDao.getCoursesPagingSource()
                 }
-            ).flow.map { pagingData ->
-                pagingData.map { entity ->
+            ).flow.map { pagingData: PagingData<CourseEntity> ->
+                pagingData.map { entity: CourseEntity ->
                     Course(
                         id = entity.id,
                         title = entity.title,
@@ -122,7 +126,7 @@ class ExploreViewModel @Inject constructor(
 
     // Simple search paging — when user types in search bar
     val searchPagingFlow: Flow<PagingData<Course>> = _searchQuery
-        .flatMapLatest { query ->
+        .flatMapLatest { query: String ->
             if (query.isBlank()) {
                 Pager(PagingConfig(pageSize = 1)) { EmptyPagingSource() }.flow
             } else {
@@ -138,8 +142,8 @@ class ExploreViewModel @Inject constructor(
                     pagingSourceFactory = {
                         CoursePagingSource(courseApiService, params)
                     }
-                ).flow.map { pagingData ->
-                    pagingData.map { dto ->
+                ).flow.map { pagingData: PagingData<CourseDto> ->
+                    pagingData.map { dto: CourseDto ->
                         Course(
                             id = dto.id,
                             title = dto.title,

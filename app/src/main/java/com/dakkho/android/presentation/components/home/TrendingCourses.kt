@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.dakkho.android.domain.model.Course
 import com.dakkho.android.presentation.components.CourseCard
 import com.dakkho.android.presentation.components.CourseCardSkeleton

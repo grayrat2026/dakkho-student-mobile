@@ -533,6 +533,7 @@ private fun NewPostBottomSheet(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ThreadDetailScreen(
     thread: ForumThread,

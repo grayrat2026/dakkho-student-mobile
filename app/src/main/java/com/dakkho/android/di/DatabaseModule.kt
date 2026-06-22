@@ -25,6 +25,7 @@ import com.dakkho.android.data.db.dao.SemesterDao
 import com.dakkho.android.data.db.dao.SubjectDao
 import com.dakkho.android.data.db.dao.RoutineEntryDao
 import com.dakkho.android.data.db.EncryptedPrefsHelper
+import androidx.work.WorkManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -164,9 +165,7 @@ object DatabaseModule {
             "dakkho_database"
         )
             .addTypeConverter(Converters())
-            .addMigration(MIGRATION_1_2)
-            .addMigration(MIGRATION_2_3)
-            .addMigration(MIGRATION_3_4)
+            .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
             .fallbackToDestructiveMigration()
             .build()
     }
@@ -175,6 +174,12 @@ object DatabaseModule {
     @Singleton
     fun provideEncryptedPrefsHelper(@ApplicationContext context: Context): EncryptedPrefsHelper {
         return EncryptedPrefsHelper(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideWorkManager(@ApplicationContext context: Context): WorkManager {
+        return WorkManager.getInstance(context)
     }
 
     @Provides

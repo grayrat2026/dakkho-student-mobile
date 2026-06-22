@@ -63,6 +63,7 @@ import com.dakkho.android.presentation.components.AnimatedPage
 import com.dakkho.android.presentation.components.EmptyState
 import com.dakkho.android.presentation.components.GlassCard
 import com.dakkho.android.presentation.components.ShimmerEffect
+import androidx.compose.foundation.layout.RowScope
 import com.dakkho.android.presentation.theme.DesignToken
 import com.dakkho.android.presentation.theme.Neutral400
 import com.dakkho.android.presentation.theme.Neutral500
@@ -116,11 +117,11 @@ fun InstructorProfileScreen(
                 }
                 uiState.error != null && uiState.instructor == null -> {
                     EmptyState(
-                        icon = painterResource(id = android.R.drawable.ic_dialog_alert),
+                        iconRes = android.R.drawable.ic_dialog_alert,
                         title = "Could not load profile",
-                        subtitle = uiState.error,
-                        onActionClick = { viewModel.loadInstructor() },
-                        actionLabel = "Retry",
+                        subtitle = uiState.error ?: "Unknown error",
+                        onAction = { viewModel.loadInstructor() },
+                        actionText = "Retry",
                         modifier = Modifier.padding(paddingValues)
                     )
                 }
@@ -306,7 +307,7 @@ fun InstructorProfileContent(
                     item {
                         Spacer(modifier = Modifier.height(DesignToken.Space.dp32))
                         EmptyState(
-                            icon = painterResource(id = android.R.drawable.ic_menu_gallery),
+                            iconRes = android.R.drawable.ic_menu_gallery,
                             title = "No courses yet",
                             subtitle = "This instructor hasn't published any courses"
                         )
@@ -646,7 +647,7 @@ fun InstructorStatsRow(
 }
 
 @Composable
-fun StatItem(
+fun RowScope.StatItem(
     label: String,
     value: String,
     modifier: Modifier = Modifier

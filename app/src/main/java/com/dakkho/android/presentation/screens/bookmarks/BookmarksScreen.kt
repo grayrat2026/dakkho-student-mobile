@@ -98,7 +98,6 @@ fun BookmarksScreen(
                     subtitle = "আপনি যে কোর্সগুলো বুকমার্ক করেছেন সেগুলো এখানে দেখা যাবে",
                     actionText = "কোর্স খুঁজুন",
                     onAction = onNavigateToExplore,
-                    icon = Icons.Default.Bookmark,
                     modifier = Modifier.padding(innerPadding)
                 )
             }

@@ -188,14 +188,13 @@ private fun DiscussionListContent(
             )
         } else if (uiState.discussions.isEmpty() && uiState.error != null) {
             EmptyState(
-                icon = Icons.Default.Forum,
                 title = "Could not load discussions",
                 subtitle = uiState.error ?: "An error occurred",
-                onRetry = onRefresh
+                actionText = "Retry",
+                onAction = onRefresh
             )
         } else if (uiState.discussions.isEmpty()) {
             EmptyState(
-                icon = Icons.Default.Forum,
                 title = "No questions yet",
                 subtitle = "Be the first to ask a question about this course"
             )
