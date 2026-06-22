@@ -6,6 +6,7 @@
 [![Platform](https://img.shields.io/badge/Platform-Android%207.0%2B-green.svg)](https://developer.android.com)
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.1.0-blue.svg)](https://kotlinlang.org)
 [![Compose](https://img.shields.io/badge/Jetpack%20Compose-BOM%202024.12-9C27B0.svg)](https://developer.android.com/jetpack/compose)
+[![Release](https://img.shields.io/badge/Release-v1.0.0--alpha-orange.svg)](https://github.com/grayrat2026/dakkho-student-mobile/releases/tag/v1.0.0-alpha)
 
 ---
 
