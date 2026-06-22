@@ -187,14 +187,13 @@ private fun ResourcesContent(
                 )
             } else if (uiState.resources.isEmpty() && uiState.error != null) {
                 EmptyState(
-                    icon = Icons.Default.FolderOpen,
                     title = "Could not load resources",
                     subtitle = uiState.error ?: "An error occurred",
-                    onRetry = onRefresh
+                    actionText = "Retry",
+                    onAction = onRefresh
                 )
             } else if (uiState.filteredResources.isEmpty()) {
                 EmptyState(
-                    icon = Icons.Default.FolderOpen,
                     title = if (uiState.searchQuery.isNotBlank()) "No matching resources"
                            else "No resources yet",
                     subtitle = if (uiState.searchQuery.isNotBlank()) "Try a different search term"

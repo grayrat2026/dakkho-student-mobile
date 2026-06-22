@@ -43,9 +43,9 @@ import com.dakkho.android.domain.model.Lesson
 import com.dakkho.android.domain.model.LessonResources
 import com.dakkho.android.domain.model.QuizItem
 import com.dakkho.android.domain.model.ResourceFile
-import com.dakkho.android.domain.model.Subject
+import com.dakkho.android.domain.model.CurriculumSubject
 import com.dakkho.android.domain.model.SubjectClass
-import com.dakkho.android.domain.model.Unit
+import com.dakkho.android.domain.model.CourseUnit
 import com.dakkho.android.presentation.theme.Green
 import com.dakkho.android.presentation.theme.Neutral400
 import com.dakkho.android.presentation.theme.SkyBlue
@@ -101,7 +101,7 @@ fun CurriculumPanel(
 
 @Composable
 private fun SubjectItem(
-    subject: Subject,
+    subject: CurriculumSubject,
     currentLessonId: String,
     isEnrolled: Boolean,
     onLessonClick: (Lesson) -> Unit,
@@ -206,7 +206,7 @@ private fun ClassItem(
 
 @Composable
 private fun UnitItem(
-    unit: Unit,
+    unit: CourseUnit,
     currentLessonId: String,
     isEnrolled: Boolean,
     onLessonClick: (Lesson) -> Unit,

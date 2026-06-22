@@ -366,7 +366,7 @@ private fun RatingBar(
                 label = "barColor"
             )
             Surface(
-                modifier = Modifier.fillMaxHeight().fillMaxWidth(percentage / 100f),
+                modifier = Modifier.fillMaxWidth(percentage / 100f),
                 color = animatedWidth,
                 shape = RoundedCornerShape(3.dp)
             ) {}

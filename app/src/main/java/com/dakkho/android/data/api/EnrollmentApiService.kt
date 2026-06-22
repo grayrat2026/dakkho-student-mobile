@@ -1,6 +1,6 @@
 package com.dakkho.android.data.api
 
-import com.dakkho.android.domain.model.ApiResult
+import com.dakkho.android.data.api.ApiResult
 import com.dakkho.android.domain.model.EnrollmentStatusDto
 import com.dakkho.android.domain.model.PackageDto
 import com.dakkho.android.domain.model.PaymentDto

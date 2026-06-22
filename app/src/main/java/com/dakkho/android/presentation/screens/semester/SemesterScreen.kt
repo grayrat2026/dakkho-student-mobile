@@ -466,7 +466,7 @@ private fun SubjectCard(
                 ) {
                     // Subject color dot
                     val dotColor = subject.color?.let {
-                        try { Color(it) } catch (_: Exception) { SkyBlue }
+                        try { Color(android.graphics.Color.parseColor(it)) } catch (_: Exception) { SkyBlue }
                     } ?: SkyBlue
 
                     Box(
@@ -672,7 +672,7 @@ private fun DaySection(
 @Composable
 private fun RoutineSlotCard(entry: RoutineEntry) {
     val slotColor = entry.color?.let {
-        try { Color(it) } catch (_: Exception) { SkyBlue }
+        try { Color(android.graphics.Color.parseColor(it)) } catch (_: Exception) { SkyBlue }
     } ?: SkyBlue
 
     Row(

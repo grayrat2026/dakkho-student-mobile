@@ -1,6 +1,6 @@
 package com.dakkho.android.data.api
 
-import com.dakkho.android.domain.model.ApiResult
+import com.dakkho.android.data.api.ApiResult
 import com.dakkho.android.domain.model.ChangePasswordRequest
 import com.dakkho.android.domain.model.ChangePasswordResponse
 import com.dakkho.android.domain.model.LearningStatsDto

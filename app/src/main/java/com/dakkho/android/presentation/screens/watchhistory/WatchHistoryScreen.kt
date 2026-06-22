@@ -187,7 +187,16 @@ private fun SwipeToDismissWatchHistoryItem(
     onDelete: () -> Unit,
     onResumeClick: () -> Unit
 ) {
-    val dismissState = rememberSwipeToDismissBoxState()
+    val dismissState = rememberSwipeToDismissBoxState(
+        confirmValueChange = { value ->
+            if (value == SwipeToDismissBoxValue.EndToStart) {
+                onDelete()
+                true
+            } else {
+                false
+            }
+        }
+    )
 
     SwipeToDismissBox(
         state = dismissState,
@@ -214,8 +223,7 @@ private fun SwipeToDismissWatchHistoryItem(
             }
         },
         enableDismissFromStartToEnd = false,
-        enableDismissFromEndToStart = true,
-        onDismiss = { onDelete() }
+        enableDismissFromEndToStart = true
     ) {
         WatchHistoryItemCard(
             item = item,

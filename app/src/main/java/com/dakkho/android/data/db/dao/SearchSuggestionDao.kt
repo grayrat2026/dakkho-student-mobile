@@ -9,10 +9,10 @@ import com.dakkho.android.data.db.entity.SearchSuggestionEntity
 @Dao
 interface SearchSuggestionDao {
 
-    @Query("SELECT * FROM search_suggestions WHERE search_suggestions MATCH :query LIMIT :limit")
+    @Query("SELECT rowid, text, type, reference_id, thumbnail_url FROM search_suggestions WHERE search_suggestions MATCH :query LIMIT :limit")
     suspend fun search(query: String, limit: Int = 10): List<SearchSuggestionEntity>
 
-    @Query("SELECT * FROM search_suggestions WHERE type = :type AND search_suggestions MATCH :query LIMIT :limit")
+    @Query("SELECT rowid, text, type, reference_id, thumbnail_url FROM search_suggestions WHERE type = :type AND search_suggestions MATCH :query LIMIT :limit")
     suspend fun searchByType(query: String, type: String, limit: Int = 10): List<SearchSuggestionEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

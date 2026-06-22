@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.media3.common.C
+import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
@@ -314,7 +315,16 @@ class VideoPlayerViewModel @Inject constructor(
                 val id = watchHistoryRepository.addVideoBookmark(bookmark)
                 _uiState.value = _uiState.value.copy(
                     isBookmarked = true,
-                    videoBookmarks = _uiState.value.videoBookmarks + bookmark.copy(id = id)
+                    videoBookmarks = _uiState.value.videoBookmarks + VideoBookmark(
+                        id = id,
+                        videoId = videoId,
+                        courseId = courseId,
+                        userId = userId,
+                        positionMs = currentPosition,
+                        note = null,
+                        videoTitle = _uiState.value.currentLesson?.title,
+                        courseTitle = null
+                    )
                 )
             }
         }

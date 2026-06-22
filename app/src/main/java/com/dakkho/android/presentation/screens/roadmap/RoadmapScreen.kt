@@ -29,7 +29,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -50,7 +52,7 @@ fun RoadmapScreen(
     viewModel: RoadmapViewModel = hiltViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
-    val selectedStatus by viewModel.selectedStatus
+    val selectedStatus by viewModel.selectedStatus.collectAsState()
 
     val statuses = remember { listOf(null, FeatureStatus.PLANNED, FeatureStatus.IN_PROGRESS, FeatureStatus.COMPLETED) }
 
@@ -70,7 +72,7 @@ fun RoadmapScreen(
         Column(modifier = Modifier.fillMaxSize().padding(innerPadding).padding(horizontal = DesignToken.Space.dp16)) {
             // Status filters
             Row(horizontalArrangement = Arrangement.spacedBy(DesignToken.Space.dp8)) {
-                statuses.forEach { status ->
+                statuses.forEach { status: FeatureStatus? ->
                     FilterChip(
                         selected = selectedStatus == status,
                         onClick = { viewModel.setStatusFilter(status) },

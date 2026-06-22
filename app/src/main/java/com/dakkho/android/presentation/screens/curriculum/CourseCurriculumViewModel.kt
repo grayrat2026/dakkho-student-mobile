@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dakkho.android.domain.model.Curriculum
 import com.dakkho.android.domain.model.Lesson
-import com.dakkho.android.domain.model.Subject
+import com.dakkho.android.domain.model.CurriculumSubject
 import com.dakkho.android.domain.model.SubjectClass
-import com.dakkho.android.domain.model.Unit
+import com.dakkho.android.domain.model.CourseUnit
 import com.dakkho.android.domain.repository.CourseRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

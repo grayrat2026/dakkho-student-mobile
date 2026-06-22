@@ -138,8 +138,8 @@ class ResourcesViewModel @Inject constructor(
             id = id,
             title = title,
             fileType = fileType ?: "pdf",
-            fileSize = fileSize,
-            fileUrl = fileUrl,
+            fileSize = fileSize?.let { "${it / 1024} KB" },
+            fileUrl = fileUrl ?: "",
             lessonTitle = lessonTitle,
             sectionTitle = sectionTitle
         )

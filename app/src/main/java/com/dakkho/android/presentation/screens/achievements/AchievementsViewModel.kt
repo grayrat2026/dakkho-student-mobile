@@ -3,7 +3,7 @@ package com.dakkho.android.presentation.screens.achievements
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dakkho.android.domain.model.Achievement
-import com.dakkho.android.domain.model.AchievementData
+import com.dakkho.android.domain.repository.AchievementData
 import com.dakkho.android.domain.model.AchievementMilestone
 import com.dakkho.android.domain.model.StreakData
 import com.dakkho.android.domain.repository.AchievementRepository

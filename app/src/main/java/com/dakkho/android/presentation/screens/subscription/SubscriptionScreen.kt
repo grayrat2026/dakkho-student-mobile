@@ -207,27 +207,14 @@ private fun SubscriptionContent(
         // Subscribe button
         if (uiState.selectedPlanId != null) {
             GradientButton(
+                text = "সাবস্ক্রাইব করুন",
                 onClick = onSubscribe,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                enabled = !uiState.isSubscribing
-            ) {
-                if (uiState.isSubscribing) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(24.dp),
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        strokeWidth = 2.dp
-                    )
-                } else {
-                    Icon(Icons.Default.Check, contentDescription = null, modifier = Modifier.size(20.dp))
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "সাবস্ক্রাইব করুন",
-                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-                    )
-                }
-            }
+                enabled = !uiState.isSubscribing,
+                isLoading = uiState.isSubscribing
+            )
         }
 
         Spacer(modifier = Modifier.height(DesignToken.Space.dp24))
@@ -290,7 +277,7 @@ private fun CurrentPlanCard(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(DesignToken.Radius.dp16))
+                .clip(RoundedCornerShape(DesignToken.Space.dp16))
                 .background(
                     brush = Brush.verticalGradient(
                         colors = listOf(SkyBlue, DeepBlue)
@@ -379,7 +366,7 @@ private fun PlanCard(
             .border(
                 width = if (isSelected) 2.dp else 1.dp,
                 color = borderColor,
-                shape = RoundedCornerShape(DesignToken.Radius.dp16)
+                shape = RoundedCornerShape(DesignToken.Space.dp16)
             )
     ) {
         Column(
@@ -489,14 +476,10 @@ private fun PlanCard(
                 )
             } else {
                 GradientButton(
+                    text = "নির্বাচন করুন",
                     onClick = onSelect,
                     modifier = Modifier.fillMaxWidth().height(40.dp)
-                ) {
-                    Text(
-                        text = "নির্বাচন করুন",
-                        style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold)
-                    )
-                }
+                )
             }
         }
     }

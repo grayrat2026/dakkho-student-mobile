@@ -42,7 +42,7 @@ import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Replay10
 import androidx.compose.material.icons.filled.Forward10
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Checkmark
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -99,7 +99,7 @@ fun VideoPlayerScreen(
     val context = LocalContext.current
     val activity = context as? Activity
     val configuration = LocalConfiguration.current
-    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDCAPE
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     val trackSelector = remember { DefaultTrackSelector(context) }
     val exoPlayer = remember {
@@ -487,8 +487,7 @@ private fun SeekBarWithTime(
             colors = SliderDefaults.colors(
                 thumbColor = Color.White,
                 activeTrackColor = Green,
-                inactiveTrackColor = Color.White.copy(alpha = 0.3f),
-                bufferedTrackColor = Color.White.copy(alpha = 0.5f)
+                inactiveTrackColor = Color.White.copy(alpha = 0.3f)
             ),
             modifier = Modifier.fillMaxWidth()
         )
@@ -651,7 +650,7 @@ private fun SettingsOptionRow(
             color = if (isSelected) Green else Color.White
         )
         if (isSelected) {
-            Checkmark(color = Green, modifier = Modifier.size(20.dp))
+            Icon(imageVector = Icons.Default.Check, contentDescription = null, tint = Green, modifier = Modifier.size(20.dp))
         }
     }
 }
@@ -701,7 +700,7 @@ private fun AudioTrackSelectorPanel(
                         )
                     }
                     if (track.isSelected) {
-                        Checkmark(color = Green, modifier = Modifier.size(20.dp))
+                        Icon(imageVector = Icons.Default.Check, contentDescription = null, tint = Green, modifier = Modifier.size(20.dp))
                     }
                 }
             }
@@ -755,7 +754,7 @@ private fun SubtitleSelectorPanel(
                         color = if (track.isSelected) Green else Color.White
                     )
                     if (track.isSelected) {
-                        Checkmark(color = Green, modifier = Modifier.size(20.dp))
+                        Icon(imageVector = Icons.Default.Check, contentDescription = null, tint = Green, modifier = Modifier.size(20.dp))
                     }
                 }
             }
@@ -775,8 +774,7 @@ private fun EpisodesPanel(
     Surface(
         modifier = Modifier
             .fillMaxHeight(0.7f)
-            .fillMaxWidth(0.85f)
-            .align(Alignment.CenterEnd),
+            .fillMaxWidth(0.85f),
         shape = RoundedCornerShape(topStart = 16.dp, bottomStart = 16.dp),
         color = Color(0xE6171C24)
     ) {

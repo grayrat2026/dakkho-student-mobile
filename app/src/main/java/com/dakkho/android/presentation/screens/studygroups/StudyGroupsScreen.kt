@@ -36,6 +36,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -60,8 +61,8 @@ fun StudyGroupsScreen(
     viewModel: StudyGroupsViewModel = hiltViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
-    val groups by viewModel.groups
-    val showCreateDialog by viewModel.showCreateDialog
+    val groups by viewModel.groups.collectAsState()
+    val showCreateDialog by viewModel.showCreateDialog.collectAsState()
 
     Scaffold(
         topBar = {

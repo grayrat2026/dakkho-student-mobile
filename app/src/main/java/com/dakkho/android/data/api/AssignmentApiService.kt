@@ -1,6 +1,6 @@
 package com.dakkho.android.data.api
 
-import com.dakkho.android.domain.model.ApiResult
+import com.dakkho.android.data.api.ApiResult
 import com.dakkho.android.domain.model.AssignmentDto
 import okhttp3.MultipartBody
 import retrofit2.Response

@@ -7,7 +7,7 @@ import com.dakkho.android.domain.model.InstituteDto
 import com.dakkho.android.domain.model.InstructorDetailDto
 import com.dakkho.android.domain.model.InstructorDto
 import com.dakkho.android.domain.model.NotificationDto
-import com.dakkho.android.domain.model.PaginatedResponse
+import com.dakkho.android.data.api.PaginatedResponse
 import com.dakkho.android.domain.model.SupportTicketDto
 import com.dakkho.android.domain.model.TechnologyDto
 import retrofit2.Response

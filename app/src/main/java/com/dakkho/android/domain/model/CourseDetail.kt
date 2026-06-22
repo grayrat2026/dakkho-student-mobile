@@ -3,10 +3,10 @@ package com.dakkho.android.domain.model
 // ── Curriculum Hierarchy: Subject → Class → Unit → Lesson ──
 
 data class Curriculum(
-    val sections: List<Subject> = emptyList()
+    val sections: List<CurriculumSubject> = emptyList()
 )
 
-data class Subject(
+data class CurriculumSubject(
     val id: String,
     val title: String,
     val order: Int = 0,
@@ -17,10 +17,10 @@ data class SubjectClass(
     val id: String,
     val title: String,
     val order: Int = 0,
-    val units: List<Unit> = emptyList()
+    val units: List<CourseUnit> = emptyList()
 )
 
-data class Unit(
+data class CourseUnit(
     val id: String,
     val title: String,
     val order: Int = 0,

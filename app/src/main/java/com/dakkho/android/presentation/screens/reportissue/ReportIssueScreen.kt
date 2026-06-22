@@ -71,8 +71,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.dakkho.android.domain.model.HelpSupportModels.BugCategory
-import com.dakkho.android.domain.model.HelpSupportModels.BugSeverity
+import com.dakkho.android.domain.model.BugCategory
+import com.dakkho.android.domain.model.BugSeverity
 import com.dakkho.android.presentation.components.GlassCard
 import com.dakkho.android.presentation.theme.DesignToken
 import com.dakkho.android.presentation.theme.Green
@@ -147,20 +147,20 @@ fun ReportIssueScreen(
                     .fillMaxSize()
                     .padding(innerPadding)
                     .verticalScroll(rememberScrollState())
-                    .padding(horizontal = DesignToken.Spacing.md)
+                    .padding(horizontal = DesignToken.Space.dp16)
             ) {
-                Spacer(modifier = Modifier.height(DesignToken.Spacing.sm))
+                Spacer(modifier = Modifier.height(DesignToken.Space.dp8))
 
                 // Category Dropdown
                 GlassCard(modifier = Modifier.fillMaxWidth()) {
-                    Column(modifier = Modifier.padding(DesignToken.Spacing.md)) {
+                    Column(modifier = Modifier.padding(DesignToken.Space.dp16)) {
                         Text(
                             text = "সমস্যার ধরন",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSurface
                         )
-                        Spacer(modifier = Modifier.height(DesignToken.Spacing.sm))
+                        Spacer(modifier = Modifier.height(DesignToken.Space.dp8))
 
                         ExposedDropdownMenuBox(
                             expanded = uiState.categoryDropdownExpanded,
@@ -182,7 +182,7 @@ fun ReportIssueScreen(
                                     focusedBorderColor = SkyBlue,
                                     unfocusedBorderColor = MaterialTheme.colorScheme.outline
                                 ),
-                                shape = RoundedCornerShape(DesignToken.Spacing.sm)
+                                shape = RoundedCornerShape(DesignToken.Space.dp8)
                             )
 
                             ExposedDropdownMenu(
@@ -200,22 +200,22 @@ fun ReportIssueScreen(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(DesignToken.Spacing.md))
+                Spacer(modifier = Modifier.height(DesignToken.Space.dp16))
 
                 // Severity Selector
                 GlassCard(modifier = Modifier.fillMaxWidth()) {
-                    Column(modifier = Modifier.padding(DesignToken.Spacing.md)) {
+                    Column(modifier = Modifier.padding(DesignToken.Space.dp16)) {
                         Text(
                             text = "গুরুত্বের মাত্রা",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSurface
                         )
-                        Spacer(modifier = Modifier.height(DesignToken.Spacing.sm))
+                        Spacer(modifier = Modifier.height(DesignToken.Space.dp8))
 
                         FlowRow(
-                            horizontalArrangement = Arrangement.spacedBy(DesignToken.Spacing.sm),
-                            verticalArrangement = Arrangement.spacedBy(DesignToken.Spacing.sm)
+                            horizontalArrangement = Arrangement.spacedBy(DesignToken.Space.dp8),
+                            verticalArrangement = Arrangement.spacedBy(DesignToken.Space.dp8)
                         ) {
                             BugSeverity.entries.forEach { severity ->
                                 SeverityChip(
@@ -228,18 +228,18 @@ fun ReportIssueScreen(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(DesignToken.Spacing.md))
+                Spacer(modifier = Modifier.height(DesignToken.Space.dp16))
 
                 // Description
                 GlassCard(modifier = Modifier.fillMaxWidth()) {
-                    Column(modifier = Modifier.padding(DesignToken.Spacing.md)) {
+                    Column(modifier = Modifier.padding(DesignToken.Space.dp16)) {
                         Text(
                             text = "বিবরণ",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSurface
                         )
-                        Spacer(modifier = Modifier.height(DesignToken.Spacing.sm))
+                        Spacer(modifier = Modifier.height(DesignToken.Space.dp8))
 
                         OutlinedTextField(
                             value = uiState.description,
@@ -254,34 +254,34 @@ fun ReportIssueScreen(
                                 focusedBorderColor = SkyBlue,
                                 unfocusedBorderColor = MaterialTheme.colorScheme.outline
                             ),
-                            shape = RoundedCornerShape(DesignToken.Spacing.sm)
+                            shape = RoundedCornerShape(DesignToken.Space.dp8)
                         )
                     }
                 }
 
-                Spacer(modifier = Modifier.height(DesignToken.Spacing.md))
+                Spacer(modifier = Modifier.height(DesignToken.Space.dp16))
 
                 // Screenshot Section
                 GlassCard(modifier = Modifier.fillMaxWidth()) {
-                    Column(modifier = Modifier.padding(DesignToken.Spacing.md)) {
+                    Column(modifier = Modifier.padding(DesignToken.Space.dp16)) {
                         Text(
                             text = "স্ক্রিনশট",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSurface
                         )
-                        Spacer(modifier = Modifier.height(DesignToken.Spacing.sm))
+                        Spacer(modifier = Modifier.height(DesignToken.Space.dp8))
 
                         if (uiState.screenshotUri != null) {
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(180.dp)
-                                    .clip(RoundedCornerShape(DesignToken.Spacing.sm))
+                                    .clip(RoundedCornerShape(DesignToken.Space.dp8))
                                     .border(
                                         width = 1.dp,
                                         color = SkyBlue.copy(alpha = 0.3f),
-                                        shape = RoundedCornerShape(DesignToken.Spacing.sm)
+                                        shape = RoundedCornerShape(DesignToken.Space.dp8)
                                     )
                             ) {
                                 AsyncImage(
@@ -292,14 +292,14 @@ fun ReportIssueScreen(
                                     contentDescription = "স্ক্রিনশট প্রিভিউ",
                                     modifier = Modifier
                                         .fillMaxSize()
-                                        .clip(RoundedCornerShape(DesignToken.Spacing.sm)),
+                                        .clip(RoundedCornerShape(DesignToken.Space.dp8)),
                                     contentScale = ContentScale.Crop
                                 )
                                 IconButton(
                                     onClick = { viewModel.removeScreenshot() },
                                     modifier = Modifier
                                         .align(Alignment.TopEnd)
-                                        .padding(DesignToken.Spacing.xs)
+                                        .padding(DesignToken.Space.dp4)
                                         .size(32.dp)
                                         .background(
                                             color = Color.Black.copy(alpha = 0.6f),
@@ -314,7 +314,7 @@ fun ReportIssueScreen(
                                     )
                                 }
                             }
-                            Spacer(modifier = Modifier.height(DesignToken.Spacing.sm))
+                            Spacer(modifier = Modifier.height(DesignToken.Space.dp8))
                         }
 
                         OutlinedButton(
@@ -324,7 +324,7 @@ fun ReportIssueScreen(
                                 )
                             },
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(DesignToken.Spacing.sm),
+                            shape = RoundedCornerShape(DesignToken.Space.dp8),
                             colors = ButtonDefaults.outlinedButtonColors(
                                 contentColor = SkyBlue
                             )
@@ -334,30 +334,30 @@ fun ReportIssueScreen(
                                 contentDescription = null,
                                 modifier = Modifier.size(20.dp)
                             )
-                            Spacer(modifier = Modifier.width(DesignToken.Spacing.xs))
+                            Spacer(modifier = Modifier.width(DesignToken.Space.dp4))
                             Text(if (uiState.screenshotUri != null) "স্ক্রিনশট পরিবর্তন করুন" else "স্ক্রিনশট যোগ করুন")
                         }
                     }
                 }
 
-                Spacer(modifier = Modifier.height(DesignToken.Spacing.md))
+                Spacer(modifier = Modifier.height(DesignToken.Space.dp16))
 
                 // Log Collector Section
                 GlassCard(modifier = Modifier.fillMaxWidth()) {
-                    Column(modifier = Modifier.padding(DesignToken.Spacing.md)) {
+                    Column(modifier = Modifier.padding(DesignToken.Space.dp16)) {
                         Text(
                             text = "লগ সংগ্রহ",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSurface
                         )
-                        Spacer(modifier = Modifier.height(DesignToken.Spacing.xs))
+                        Spacer(modifier = Modifier.height(DesignToken.Space.dp4))
                         Text(
                             text = "অ্যাপের সাম্প্রতিক লগ সংগ্রহ করে রিপোর্টে যুক্ত করুন",
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
-                        Spacer(modifier = Modifier.height(DesignToken.Spacing.sm))
+                        Spacer(modifier = Modifier.height(DesignToken.Space.dp8))
 
                         AnimatedVisibility(
                             visible = uiState.collectedLogs != null,
@@ -370,14 +370,14 @@ fun ReportIssueScreen(
                                         modifier = Modifier
                                             .fillMaxWidth()
                                             .height(120.dp)
-                                            .clip(RoundedCornerShape(DesignToken.Spacing.sm))
+                                            .clip(RoundedCornerShape(DesignToken.Space.dp8))
                                             .background(Color(0xFF1A1A2E))
                                             .border(
                                                 width = 1.dp,
                                                 color = SkyBlue.copy(alpha = 0.3f),
-                                                shape = RoundedCornerShape(DesignToken.Spacing.sm)
+                                                shape = RoundedCornerShape(DesignToken.Space.dp8)
                                             )
-                                            .padding(DesignToken.Spacing.sm)
+                                            .padding(DesignToken.Space.dp8)
                                     ) {
                                         Text(
                                             text = uiState.collectedLogs!!.take(500) + "...",
@@ -387,11 +387,11 @@ fun ReportIssueScreen(
                                             modifier = Modifier.verticalScroll(rememberScrollState())
                                         )
                                     }
-                                    Spacer(modifier = Modifier.height(DesignToken.Spacing.xs))
+                                    Spacer(modifier = Modifier.height(DesignToken.Space.dp4))
                                     OutlinedButton(
                                         onClick = { viewModel.removeLogs() },
                                         modifier = Modifier.fillMaxWidth(),
-                                        shape = RoundedCornerShape(DesignToken.Spacing.sm),
+                                        shape = RoundedCornerShape(DesignToken.Space.dp8),
                                         colors = ButtonDefaults.outlinedButtonColors(
                                             contentColor = MaterialTheme.colorScheme.error
                                         )
@@ -401,10 +401,10 @@ fun ReportIssueScreen(
                                             contentDescription = null,
                                             modifier = Modifier.size(18.dp)
                                         )
-                                        Spacer(modifier = Modifier.width(DesignToken.Spacing.xs))
+                                        Spacer(modifier = Modifier.width(DesignToken.Space.dp4))
                                         Text("লগ সরিয়ে দিন")
                                     }
-                                    Spacer(modifier = Modifier.height(DesignToken.Spacing.sm))
+                                    Spacer(modifier = Modifier.height(DesignToken.Space.dp8))
                                 }
                             }
                         }
@@ -412,7 +412,7 @@ fun ReportIssueScreen(
                         OutlinedButton(
                             onClick = { viewModel.collectLogs() },
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(DesignToken.Spacing.sm),
+                            shape = RoundedCornerShape(DesignToken.Space.dp8),
                             colors = ButtonDefaults.outlinedButtonColors(
                                 contentColor = SkyBlue
                             ),
@@ -423,24 +423,24 @@ fun ReportIssueScreen(
                                 contentDescription = null,
                                 modifier = Modifier.size(20.dp)
                             )
-                            Spacer(modifier = Modifier.width(DesignToken.Spacing.xs))
+                            Spacer(modifier = Modifier.width(DesignToken.Space.dp4))
                             Text(if (uiState.isCollectingLogs) "লগ সংগ্রহ হচ্ছে..." else "লগ সংগ্রহ করুন")
                         }
                     }
                 }
 
-                Spacer(modifier = Modifier.height(DesignToken.Spacing.md))
+                Spacer(modifier = Modifier.height(DesignToken.Space.dp16))
 
                 // Device Info Card
                 GlassCard(modifier = Modifier.fillMaxWidth()) {
-                    Column(modifier = Modifier.padding(DesignToken.Spacing.md)) {
+                    Column(modifier = Modifier.padding(DesignToken.Space.dp16)) {
                         Text(
                             text = "ডিভাইস তথ্য",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSurface
                         )
-                        Spacer(modifier = Modifier.height(DesignToken.Spacing.sm))
+                        Spacer(modifier = Modifier.height(DesignToken.Space.dp8))
 
                         DeviceInfoRow(label = "ডিভাইস", value = uiState.deviceModel)
                         DeviceInfoRow(label = "ওএস সংস্করণ", value = "Android ${uiState.osVersion}")
@@ -448,7 +448,7 @@ fun ReportIssueScreen(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(DesignToken.Spacing.lg))
+                Spacer(modifier = Modifier.height(DesignToken.Space.dp20))
 
                 // Submit Button
                 GradientButton(
@@ -457,7 +457,7 @@ fun ReportIssueScreen(
                     enabled = !uiState.isSubmitting && uiState.description.isNotBlank()
                 )
 
-                Spacer(modifier = Modifier.height(DesignToken.Spacing.xl))
+                Spacer(modifier = Modifier.height(DesignToken.Space.dp24))
             }
         }
     }
@@ -487,15 +487,15 @@ private fun SeverityChip(
 
     Box(
         modifier = Modifier
-            .clip(RoundedCornerShape(DesignToken.Spacing.sm))
+            .clip(RoundedCornerShape(DesignToken.Space.dp8))
             .background(backgroundColor)
             .border(
                 width = 1.5.dp,
                 color = borderColor,
-                shape = RoundedCornerShape(DesignToken.Spacing.sm)
+                shape = RoundedCornerShape(DesignToken.Space.dp8)
             )
             .clickable { onSelect() }
-            .padding(horizontal = DesignToken.Spacing.md, vertical = DesignToken.Spacing.sm)
+            .padding(horizontal = DesignToken.Space.dp16, vertical = DesignToken.Space.dp8)
     ) {
         Text(
             text = severityLabel(severity),
@@ -511,7 +511,7 @@ private fun DeviceInfoRow(label: String, value: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = DesignToken.Spacing.xs),
+            .padding(vertical = DesignToken.Space.dp4),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
@@ -545,7 +545,7 @@ private fun GradientButton(
         modifier = Modifier
             .fillMaxWidth()
             .height(52.dp)
-            .clip(RoundedCornerShape(DesignToken.Spacing.md))
+            .clip(RoundedCornerShape(DesignToken.Space.dp16))
             .background(gradientBrush)
             .then(
                 if (enabled) Modifier.clickable { onClick() }
@@ -571,7 +571,7 @@ private fun SubmittedSuccessView(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = DesignToken.Spacing.lg),
+            .padding(horizontal = DesignToken.Space.dp20),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -581,32 +581,32 @@ private fun SubmittedSuccessView(
             modifier = Modifier.size(80.dp),
             tint = Green
         )
-        Spacer(modifier = Modifier.height(DesignToken.Spacing.md))
+        Spacer(modifier = Modifier.height(DesignToken.Space.dp16))
         Text(
             text = "ধন্যবাদ!",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface
         )
-        Spacer(modifier = Modifier.height(DesignToken.Spacing.sm))
+        Spacer(modifier = Modifier.height(DesignToken.Space.dp8))
         Text(
             text = "আপনার রিপোর্ট সফলভাবে জমা হয়েছে। আমরা শীঘ্রই এটি পর্যালোচনা করব।",
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
-        Spacer(modifier = Modifier.height(DesignToken.Spacing.xl))
+        Spacer(modifier = Modifier.height(DesignToken.Space.dp24))
 
         GradientButton(
             text = "আরেকটি রিপোর্ট করুন",
             onClick = onReportAnother
         )
-        Spacer(modifier = Modifier.height(DesignToken.Spacing.sm))
+        Spacer(modifier = Modifier.height(DesignToken.Space.dp8))
 
         OutlinedButton(
             onClick = onNavigateBack,
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(DesignToken.Spacing.md),
+            shape = RoundedCornerShape(DesignToken.Space.dp16),
             colors = ButtonDefaults.outlinedButtonColors(contentColor = SkyBlue)
         ) {
             Text("ফিরে যান")

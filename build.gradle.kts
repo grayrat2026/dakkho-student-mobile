@@ -5,5 +5,6 @@ plugins {
     alias(libs.plugins.kotlin.compose) apply false
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.hilt.android) apply false
-    alias(libs.plugins.ksp) apply false
+    // KSP disabled — switched to kapt to avoid StackOverflow in KSP2 validator with deeply nested generics
+    // alias(libs.plugins.ksp) apply false
 }

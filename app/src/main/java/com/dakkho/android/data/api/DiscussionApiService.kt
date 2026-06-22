@@ -1,6 +1,6 @@
 package com.dakkho.android.data.api
 
-import com.dakkho.android.domain.model.ApiResult
+import com.dakkho.android.data.api.ApiResult
 import com.dakkho.android.domain.model.CreateDiscussionRequest
 import com.dakkho.android.domain.model.CreateReplyRequest
 import com.dakkho.android.domain.model.DiscussionDetailResponse

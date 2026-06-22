@@ -1,7 +1,7 @@
 package com.dakkho.android.data.api
 
-import com.dakkho.android.domain.model.ApiResponse
-import com.dakkho.android.domain.model.ApiResult
+import com.dakkho.android.data.api.ApiResponse
+import com.dakkho.android.data.api.ApiResult
 import com.dakkho.android.domain.model.AuthResponse
 import com.dakkho.android.domain.model.ForgotPasswordRequest
 import com.dakkho.android.domain.model.LoginRequest

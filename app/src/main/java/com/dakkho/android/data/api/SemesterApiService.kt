@@ -1,6 +1,6 @@
 package com.dakkho.android.data.api
 
-import com.dakkho.android.domain.model.ApiResult
+import com.dakkho.android.data.api.ApiResult
 import com.dakkho.android.domain.model.SemesterDto
 import com.dakkho.android.domain.model.SubjectDto2
 import com.dakkho.android.domain.model.RoutineEntryDto

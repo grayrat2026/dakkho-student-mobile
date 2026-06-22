@@ -317,30 +317,8 @@ data class TechnologyDto(
     @Json(name = "is_active") val isActive: Boolean? = null
 )
 
-@JsonClass(generateAdapter = true)
-data class AchievementDto(
-    @Json(name = "id") val id: String,
-    @Json(name = "title") val title: String,
-    @Json(name = "description") val description: String?,
-    @Json(name = "icon_url") val iconUrl: String?,
-    @Json(name = "earned_at") val earnedAt: String?
-)
-
-@JsonClass(generateAdapter = true)
-data class SupportTicketDto(
-    @Json(name = "id") val id: String,
-    @Json(name = "subject") val subject: String,
-    @Json(name = "status") val status: String?,
-    @Json(name = "created_at") val createdAt: String?,
-    @Json(name = "updated_at") val updatedAt: String?
-)
-
-@JsonClass(generateAdapter = true)
-data class CreateTicketRequest(
-    @Json(name = "subject") val subject: String,
-    @Json(name = "message") val message: String,
-    @Json(name = "category") val category: String?
-)
+// AchievementDto, SupportTicketDto, CreateTicketRequest are defined in their respective model files
+// to avoid redeclaration errors
 
 // ── Review Models ──
 

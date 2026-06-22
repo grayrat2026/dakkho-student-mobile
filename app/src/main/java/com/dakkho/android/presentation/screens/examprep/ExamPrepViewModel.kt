@@ -49,10 +49,11 @@ class ExamPrepViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val userId = encryptedPrefsHelper.getUserId() ?: "anonymous"
-                val response = examApiService.getExamPrepInfo(userId)
+                val response = examApiService.getExamPrepInfo(userId, semester = 1)
                 if (response.isSuccessful) {
-                    val data = response.body()
-                    data?.let { prepInfo ->
+                    val result = response.body()
+                    val prepInfo = result?.data
+                    if (prepInfo != null) {
                         _uiState.update {
                             it.copy(
                                 examPrepInfo = prepInfo,
@@ -66,6 +67,8 @@ class ExamPrepViewModel @Inject constructor(
                         if (prepInfo.examDateMillis != null) {
                             startCountdown(prepInfo.examDateMillis)
                         }
+                    } else {
+                        loadFallbackData()
                     }
                 } else {
                     loadFallbackData()
@@ -77,64 +80,69 @@ class ExamPrepViewModel @Inject constructor(
     }
 
     private fun loadFallbackData() {
-        // Fallback sample data when API is not available
         val sampleTopics = listOf(
-            ImportantTopic(id = "1", name = "বীজগণিত ও ত্রিকোণমিতি", isCompleted = false),
-            ImportantTopic(id = "2", name = "জ্যামিতি ও মাপজোক", isCompleted = false),
-            ImportantTopic(id = "3", name = "পদার্থবিজ্ঞান - বল ও গতি", isCompleted = true),
-            ImportantTopic(id = "4", name = "রসায়ন - জৈব রসায়ন", isCompleted = false),
-            ImportantTopic(id = "5", name = "জীববিজ্ঞান - কোষ বিভাজন", isCompleted = true),
-            ImportantTopic(id = "6", name = "বাংলা সাহিত্যের ইতিহাস", isCompleted = false),
-            ImportantTopic(id = "7", name = "ইংরেজি ব্যাকরণ", isCompleted = false),
-            ImportantTopic(id = "8", name = "সাধারণ জ্ঞান ও সমসাময়িক", isCompleted = false)
+            ImportantTopic(id = "1", title = "বীজগণিত ও ত্রিকোণমিতি", subject = "গণিত", isCompleted = false),
+            ImportantTopic(id = "2", title = "জ্যামিতি ও মাপজোক", subject = "গণিত", isCompleted = false),
+            ImportantTopic(id = "3", title = "পদার্থবিজ্ঞান - বল ও গতি", subject = "পদার্থবিজ্ঞান", isCompleted = true),
+            ImportantTopic(id = "4", title = "রসায়ন - জৈব রসায়ন", subject = "রসায়ন", isCompleted = false),
+            ImportantTopic(id = "5", title = "জীববিজ্ঞান - কোষ বিভাজন", subject = "জীববিজ্ঞান", isCompleted = true),
+            ImportantTopic(id = "6", title = "বাংলা সাহিত্যের ইতিহাস", subject = "বাংলা", isCompleted = false),
+            ImportantTopic(id = "7", title = "ইংরেজি ব্যাকরণ", subject = "ইংরেজি", isCompleted = false),
+            ImportantTopic(id = "8", title = "সাধারণ জ্ঞান ও সমসাময়িক", subject = "সাধারণ জ্ঞান", isCompleted = false)
         )
 
         val sampleStudyPlan = listOf(
             StudyPlanItem(
+                id = "1",
                 dayNumber = 1,
                 title = "বীজগণিত পুনরালোচনা",
-                durationMinutes = 120,
+                duration = "2 ঘন্টা",
                 topics = listOf("দ্বিঘাত সমীকরণ", "অনুপাত ও সমানুপাত")
             ),
             StudyPlanItem(
+                id = "2",
                 dayNumber = 2,
                 title = "জ্যামিতি অনুশীলন",
-                durationMinutes = 90,
+                duration = "1.5 ঘন্টা",
                 topics = listOf("ত্রিভুজ", "বৃত্তের ধর্ম")
             ),
             StudyPlanItem(
+                id = "3",
                 dayNumber = 3,
                 title = "পদার্থবিজ্ঞান - বল ও গতি",
-                durationMinutes = 150,
+                duration = "2.5 ঘন্টা",
                 topics = listOf("নিউটনের সূত্র", "কাজ ও শক্তি")
             ),
             StudyPlanItem(
+                id = "4",
                 dayNumber = 4,
                 title = "রসায়ন মডেল টেস্ট",
-                durationMinutes = 120,
+                duration = "2 ঘন্টা",
                 topics = listOf("জৈব যৌগ", "রাসায়নিক বন্ধ")
             ),
             StudyPlanItem(
+                id = "5",
                 dayNumber = 5,
                 title = "জীববিজ্ঞান ও সাধারণ বিজ্ঞান",
-                durationMinutes = 100,
+                duration = "1.5 ঘন্টা",
                 topics = listOf("কোষ বিভাজন", "জিনতত্ত্ব")
             ),
             StudyPlanItem(
+                id = "6",
                 dayNumber = 6,
                 title = "বাংলা ও ইংরেজি",
-                durationMinutes = 90,
+                duration = "1.5 ঘন্টা",
                 topics = listOf("সাহিত্য ইতিহাস", "Grammar & Composition")
             ),
             StudyPlanItem(
+                id = "7",
                 dayNumber = 7,
                 title = "ফুল মডেল টেস্ট",
-                durationMinutes = 180,
+                duration = "3 ঘন্টা",
                 topics = listOf("সকল বিষয়", "সময় ব্যবস্থাপনা")
             )
         )
 
-        // Set exam date to 14 days from now
         val examDate = System.currentTimeMillis() + (14L * 24 * 60 * 60 * 1000)
         val checkedSet = sampleTopics.filter { it.isCompleted }.map { it.id }.toSet()
 
@@ -197,7 +205,7 @@ class ExamPrepViewModel @Inject constructor(
             } else {
                 currentChecked.add(topicId)
             }
-            it.copy(checkedTopics = currentChecked)
+            currentState.copy(checkedTopics = currentChecked)
         }
     }
 

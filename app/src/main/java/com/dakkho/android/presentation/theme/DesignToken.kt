@@ -39,21 +39,30 @@ object DesignToken {
 
     // ── Spacing ──
     object Space {
-        val dp2 = Spacing.dp2
-        val dp4 = Spacing.dp4
-        val dp6 = Spacing.dp6
-        val dp8 = Spacing.dp8
-        val dp10 = Spacing.dp10
-        val dp12 = Spacing.dp12
-        val dp16 = Spacing.dp16
-        val dp20 = Spacing.dp20
-        val dp24 = Spacing.dp24
-        val dp28 = Spacing.dp28
-        val dp32 = Spacing.dp32
-        val dp40 = Spacing.dp40
-        val dp48 = Spacing.dp48
-        val dp56 = Spacing.dp56
-        val dp64 = Spacing.dp64
+        val dp2 = com.dakkho.android.presentation.theme.Spacing.dp2
+        val dp4 = com.dakkho.android.presentation.theme.Spacing.dp4
+        val dp6 = com.dakkho.android.presentation.theme.Spacing.dp6
+        val dp8 = com.dakkho.android.presentation.theme.Spacing.dp8
+        val dp10 = com.dakkho.android.presentation.theme.Spacing.dp10
+        val dp12 = com.dakkho.android.presentation.theme.Spacing.dp12
+        val dp16 = com.dakkho.android.presentation.theme.Spacing.dp16
+        val dp20 = com.dakkho.android.presentation.theme.Spacing.dp20
+        val dp24 = com.dakkho.android.presentation.theme.Spacing.dp24
+        val dp28 = com.dakkho.android.presentation.theme.Spacing.dp28
+        val dp32 = com.dakkho.android.presentation.theme.Spacing.dp32
+        val dp40 = com.dakkho.android.presentation.theme.Spacing.dp40
+        val dp48 = com.dakkho.android.presentation.theme.Spacing.dp48
+        val dp56 = com.dakkho.android.presentation.theme.Spacing.dp56
+        val dp64 = com.dakkho.android.presentation.theme.Spacing.dp64
+    }
+
+    // Semantic spacing aliases (used by screen composables)
+    object Spacing {
+        val xs = com.dakkho.android.presentation.theme.Spacing.dp4    // 4.dp
+        val sm = com.dakkho.android.presentation.theme.Spacing.dp8    // 8.dp
+        val md = com.dakkho.android.presentation.theme.Spacing.dp12   // 12.dp
+        val lg = com.dakkho.android.presentation.theme.Spacing.dp16   // 16.dp
+        val xl = com.dakkho.android.presentation.theme.Spacing.dp24   // 24.dp
     }
 
     // ── Shapes ──

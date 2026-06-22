@@ -2,7 +2,7 @@ package com.dakkho.android.data.repository
 
 import com.dakkho.android.data.api.AchievementApiService
 import com.dakkho.android.domain.model.Achievement
-import com.dakkho.android.domain.model.AchievementData
+import com.dakkho.android.domain.repository.AchievementData
 import com.dakkho.android.domain.model.AchievementMilestone
 import com.dakkho.android.domain.model.StreakData
 import com.dakkho.android.domain.repository.AchievementRepository

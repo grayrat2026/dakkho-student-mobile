@@ -17,9 +17,9 @@ import com.dakkho.android.domain.model.ResourceFile
 import com.dakkho.android.domain.model.Review
 import com.dakkho.android.domain.model.Section
 import com.dakkho.android.domain.model.SubmitReviewRequest
-import com.dakkho.android.domain.model.Subject
+import com.dakkho.android.domain.model.CurriculumSubject
 import com.dakkho.android.domain.model.SubjectClass
-import com.dakkho.android.domain.model.Unit
+import com.dakkho.android.domain.model.CourseUnit
 import com.dakkho.android.domain.repository.CourseRepository
 import timber.log.Timber
 import javax.inject.Inject
@@ -90,7 +90,7 @@ class CourseRepositoryImpl @Inject constructor(
                         // New hierarchy: Subject → Class → Unit → Lesson
                         Curriculum(
                             sections = dto.subjects.map { subjectDto ->
-                                Subject(
+                                CurriculumSubject(
                                     id = subjectDto.id,
                                     title = subjectDto.title,
                                     order = subjectDto.order ?: 0,
@@ -100,7 +100,7 @@ class CourseRepositoryImpl @Inject constructor(
                                             title = classDto.title,
                                             order = classDto.order ?: 0,
                                             units = classDto.units?.map { unitDto ->
-                                                Unit(
+                                                CourseUnit(
                                                     id = unitDto.id,
                                                     title = unitDto.title,
                                                     order = unitDto.order ?: 0,
@@ -116,7 +116,7 @@ class CourseRepositoryImpl @Inject constructor(
                         // Backward compat: Section → Lesson (mapped as Subject with single Class/Unit)
                         Curriculum(
                             sections = dto.sections?.map { sectionDto ->
-                                Subject(
+                                CurriculumSubject(
                                     id = sectionDto.id,
                                     title = sectionDto.title,
                                     order = sectionDto.order ?: 0,
@@ -126,7 +126,7 @@ class CourseRepositoryImpl @Inject constructor(
                                             title = sectionDto.title,
                                             order = 0,
                                             units = listOf(
-                                                Unit(
+                                                CourseUnit(
                                                     id = "${sectionDto.id}_unit",
                                                     title = sectionDto.title,
                                                     order = 0,

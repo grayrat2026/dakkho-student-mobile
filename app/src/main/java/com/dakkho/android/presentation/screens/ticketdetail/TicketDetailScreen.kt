@@ -37,6 +37,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -52,12 +53,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import com.dakkho.android.data.api.SupportApiService
 import com.dakkho.android.data.db.EncryptedPrefsHelper
 import com.dakkho.android.domain.model.TicketAttachment
 import com.dakkho.android.domain.model.TicketMessage
 import com.dakkho.android.domain.model.TicketStatus
 import com.dakkho.android.domain.model.SupportTicket
+import com.dakkho.android.domain.model.SupportTicketDto
 import com.dakkho.android.presentation.components.GlassCard
 import com.dakkho.android.presentation.theme.DesignToken
 import com.dakkho.android.presentation.theme.Green
@@ -71,6 +75,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import timber.log.Timber
 import javax.inject.Inject
 
 // ════════════════════════════════════════════════════
@@ -105,14 +110,19 @@ class TicketDetailViewModel @Inject constructor(
             try {
                 val response = apiService.getTicketDetail(id)
                 if (response.isSuccessful) {
-                    response.body()?.data?.let { dto ->
+                    val result = response.body()
+                    val dto = result?.data as? com.dakkho.android.domain.model.SupportTicketDto
+                    if (dto != null) {
+                        val ticket = dto.toDomain()
                         _uiState.update {
                             it.copy(
-                                ticket = dto.toDomain(),
-                                messages = dto.toDomain().messages,
+                                ticket = ticket,
+                                messages = ticket.messages,
                                 isLoading = false
                             )
                         }
+                    } else {
+                        _uiState.update { it.copy(isLoading = false) }
                     }
                 } else {
                     _uiState.update { it.copy(isLoading = false) }

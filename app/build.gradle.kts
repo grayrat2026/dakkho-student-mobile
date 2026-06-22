@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.hilt.android)
-    alias(libs.plugins.ksp)
+    id("kotlin-kapt")
 }
 
 android {
@@ -23,9 +23,11 @@ android {
             useSupportLibrary = true
         }
 
-        // Room schema export
-        ksp {
-            arg("room.schemaLocation", "$projectDir/schemas")
+        // Room schema export via kapt
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas")
+            }
         }
     }
 
@@ -101,12 +103,12 @@ dependencies {
     // Navigation
     implementation(libs.navigation.compose)
 
-    // Hilt
+    // Hilt — using kapt instead of KSP (avoids StackOverflow in KSP2 validator)
     implementation(libs.hilt.android)
-    ksp(libs.hilt.android.compiler)
+    kapt(libs.hilt.android.compiler)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.hilt.work)
-    ksp(libs.hilt.compiler)
+    kapt(libs.hilt.compiler)
 
     // Retrofit + OkHttp
     implementation(libs.retrofit)
@@ -119,10 +121,10 @@ dependencies {
     implementation(libs.moshi.kotlin)
     implementation(libs.moshi.adapters)
 
-    // Room
+    // Room — using kapt instead of KSP (avoids StackOverflow in KSP2 validator)
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
-    ksp(libs.room.compiler)
+    kapt(libs.room.compiler)
     implementation(libs.room.paging)
 
     // Paging
@@ -138,6 +140,7 @@ dependencies {
     implementation(libs.media3.hls)
     implementation(libs.media3.dash)
     implementation(libs.media3.session)
+    implementation(libs.media3.datasource.okhttp)
 
     // WorkManager
     implementation(libs.work.runtime.ktx)

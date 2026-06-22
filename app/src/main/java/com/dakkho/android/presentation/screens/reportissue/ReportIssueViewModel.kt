@@ -8,9 +8,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dakkho.android.data.api.SupportApiService
 import com.dakkho.android.data.db.EncryptedPrefsHelper
-import com.dakkho.android.domain.model.HelpSupportModels.BugCategory
-import com.dakkho.android.domain.model.HelpSupportModels.BugReport
-import com.dakkho.android.domain.model.HelpSupportModels.BugSeverity
+import com.dakkho.android.domain.model.BugCategory
+import com.dakkho.android.domain.model.BugReport
+import com.dakkho.android.domain.model.BugSeverity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

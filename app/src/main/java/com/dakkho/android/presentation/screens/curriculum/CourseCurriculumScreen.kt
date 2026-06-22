@@ -56,9 +56,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.dakkho.android.domain.model.Lesson
-import com.dakkho.android.domain.model.Subject
+import com.dakkho.android.domain.model.CurriculumSubject
 import com.dakkho.android.domain.model.SubjectClass
-import com.dakkho.android.domain.model.Unit
+import com.dakkho.android.domain.model.CourseUnit
 import com.dakkho.android.presentation.theme.Green
 import com.dakkho.android.presentation.theme.Neutral400
 import com.dakkho.android.presentation.theme.SkyBlue
@@ -256,7 +256,7 @@ private fun CurriculumProgressHeader(uiState: CurriculumUiState) {
 
 @Composable
 private fun SubjectTreeItem(
-    subject: Subject,
+    subject: CurriculumSubject,
     isExpanded: Boolean,
     expandedClasses: Set<String>,
     expandedUnits: Set<String>,

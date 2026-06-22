@@ -14,6 +14,8 @@ import com.dakkho.android.domain.model.SearchResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -118,23 +120,25 @@ class SearchViewModel @Inject constructor(
             saveToHistory(query)
 
             // Search courses and instructors in parallel
-            val courseDeferred = kotlinx.coroutines.async { searchCourses(query) }
-            val instructorDeferred = kotlinx.coroutines.async { searchInstructors(query) }
+            coroutineScope {
+                val courseDeferred = async { searchCourses(query) }
+                val instructorDeferred = async { searchInstructors(query) }
 
-            val courses = courseDeferred.await()
-            val instructors = instructorDeferred.await()
+                val courses = courseDeferred.await()
+                val instructors = instructorDeferred.await()
 
-            _uiState.update {
-                it.copy(
-                    courseResults = courses,
-                    instructorResults = instructors,
-                    isSearching = false,
-                    error = if (courses.isEmpty() && instructors.isEmpty()) null else null
-                )
+                _uiState.update {
+                    it.copy(
+                        courseResults = courses,
+                        instructorResults = instructors,
+                        isSearching = false,
+                        error = if (courses.isEmpty() && instructors.isEmpty()) null else null
+                    )
+                }
+
+                // Update local suggestion index for future FTS queries
+                indexSearchResults(query, courses, instructors)
             }
-
-            // Update local suggestion index for future FTS queries
-            indexSearchResults(query, courses, instructors)
         }
     }
 

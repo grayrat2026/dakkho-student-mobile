@@ -128,8 +128,9 @@ fun ReferralScreen(
                 )
             }
             uiState.referralData != null -> {
+                val referralData = uiState.referralData!!
                 ReferralContent(
-                    referralData = uiState.referralData,
+                    referralData = referralData,
                     onCopyCode = { code ->
                         clipboardManager.setText(AnnotatedString(code))
                     },
@@ -167,7 +168,7 @@ private fun ReferralContent(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(DesignToken.Radius.dp16))
+                .clip(RoundedCornerShape(DesignToken.Space.dp16))
                 .background(
                     brush = Brush.verticalGradient(
                         colors = listOf(SkyBlue, DeepBlue)
@@ -235,22 +236,12 @@ private fun ReferralContent(
 
         // Share button
         GradientButton(
+            text = "শেয়ার করুন",
             onClick = { onShareLink(referralData.referralLink, referralData.referralCode) },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp)
-        ) {
-            Icon(
-                Icons.Default.Share,
-                contentDescription = null,
-                modifier = Modifier.size(20.dp)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = "শেয়ার করুন",
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-            )
-        }
+        )
 
         Spacer(modifier = Modifier.height(DesignToken.Space.dp20))
 

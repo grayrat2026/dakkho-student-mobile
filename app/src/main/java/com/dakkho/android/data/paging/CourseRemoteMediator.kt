@@ -117,7 +117,7 @@ class CourseRemoteMediator(
             }
     }
 
-    private fun mapCourseDtoToEntity(dto: CourseDto): CourseEntity {
+    private fun mapCourseDtoToEntity(dto: com.dakkho.android.domain.model.CourseDto): CourseEntity {
         return CourseEntity(
             id = dto.id,
             title = dto.title,

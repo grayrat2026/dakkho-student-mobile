@@ -75,9 +75,9 @@ fun TermsOfServiceScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = DesignToken.Spacing.md)
+                .padding(horizontal = DesignToken.Space.dp16)
         ) {
-            Spacer(modifier = Modifier.height(DesignToken.Spacing.sm))
+            Spacer(modifier = Modifier.height(DesignToken.Space.dp8))
 
             // Last updated info
             GlassCard(modifier = Modifier.fillMaxSize()) {
@@ -85,11 +85,11 @@ fun TermsOfServiceScreen(
                     text = "সর্বশেষ আপডেট: ১ জানুয়ারি, ২০২৫",
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(DesignToken.Spacing.md)
+                    modifier = Modifier.padding(DesignToken.Space.dp16)
                 )
             }
 
-            Spacer(modifier = Modifier.height(DesignToken.Spacing.md))
+            Spacer(modifier = Modifier.height(DesignToken.Space.dp16))
 
             // Section 1: সাধারণ শর্তাবলী
             TermsSection(
@@ -102,7 +102,7 @@ fun TermsOfServiceScreen(
                 )
             )
 
-            Spacer(modifier = Modifier.height(DesignToken.Spacing.md))
+            Spacer(modifier = Modifier.height(DesignToken.Space.dp16))
 
             // Section 2: ব্যবহারকারীর অধিকার ও দায়িত্ব
             TermsSection(
@@ -115,7 +115,7 @@ fun TermsOfServiceScreen(
                 )
             )
 
-            Spacer(modifier = Modifier.height(DesignToken.Spacing.md))
+            Spacer(modifier = Modifier.height(DesignToken.Space.dp16))
 
             // Section 3: মেধা সম্পদ
             TermsSection(
@@ -128,7 +128,7 @@ fun TermsOfServiceScreen(
                 )
             )
 
-            Spacer(modifier = Modifier.height(DesignToken.Spacing.md))
+            Spacer(modifier = Modifier.height(DesignToken.Space.dp16))
 
             // Section 4: পেমেন্ট ও রিফান্ড
             TermsSection(
@@ -141,7 +141,7 @@ fun TermsOfServiceScreen(
                 )
             )
 
-            Spacer(modifier = Modifier.height(DesignToken.Spacing.md))
+            Spacer(modifier = Modifier.height(DesignToken.Space.dp16))
 
             // Section 5: পরিবর্তন ও সমাপ্তি
             TermsSection(
@@ -154,7 +154,7 @@ fun TermsOfServiceScreen(
                 )
             )
 
-            Spacer(modifier = Modifier.height(DesignToken.Spacing.xl))
+            Spacer(modifier = Modifier.height(DesignToken.Space.dp24))
         }
     }
 }
@@ -167,7 +167,7 @@ private fun TermsSection(
 ) {
     GlassCard(modifier = Modifier.fillMaxSize()) {
         Column(
-            modifier = Modifier.padding(DesignToken.Spacing.md)
+            modifier = Modifier.padding(DesignToken.Space.dp16)
         ) {
             // Section Header
             Row(
@@ -187,7 +187,7 @@ private fun TermsSection(
                         style = MaterialTheme.typography.titleMedium
                     )
                 }
-                Spacer(modifier = Modifier.width(DesignToken.Spacing.sm))
+                Spacer(modifier = Modifier.width(DesignToken.Space.dp8))
                 Text(
                     text = title,
                     style = MaterialTheme.typography.titleLarge,
@@ -196,7 +196,7 @@ private fun TermsSection(
                 )
             }
 
-            Spacer(modifier = Modifier.height(DesignToken.Spacing.md))
+            Spacer(modifier = Modifier.height(DesignToken.Space.dp16))
 
             // Paragraphs
             paragraphs.forEachIndexed { index, paragraph ->
@@ -207,7 +207,7 @@ private fun TermsSection(
                     lineHeight = 24.sp
                 )
                 if (index < paragraphs.lastIndex) {
-                    Spacer(modifier = Modifier.height(DesignToken.Spacing.sm))
+                    Spacer(modifier = Modifier.height(DesignToken.Space.dp8))
                 }
             }
         }

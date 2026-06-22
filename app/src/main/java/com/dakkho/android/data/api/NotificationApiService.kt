@@ -1,8 +1,8 @@
 package com.dakkho.android.data.api
 
-import com.dakkho.android.domain.model.ApiResult
+import com.dakkho.android.data.api.ApiResult
 import com.dakkho.android.domain.model.NotificationDto
-import com.dakkho.android.domain.model.PaginatedResponse
+import com.dakkho.android.data.api.PaginatedResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.PATCH

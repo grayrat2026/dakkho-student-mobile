@@ -1,11 +1,11 @@
 package com.dakkho.android.data.api
 
-import com.dakkho.android.domain.model.ApiResult
+import com.dakkho.android.data.api.ApiResult
 import com.dakkho.android.domain.model.CourseDetailDto
 import com.dakkho.android.domain.model.CourseDto
 import com.dakkho.android.domain.model.CoursePackageDto
 import com.dakkho.android.domain.model.CurriculumDto
-import com.dakkho.android.domain.model.PaginatedResponse
+import com.dakkho.android.data.api.PaginatedResponse
 import com.dakkho.android.domain.model.ReviewDto
 import com.dakkho.android.domain.model.SubmitReviewRequest
 import retrofit2.Response

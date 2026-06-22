@@ -1,6 +1,6 @@
 package com.dakkho.android.data.api
 
-import com.dakkho.android.domain.model.ApiResult
+import com.dakkho.android.data.api.ApiResult
 import com.dakkho.android.domain.model.ActiveSessionDto
 import com.dakkho.android.domain.model.ContentProtectionConfigDto
 import com.dakkho.android.domain.model.DownloadSettingsDto

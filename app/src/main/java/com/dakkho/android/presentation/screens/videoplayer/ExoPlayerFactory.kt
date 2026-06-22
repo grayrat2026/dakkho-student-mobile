@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import androidx.media3.common.C
 import androidx.media3.common.Format
+import androidx.media3.common.MediaItem
 import androidx.media3.common.MimeTypes
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
@@ -88,7 +89,7 @@ object ExoPlayerFactory {
                 .setUserAgent("DAKKHO-Student/1.0")
         }
 
-        val uri = Uri.parse(url)
+        val mediaItem = MediaItem.fromUri(url)
         val extension = url.substringAfterLast(".", "").lowercase()
 
         return when {
@@ -96,19 +97,19 @@ object ExoPlayerFactory {
             extension == "m3u8" || url.contains(".m3u8") -> {
                 Timber.d("Creating HLS media source for: $url")
                 HlsMediaSource.Factory(dataSourceFactory)
-                    .createMediaSource(uri)
+                    .createMediaSource(mediaItem)
             }
             // DASH
             extension == "mpd" || url.contains(".mpd") -> {
                 Timber.d("Creating DASH media source for: $url")
                 DashMediaSource.Factory(dataSourceFactory)
-                    .createMediaSource(uri)
+                    .createMediaSource(mediaItem)
             }
             // Progressive (MP4, MKV, AVI, WEBM, etc.)
             else -> {
                 Timber.d("Creating Progressive media source for: $url")
                 ProgressiveMediaSource.Factory(dataSourceFactory)
-                    .createMediaSource(uri)
+                    .createMediaSource(mediaItem)
             }
         }
     }
@@ -130,7 +131,7 @@ class AudioTrackManager(private val trackSelector: DefaultTrackSelector) {
 
         // Audio renderer is typically at index 1 (0 = video, 1 = audio, 2 = subtitle)
         for (rendererIndex in 0 until trackGroups.rendererCount) {
-            if (trackGroups.getTrackType(rendererIndex) != C.TRACK_TYPE_AUDIO) continue
+            if (trackGroups.getRendererType(rendererIndex) != C.TRACK_TYPE_AUDIO) continue
 
             val trackGroupArray = trackGroups.getTrackGroups(rendererIndex)
             val selectedTrackIndices = getSelectedTrackIndices(rendererIndex)
@@ -138,7 +139,7 @@ class AudioTrackManager(private val trackSelector: DefaultTrackSelector) {
             for (groupIndex in 0 until trackGroupArray.length) {
                 val trackGroup = trackGroupArray[groupIndex]
                 for (trackIndex in 0 until trackGroup.length) {
-                    val format = trackGroup.getTrackFormat(trackIndex)
+                    val format = trackGroup.getFormat(trackIndex)
                     val globalIndex = trackInfoList.size
                     trackInfoList.add(
                         AudioTrackInfo(
@@ -174,7 +175,7 @@ class AudioTrackManager(private val trackSelector: DefaultTrackSelector) {
         val trackGroups = trackSelector.currentMappedTrackInfo ?: return
 
         for (rendererIndex in 0 until trackGroups.rendererCount) {
-            if (trackGroups.getTrackType(rendererIndex) != C.TRACK_TYPE_AUDIO) continue
+            if (trackGroups.getRendererType(rendererIndex) != C.TRACK_TYPE_AUDIO) continue
 
             val trackGroupArray = trackGroups.getTrackGroups(rendererIndex)
             var currentIndex = 0
@@ -187,7 +188,7 @@ class AudioTrackManager(private val trackSelector: DefaultTrackSelector) {
                             listOf(trackIndex)
                         )
                         val params = trackSelector.buildUponParameters()
-                            .setTrackSelectionOverride(override)
+                            .setOverrideForType(override)
                             .build()
                         trackSelector.parameters = params
                         Timber.d("Selected audio track: ${trackInfo.label} (index=${trackInfo.trackIndex})")
@@ -203,8 +204,7 @@ class AudioTrackManager(private val trackSelector: DefaultTrackSelector) {
      * Reset to automatic audio track selection.
      */
     fun resetAudioTrackSelection() {
-        val params = trackSelector.buildUponParameters()
-            .clearTrackSelectionOverrides(C.TRACK_TYPE_AUDIO)
+        val params = DefaultTrackSelector.ParametersBuilder(trackSelector.context!!)
             .build()
         trackSelector.parameters = params
     }
@@ -217,7 +217,7 @@ class AudioTrackManager(private val trackSelector: DefaultTrackSelector) {
         val trackGroups = trackSelector.currentMappedTrackInfo ?: return emptyList()
 
         for (rendererIndex in 0 until trackGroups.rendererCount) {
-            if (trackGroups.getTrackType(rendererIndex) != C.TRACK_TYPE_TEXT) continue
+            if (trackGroups.getRendererType(rendererIndex) != C.TRACK_TYPE_TEXT) continue
 
             val trackGroupArray = trackGroups.getTrackGroups(rendererIndex)
             val selectedTrackIndices = getSelectedTrackIndices(rendererIndex)
@@ -225,7 +225,7 @@ class AudioTrackManager(private val trackSelector: DefaultTrackSelector) {
             for (groupIndex in 0 until trackGroupArray.length) {
                 val trackGroup = trackGroupArray[groupIndex]
                 for (trackIndex in 0 until trackGroup.length) {
-                    val format = trackGroup.getTrackFormat(trackIndex)
+                    val format = trackGroup.getFormat(trackIndex)
                     trackInfoList.add(
                         SubtitleTrackInfo(
                             trackIndex = trackInfoList.size,
@@ -256,7 +256,7 @@ class AudioTrackManager(private val trackSelector: DefaultTrackSelector) {
         val trackGroups = trackSelector.currentMappedTrackInfo ?: return
 
         for (rendererIndex in 0 until trackGroups.rendererCount) {
-            if (trackGroups.getTrackType(rendererIndex) != C.TRACK_TYPE_TEXT) continue
+            if (trackGroups.getRendererType(rendererIndex) != C.TRACK_TYPE_TEXT) continue
 
             val trackGroupArray = trackGroups.getTrackGroups(rendererIndex)
             var currentIndex = 0
@@ -269,7 +269,7 @@ class AudioTrackManager(private val trackSelector: DefaultTrackSelector) {
                             listOf(trackIndex)
                         )
                         val params = trackSelector.buildUponParameters()
-                            .setTrackSelectionOverride(override)
+                            .setOverrideForType(override)
                             .build()
                         trackSelector.parameters = params
                         Timber.d("Selected subtitle track: ${trackInfo.label}")
@@ -305,7 +305,7 @@ class AudioTrackManager(private val trackSelector: DefaultTrackSelector) {
 
     private fun getSelectedTrackIndices(rendererIndex: Int): Set<Pair<Int, Int>> {
         val selected = mutableSetOf<Pair<Int, Int>>()
-        val selectionOverrides = trackSelector.parameters.trackSelectionOverrides
+        val overrides = trackSelector.parameters.overrides
         // We'll check selection state via the player's current track selection
         // This is a simplified approach
         return selected

@@ -4,7 +4,7 @@ import com.dakkho.android.domain.model.CreateForumCommentRequest
 import com.dakkho.android.domain.model.CreateForumThreadRequest
 import com.dakkho.android.domain.model.ForumThreadDetailResponse
 import com.dakkho.android.domain.model.ForumThreadListResponse
-import com.dakkho.android.domain.model.ApiResult
+import com.dakkho.android.data.api.ApiResult
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE

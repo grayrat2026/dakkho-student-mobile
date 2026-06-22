@@ -1,11 +1,9 @@
 package com.dakkho.android.data.api
 
-import com.dakkho.android.domain.model.ApiResult
+import com.dakkho.android.data.api.ApiResult
+import com.dakkho.android.domain.model.ExamModels
 import com.dakkho.android.domain.model.ExamResultDto
 import com.dakkho.android.domain.model.ExamScheduleDto
-import com.dakkho.android.domain.model.ExamTip
-import com.dakkho.android.domain.model.PracticeQuestion
-import com.dakkho.android.domain.model.PracticeTest
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -23,7 +21,7 @@ interface ExamApiService {
     suspend fun getExamPrepInfo(
         @Query("department") department: String,
         @Query("semester") semester: Int
-    ): Response<ApiResult<com.dakkho.android.domain.model.ExamPrepInfo>>
+    ): Response<ApiResult<ExamModels.ExamPrepInfo>>
 
     // ── #90: Exam Schedule ──
 
@@ -46,19 +44,19 @@ interface ExamApiService {
     @GET("api/exam/practice/tests")
     suspend fun getPracticeTests(
         @Query("subject") subject: String? = null
-    ): Response<ApiResult<List<PracticeTest>>>
+    ): Response<ApiResult<List<ExamModels.PracticeTest>>>
 
     @GET("api/exam/practice/test/{id}/questions")
-    suspend fun getPracticeQuestions(@Path("id") testId: String): Response<ApiResult<List<PracticeQuestion>>>
+    suspend fun getPracticeQuestions(@Path("id") testId: String): Response<ApiResult<List<ExamModels.PracticeQuestion>>>
 
     @GET("api/exam/practice/previous-year")
     suspend fun getPreviousYearQuestions(
         @Query("year") year: String,
         @Query("subject") subject: String? = null
-    ): Response<ApiResult<List<PracticeQuestion>>>
+    ): Response<ApiResult<List<ExamModels.PracticeQuestion>>>
 
     // ── #93: Exam Tips ──
 
     @GET("api/exam/tips")
-    suspend fun getExamTips(): Response<ApiResult<List<ExamTip>>>
+    suspend fun getExamTips(): Response<ApiResult<List<ExamModels.ExamTip>>>
 }
