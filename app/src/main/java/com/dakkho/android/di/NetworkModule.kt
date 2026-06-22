@@ -76,22 +76,7 @@ object NetworkModule {
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
-            .certificatePinner(
-                okhttp3.CertificatePinner.Builder()
-                    .add(
-                        "dakkho-api.pages.dev",
-                        "sha256/PLACEHOLDER_PIN_1_REPLACE_WITH_REAL_SHA256="
-                    )
-                    .add(
-                        "dakkho-api.pages.dev",
-                        "sha256/PLACEHOLDER_PIN_2_REPLACE_WITH_REAL_SHA256="
-                    )
-                    .add(
-                        "dakkho-api.pages.dev",
-                        "sha256/PLACEHOLDER_BACKUP_PIN_REPLACE_WITH_REAL_SHA256="
-                    )
-                    .build()
-            )
+            // Certificate pinning disabled until real SHA-256 hashes are available
             .build()
     }
 

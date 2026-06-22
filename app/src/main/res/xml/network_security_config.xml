@@ -5,19 +5,11 @@
         <trust-anchors>
             <certificates src="system" />
         </trust-anchors>
-        <dns-over-https>
-            <server addr="https://dns.google/dns-query" />
-        </dns-over-https>
     </base-config>
 
-    <!-- Certificate pinning for API -->
+    <!-- Certificate pinning for API (pins will be added when real SHA-256 hashes are available) -->
     <domain-config>
         <domain includeSubdomains="true">dakkho-api.pages.dev</domain>
-        <pin-set>
-            <pin digest="SHA-256">PLACEHOLDER_PIN_1_REPLACE_WITH_REAL_SHA256=</pin>
-            <pin digest="SHA-256">PLACEHOLDER_PIN_2_REPLACE_WITH_REAL_SHA256=</pin>
-            <pin digest="SHA-256">PLACEHOLDER_BACKUP_PIN_REPLACE_WITH_REAL_SHA256=</pin>
-        </pin-set>
         <trust-anchors>
             <certificates src="system" />
         </trust-anchors>
